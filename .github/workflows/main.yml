@@ -1,0 +1,76 @@
+name: Run Web Scrapers
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight UTC
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          
+      - name: Install Chrome and Selenium dependencies
+        run: |
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable chromium-driver
+          
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install openpyxl requests beautifulsoup4 selenium selenium-stealth webdriver-manager requests-html send2trash
+          
+      - name: Download files from FTP
+        run: |
+          python -c "
+          import ftplib
+          import os
+          
+          # Create directory if it doesn't exist
+          os.makedirs('Pricing Spreadsheets', exist_ok=True)
+          
+          # Connect to FTP
+          session = ftplib.FTP('ftp.drivehq.com','kyaldabomb','${{ secrets.FTP_PASSWORD }}')
+          
+          # Download Sky_Music.xlsx
+          with open('Pricing Spreadsheets/Belfield_Scrape.xlsx', 'wb') as f:
+              session.retrbinary('RETR competitor_pricing/Belfield_Scrape.xlsx', f.write)
+              
+          # You can repeat for other files you need
+          # with open('Pricing Spreadsheets/Sounds_Easy.xlsx', 'wb') as f:
+          #     session.retrbinary('RETR competitor_pricing/Sounds_Easy.xlsx', f.write)
+          
+          session.quit()
+          "
+          
+      - name: Modify scraper to use local paths
+        run: |
+          # Create a modified version of the scraper that uses local paths
+          sed 's|\\\\\\\\SERVER\\\\Python\\\\Pricing\\\\Pricing Spreadsheets\\\\|Pricing Spreadsheets/|g' "Belfield_Scrape (Daily).py" > "Belfield_Scrape_Daily_Modified.py"
+          
+      - name: Run scraper
+        run: |
+          python Belfield_Scrape_Daily_Modified.py
+        
+      - name: Upload results to FTP
+        run: |
+          python -c "
+          import ftplib
+          
+          # Connect to FTP
+          session = ftplib.FTP('ftp.drivehq.com','kyaldabomb','${{ secrets.FTP_PASSWORD }}')
+          
+          # Upload Belfield_Scrape.xlsx
+          with open('Pricing Spreadsheets/Belfield_Scrape.xlsx', 'rb') as file:
+              session.storbinary('STOR competitor_pricing/Belfield_Scrape.xlsx', file)
+          
+          session.quit()
+          "
