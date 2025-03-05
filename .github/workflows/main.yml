@@ -8,6 +8,9 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    env:
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       
@@ -28,14 +31,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install openpyxl requests beautifulsoup4 selenium selenium-stealth webdriver-manager requests-html send2trash
           
-      - name: Download files from FTP
-        run: |
-          python download_files.py
+      - name: Test FTP connection
+        run: python test_ftp.py
           
-      - name: Run scraper
-        run: |
-          python "Belfield_Scrape (Daily).py"
+      - name: Download files from FTP
+        run: python download_files.py
+          
+      - name: Run Belfield scraper
+        run: python Belfield_Daily_Modified.py
         
       - name: Upload results to FTP
-        run: |
-          python upload_files.py
+        run: python upload_files.py
