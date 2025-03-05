@@ -34,7 +34,7 @@ jobs:
           
       - name: Run scraper
         run: |
-          python "Sky_Music (Daily)_Modified.py"
+          python "Belfield_Scrape (Daily).py"
         
       - name: Upload results to FTP
         run: |
