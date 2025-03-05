@@ -5,6 +5,8 @@ import os
 os.makedirs('Pricing Spreadsheets', exist_ok=True)
 
 print("Connecting to FTP for downloading files...")
+print(f"FTP_PASSWORD environment variable exists: {'Yes' if 'FTP_PASSWORD' in os.environ else 'No'}")
+
 # Get password from environment variable
 password = os.environ.get('FTP_PASSWORD')
 if not password:
@@ -28,24 +30,37 @@ try:
     print(f"Files in directory: {files}")
     
     # Download Excel files if they exist
-    if 'Sky_Music.xlsx' in files:
-        print("Downloading Sky_Music.xlsx...")
-        with open('Pricing Spreadsheets/Sky_Music.xlsx', 'wb') as f:
-            session.retrbinary('RETR Sky_Music.xlsx', f.write)
+    if 'Belfield.xlsx' in files:
+        print("Downloading Belfield.xlsx...")
+        with open('Pricing Spreadsheets/Belfield.xlsx', 'wb') as f:
+            session.retrbinary('RETR Belfield.xlsx', f.write)
         print("Download complete")
     else:
-        print("Sky_Music.xlsx not found on server, creating placeholder file...")
-        # Create an empty placeholder file for first run
-        with open('Pricing Spreadsheets/Sky_Music.xlsx', 'wb') as f:
-            f.write(b'')
+        print("Belfield.xlsx not found on server, creating a new file...")
+        # Create a new Excel file since it's not on the server
+        import openpyxl
+        wb = openpyxl.Workbook()
+        sheet = wb.active
+        sheet.title = 'Sheet'
+        # Add header row
+        headers = ['SKU', 'Brand', 'Title', 'Price', 'URL', 'Image', 'Description', 'Date', 'Stock Available']
+        for col, header in enumerate(headers, 1):
+            sheet.cell(row=1, column=col).value = header
+        wb.save('Pricing Spreadsheets/Belfield.xlsx')
+        print("Created new Belfield.xlsx file")
 
-    # Add other files as needed
-    
     session.quit()
     print("Files downloaded successfully")
 except Exception as e:
     print(f"Error during FTP download: {str(e)}")
-    # Create empty files if download fails
-    with open('Pricing Spreadsheets/Sky_Music.xlsx', 'wb') as f:
-        f.write(b'')
-    print("Created empty placeholder files")
+    # Create new Excel file if download fails
+    import openpyxl
+    wb = openpyxl.Workbook()
+    sheet = wb.active
+    sheet.title = 'Sheet'
+    # Add header row
+    headers = ['SKU', 'Brand', 'Title', 'Price', 'URL', 'Image', 'Description', 'Date', 'Stock Available']
+    for col, header in enumerate(headers, 1):
+        sheet.cell(row=1, column=col).value = header
+    wb.save('Pricing Spreadsheets/Belfield.xlsx')
+    print("Created new Belfield.xlsx file due to FTP error")
