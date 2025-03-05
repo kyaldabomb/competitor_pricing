@@ -2,12 +2,14 @@ import ftplib
 import os
 import time
 
+print("Connecting to FTP for uploading files...")
+print(f"FTP_PASSWORD environment variable exists: {'Yes' if 'FTP_PASSWORD' in os.environ else 'No'}")
+
 # Get password from environment variable
 password = os.environ.get('FTP_PASSWORD')
 if not password:
     raise ValueError("FTP_PASSWORD environment variable not set")
 
-print("Connecting to FTP for uploading files...")
 try:
     # Connect to FTP
     session = ftplib.FTP('ftp.drivehq.com', 'kyaldabomb', password)
@@ -21,9 +23,9 @@ try:
     session.cwd('competitor_pricing')
     
     # Upload Excel files
-    print("Uploading Sky_Music.xlsx...")
-    with open('Pricing Spreadsheets/Sky_Music.xlsx', 'rb') as file:
-        session.storbinary('STOR Sky_Music.xlsx', file)
+    print("Uploading Belfield.xlsx...")
+    with open('Pricing Spreadsheets/Belfield.xlsx', 'rb') as file:
+        session.storbinary('STOR Belfield.xlsx', file)
     print("Upload complete")
     
     # Add timestamp file to verify upload
