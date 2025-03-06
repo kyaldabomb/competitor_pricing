@@ -27,14 +27,10 @@ jobs:
           
       - name: Install Chrome and Selenium dependencies
         run: |
-          # Add proper Chrome repository
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          # Debug info
-          google-chrome --version
-          which google-chrome
+          sudo apt-get install -y google-chrome-stable chromium-driver
           
       - name: Install Python dependencies
         run: |
@@ -69,6 +65,14 @@ jobs:
             # Run all monthly scrapers
             python run_scrapers.py --type monthly
           fi
+      
+      # Add the artifact upload step here
+      - name: Upload files as artifacts (for debugging)
+        uses: actions/upload-artifact@v2
+        with:
+          name: pricing-spreadsheets
+          path: Pricing Spreadsheets/*.xlsx
+        if: always()  # This ensures files are uploaded even if previous steps fail
         
       - name: Upload results to FTP
         run: |
