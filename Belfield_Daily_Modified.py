@@ -211,8 +211,6 @@ try:
     except Exception as final_error:
         print(f"Error in final save and upload: {str(final_error)}")
         print(traceback.format_exc())
-        print(f"Scraping completed successfully. Scraped {items_scrapped} items.")
-        send_email_notification(True, items_scrapped)
     
 except Exception as e:
     error_message = str(e)
