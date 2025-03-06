@@ -1,0 +1,68 @@
+name: Run Monthly Web Scrapers
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # Run at midnight on the 1st day of each month
+  workflow_dispatch:
+    inputs:
+      scraper:
+        description: 'Monthly scraper to run (leave empty to run all)'
+        required: false
+        default: ''
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    env:
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          
+      - name: Install Chrome and Selenium dependencies
+        run: |
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable chromium-driver
+          
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install openpyxl requests beautifulsoup4 selenium selenium-stealth webdriver-manager send2trash
+          pip install "lxml[html_clean]"
+          pip install requests-html
+          
+      - name: Test FTP connection
+        run: python test_ftp.py
+          
+      - name: Download files from FTP
+        run: |
+          if [ -n "${{ github.event.inputs.scraper }}" ]; then
+            python download_files.py ${{ github.event.inputs.scraper }}
+          else
+            python download_files.py --type monthly
+          fi
+          
+      - name: Run monthly scrapers
+        run: |
+          if [ -n "${{ github.event.inputs.scraper }}" ]; then
+            # Run specific scraper
+            python "${scraper_name}_Monthly_Modified.py" ${{ github.event.inputs.scraper }}
+          else
+            # Run all monthly scrapers
+            python run_scrapers.py --type monthly
+          fi
+        
+      - name: Upload results to FTP
+        run: |
+          if [ -n "${{ github.event.inputs.scraper }}" ]; then
+            python upload_files.py ${{ github.event.inputs.scraper }}
+          else
+            python upload_files.py --type monthly
+          fi
