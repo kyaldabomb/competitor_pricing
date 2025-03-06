@@ -68,7 +68,7 @@ jobs:
       
       # Add the artifact upload step here
       - name: Upload files as artifacts (for debugging)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: pricing-spreadsheets
           path: Pricing Spreadsheets/*.xlsx
