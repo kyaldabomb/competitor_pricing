@@ -3423,7 +3423,7 @@ def Tascam(RRP, title, sku, obsolete_stock):
 
             if "DA-6400DP" in sku:
 
-                return RRP
+                 return RRP, cost
 
             else:
 
