@@ -1,6 +1,19 @@
 import ftplib
 import os
 import time
+import sys
+from scrapers_config import SCRAPERS
+
+# Get scraper name from command line argument
+if len(sys.argv) > 1:
+    scraper_name = sys.argv[1]
+    if scraper_name not in SCRAPERS:
+        print(f"Error: Scraper '{scraper_name}' not found in config")
+        sys.exit(1)
+    scrapers_to_process = [scraper_name]
+else:
+    # Process all scrapers if none specified
+    scrapers_to_process = SCRAPERS.keys()
 
 print("Connecting to FTP for uploading files...")
 print(f"FTP_PASSWORD environment variable exists: {'Yes' if 'FTP_PASSWORD' in os.environ else 'No'}")
@@ -22,11 +35,20 @@ try:
     # Change to the directory
     session.cwd('competitor_pricing')
     
-    # Upload Excel files
-    print("Uploading Belfield.xlsx...")
-    with open('Pricing Spreadsheets/Belfield.xlsx', 'rb') as file:
-        session.storbinary('STOR Belfield.xlsx', file)
-    print("Upload complete")
+    # Process each scraper
+    for scraper_name in scrapers_to_process:
+        scraper = SCRAPERS[scraper_name]
+        file_name = scraper["file_name"]
+        file_path = f'Pricing Spreadsheets/{file_name}'
+        
+        # Check if file exists locally before uploading
+        if os.path.exists(file_path):
+            print(f"Uploading {file_name}...")
+            with open(file_path, 'rb') as file:
+                session.storbinary(f'STOR {file_name}', file)
+            print(f"Upload of {file_name} complete")
+        else:
+            print(f"Warning: {file_path} not found locally, skipping upload")
     
     # Add timestamp file to verify upload
     timestamp = str(time.time())
@@ -39,4 +61,6 @@ try:
     session.quit()
     print("Files uploaded successfully")
 except Exception as e:
+    import traceback
     print(f"Error during FTP upload: {str(e)}")
+    print(traceback.format_exc())
