@@ -3,7 +3,12 @@ name: Run Web Scrapers
 on:
   schedule:
     - cron: '0 0 * * *'  # Run daily at midnight UTC
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
+    inputs:
+      scraper:
+        description: 'Scraper to run (leave empty to run all)'
+        required: false
+        default: ''
 
 jobs:
   scrape:
@@ -30,17 +35,45 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install openpyxl requests beautifulsoup4 selenium selenium-stealth webdriver-manager send2trash
-          pip install "lxml[html_clean]"  # Install lxml with html_clean extras
-          pip install requests-html  # Install after lxml
+          pip install "lxml[html_clean]"
+          pip install requests-html
           
       - name: Test FTP connection
         run: python test_ftp.py
           
       - name: Download files from FTP
-        run: python download_files.py
+        run: |
+          if [ -n "${{ github.event.inputs.scraper }}" ]; then
+            python download_files.py ${{ github.event.inputs.scraper }}
+          else
+            python download_files.py
+          fi
           
-      - name: Run Belfield scraper
-        run: python Belfield_Daily_Modified.py
+      - name: Run scrapers
+        run: |
+          if [ -n "${{ github.event.inputs.scraper }}" ]; then
+            python $SCRAPER_SCRIPT ${{ github.event.inputs.scraper }}
+            exit_code=$?
+            if [ $exit_code -ne 0 ]; then
+              echo "Scraper failed with exit code $exit_code"
+              exit $exit_code
+            fi
+          else
+            for scraper in belfield sky_music sounds_easy acoustic_centre apw billy_hyde better derringer dj_city mannys; do
+              echo "Running $scraper scraper..."
+              python ${scraper}_Daily_Modified.py $scraper
+              exit_code=$?
+              if [ $exit_code -ne 0 ]; then
+                echo "$scraper scraper failed with exit code $exit_code"
+                # Continue with other scrapers even if one fails
+              fi
+            done
+          fi
         
       - name: Upload results to FTP
-        run: python upload_files.py
+        run: |
+          if [ -n "${{ github.event.inputs.scraper }}" ]; then
+            python upload_files.py ${{ github.event.inputs.scraper }}
+          else
+            python upload_files.py
+          fi
