@@ -13,6 +13,7 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     env:
       FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
       EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
@@ -50,10 +51,16 @@ jobs:
           fi
           
       - name: Run monthly scrapers
+        timeout-minutes: 120
         run: |
           if [ -n "${{ github.event.inputs.scraper }}" ]; then
             # Run specific scraper
             python "${scraper_name}_Monthly_Modified.py" ${{ github.event.inputs.scraper }}
+            exit_code=$?
+            if [ $exit_code -ne 0 ]; then
+              echo "Scraper failed with exit code $exit_code"
+              exit $exit_code
+            fi
           else
             # Run all monthly scrapers
             python run_scrapers.py --type monthly
