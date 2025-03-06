@@ -8,6 +8,8 @@ from datetime import datetime, timedelta
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import traceback
+
 
 # Email notification function
 def send_email_notification(success, items_count=0, error_msg=""):
@@ -195,11 +197,14 @@ try:
     
 except Exception as e:
     error_message = str(e)
+    full_traceback = traceback.format_exc()
     print(f"Error in scraping: {error_message}")
+    print(f"Traceback:\n{full_traceback}")
+    
     try:
         wb.save(file_path)
         print("Saved progress before error")
     except:
         print("Could not save progress after error")
     
-    send_email_notification(False, error_msg=error_message)
+    send_email_notification(False, error_msg=f"{error_message}\n\nFull traceback:\n{full_traceback}")
