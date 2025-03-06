@@ -49,9 +49,9 @@ try:
     
     # Process each scraper
     for scraper_name in scrapers_to_process:
-    scraper = SCRAPERS[scraper_name]
-    file_name = scraper["file_name"]
-    file_path = f'Pricing Spreadsheets/{file_name}'
+      scraper = SCRAPERS[scraper_name]
+      file_name = scraper["file_name"]
+      file_path = f'Pricing Spreadsheets/{file_name}'
     
     # Check if file exists locally before uploading
     print(f"Checking if {file_path} exists locally...")
