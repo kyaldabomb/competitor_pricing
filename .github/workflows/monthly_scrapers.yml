@@ -24,19 +24,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-      
-      - name: Setup Chrome
-        uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: stable
-      
-      - name: Setup ChromeDriver
-        uses: nanasess/setup-chromedriver@v2
-      
-      - name: Display Chrome and ChromeDriver versions
+          
+      - name: Install Chrome and Selenium dependencies
         run: |
-          google-chrome --version
-          chromedriver --version
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable chromium-driver
           
       - name: Install Python dependencies
         run: |
@@ -51,7 +45,7 @@ jobs:
       - name: Download files from FTP
         run: |
           if [ -n "${{ github.event.inputs.scraper }}" ]; then
-            python download_files.py "${{ github.event.inputs.scraper }}"
+            python download_files.py ${{ github.event.inputs.scraper }}
           else
             python download_files.py --type monthly
           fi
@@ -59,27 +53,23 @@ jobs:
       - name: Run monthly scrapers
         timeout-minutes: 120
         run: |
-          # Echo inputs for debugging
-          echo "Scraper input: '${{ github.event.inputs.scraper }}'"
-          
-          # Check if a specific scraper was requested
           if [ -n "${{ github.event.inputs.scraper }}" ]; then
-            echo "Running specific scraper: ${{ github.event.inputs.scraper }}"
-            python "${{ github.event.inputs.scraper }}_Monthly_Modified.py" "${{ github.event.inputs.scraper }}"
+            # Run specific scraper
+            python "${scraper_name}_Monthly_Modified.py" ${{ github.event.inputs.scraper }}
             exit_code=$?
             if [ $exit_code -ne 0 ]; then
               echo "Scraper failed with exit code $exit_code"
               exit $exit_code
             fi
           else
-            echo "Running all monthly scrapers"
+            # Run all monthly scrapers
             python run_scrapers.py --type monthly
           fi
         
       - name: Upload results to FTP
         run: |
           if [ -n "${{ github.event.inputs.scraper }}" ]; then
-            python upload_files.py "${{ github.event.inputs.scraper }}"
+            python upload_files.py ${{ github.event.inputs.scraper }}
           else
             python upload_files.py --type monthly
           fi
