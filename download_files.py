@@ -2,18 +2,28 @@ import ftplib
 import os
 import openpyxl
 import sys
-from scrapers_config import SCRAPERS
+import argparse
+from scrapers_config import SCRAPERS, DAILY_SCRAPERS, MONTHLY_SCRAPERS
 
-# Get scraper name from command line argument
-if len(sys.argv) > 1:
-    scraper_name = sys.argv[1]
-    if scraper_name not in SCRAPERS:
-        print(f"Error: Scraper '{scraper_name}' not found in config")
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Download files from FTP')
+parser.add_argument('scraper', nargs='?', help='Specific scraper to process')
+parser.add_argument('--type', choices=['daily', 'monthly'], default='daily',
+                    help='Type of scrapers to process (daily or monthly)')
+args = parser.parse_args()
+
+# Determine which scrapers to process
+if args.scraper:
+    if args.scraper not in SCRAPERS:
+        print(f"Error: Scraper '{args.scraper}' not found in config")
         sys.exit(1)
-    scrapers_to_process = [scraper_name]
+    scrapers_to_process = [args.scraper]
 else:
-    # Process all scrapers if none specified
-    scrapers_to_process = SCRAPERS.keys()
+    # Process all scrapers of the specified type
+    if args.type == 'monthly':
+        scrapers_to_process = MONTHLY_SCRAPERS.keys()
+    else:  # default to daily
+        scrapers_to_process = DAILY_SCRAPERS.keys()
 
 # Create directory if it doesn't exist
 os.makedirs('Pricing Spreadsheets', exist_ok=True)
