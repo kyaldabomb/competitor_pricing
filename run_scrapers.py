@@ -4,6 +4,7 @@ import subprocess
 import sys
 import time
 import signal
+import os
 from datetime import datetime
 
 # Parse command line arguments
@@ -21,7 +22,7 @@ except ImportError:
     sys.exit(1)
 
 # Run each scraper with timeout
-MAX_SCRAPER_RUNTIME = 15 * 60  # 15 minutes max per scraper
+MAX_SCRAPER_RUNTIME = 120 * 60  # 20 minutes max per scraper
 success_count = 0
 failure_count = 0
 skipped_count = 0
@@ -36,13 +37,17 @@ for scraper_name, config in scrapers.items():
     
     try:
         # Create a process with timeout
+        cmd = ['python', script_name, scraper_name]
+        print(f"Executing command: {' '.join(cmd)}")
+        
         process = subprocess.Popen(
-            ['python', script_name, scraper_name],
+            cmd,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
             bufsize=1,
-            universal_newlines=True
+            universal_newlines=True,
+            env=os.environ.copy()  # Pass current environment variables
         )
         
         # Monitor the process with timeout
@@ -53,13 +58,15 @@ for scraper_name, config in scrapers.items():
         while process.poll() is None:
             # Read output without blocking
             if process.stdout:
-                for line in process.stdout:
+                line = process.stdout.readline()
+                if line:
                     print(line, end='')
                     output_lines.append(line)
                     
             # Read errors without blocking
             if process.stderr:
-                for line in process.stderr:
+                line = process.stderr.readline()
+                if line:
                     print(f"ERROR: {line}", end='')
                     error_lines.append(line)
             
@@ -83,17 +90,28 @@ for scraper_name, config in scrapers.items():
                 break
                 
             # Small sleep to prevent CPU hogging
-            time.sleep(0.5)
+            time.sleep(0.2)
         
-        # Process completed normally
-        if process.returncode == 0:
+        # Process completed normally or was terminated
+        exit_code = process.poll()
+        
+        # Read any remaining output
+        stdout, stderr = process.communicate()
+        if stdout:
+            print(stdout)
+            output_lines.append(stdout)
+        if stderr:
+            print(f"ERROR: {stderr}")
+            error_lines.append(stderr)
+        
+        if exit_code == 0:
             print(f"SUCCESS: {config['description']} completed successfully")
             success_count += 1
         else:
-            print(f"ERROR: {config['description']} failed with exit code {process.returncode}")
-            # Print any remaining stderr
-            for line in process.stderr:
-                print(f"ERROR: {line}", end='')
+            if exit_code is None:
+                print(f"ERROR: {config['description']} was terminated")
+            else:
+                print(f"ERROR: {config['description']} failed with exit code {exit_code}")
             failure_count += 1
             
     except Exception as e:
