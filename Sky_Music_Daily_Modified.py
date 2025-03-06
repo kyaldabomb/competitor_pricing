@@ -252,7 +252,6 @@ try:
         print(f"Error in final save and upload: {str(final_error)}")
         print(traceback.format_exc())
     print(f"Scraping completed successfully. Updated {items_scrapped} items.")
-    send_email_notification(True, items_scrapped)
     
 except Exception as e:
     error_message = str(e)
