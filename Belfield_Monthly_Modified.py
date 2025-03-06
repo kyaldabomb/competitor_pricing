@@ -144,7 +144,7 @@ try:
                             title = soup.find(class_='product_name').text.strip()
                         except:
                             print(f"Could not find title for {url}, skipping")
-                            continue
+                            break
                             
                         try:
                             price = soup.find(class_='price-ui').text.strip()
