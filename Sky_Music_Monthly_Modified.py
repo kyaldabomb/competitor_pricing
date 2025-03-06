@@ -12,6 +12,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import sys
 import argparse
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Run monthly scraper for Sky Music')
@@ -67,8 +70,8 @@ options.add_experimental_option('useAutomationExtension', False)
 
 try:
     # Initialize WebDriver and HTMLSession
-    driver = webdriver.Chrome(options=options)
-    
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)    
     stealth(driver,
             languages=["en-US", "en"],
             vendor="Google Inc.",
