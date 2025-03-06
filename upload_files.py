@@ -3,6 +3,8 @@ import os
 import openpyxl
 import sys
 import argparse
+import time  # Add missing import
+import traceback  # Add for better error reporting
 from scrapers_config import SCRAPERS, DAILY_SCRAPERS, MONTHLY_SCRAPERS
 
 # Parse command line arguments
@@ -47,18 +49,23 @@ try:
     
     # Process each scraper
     for scraper_name in scrapers_to_process:
-        scraper = SCRAPERS[scraper_name]
-        file_name = scraper["file_name"]
-        file_path = f'Pricing Spreadsheets/{file_name}'
-        
-        # Check if file exists locally before uploading
-        if os.path.exists(file_path):
-            print(f"Uploading {file_name}...")
+    scraper = SCRAPERS[scraper_name]
+    file_name = scraper["file_name"]
+    file_path = f'Pricing Spreadsheets/{file_name}'
+    
+    # Check if file exists locally before uploading
+    print(f"Checking if {file_path} exists locally...")
+    if os.path.exists(file_path):
+        print(f"Uploading {file_name}...")
+        try:
             with open(file_path, 'rb') as file:
                 session.storbinary(f'STOR {file_name}', file)
             print(f"Upload of {file_name} complete")
-        else:
-            print(f"Warning: {file_path} not found locally, skipping upload")
+        except Exception as upload_error:
+            print(f"Error uploading {file_name}: {str(upload_error)}")
+            print(traceback.format_exc())
+    else:
+        print(f"Warning: {file_path} not found locally, skipping upload")
     
     # Add timestamp file to verify upload
     timestamp = str(time.time())
