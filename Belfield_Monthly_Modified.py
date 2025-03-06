@@ -95,7 +95,7 @@ try:
         print(f'Scraping page {t+1}...')
         
         # Make request to the page
-        r = session.get(f'https://www.belfieldmusic.com.au/search?page={str(t+1)}&q=+&type=product')
+        r = session.get(f'https://www.belfieldmusic.com.au/search?page={str(t+1)}&q=+&type=product', timeout=30)
         r.html.render(timeout=10)  # Render JavaScript
         
         # Find all product links
@@ -117,7 +117,7 @@ try:
                 while True:
                     try:
                         while True:
-                            r = requests.get(url)
+                            r = requests.get(url, timeout=30)
                             if r.status_code == 430:
                                 print('Page limit reached, waiting 5 mins')
                                 time.sleep(300)
