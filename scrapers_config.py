@@ -7,7 +7,7 @@ SCRAPERS = {
     },
     "belfield_monthly": {
         "file_name": "Belfield.xlsx",
-        "script_name": "Belfield_Daily_Modified.py", 
+        "script_name": "Belfield_Monthly_Modified.py", 
         "description": "Belfield Music Store"
     },
     
