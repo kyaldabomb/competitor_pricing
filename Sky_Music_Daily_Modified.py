@@ -229,9 +229,28 @@ try:
             print(traceback.format_exc())
             # Continue with next item even if this one fails
     
-    # Final save
-    print("Scraping complete. Saving final results...")
-    wb.save(file_path)
+    # After successful scraping and just before the final save
+    try:
+        # Final save
+        wb.save(file_path)
+        print(f"Scraping completed successfully. Added {items_scrapped} new items.")
+        
+        # Import the FTP helper and upload immediately
+        try:
+            from ftp_helper import upload_to_ftp
+            upload_success = upload_to_ftp(file_path, file_name)
+            if upload_success:
+                print(f"Uploaded {file_name} to FTP immediately after completion")
+            else:
+                print(f"Failed to upload {file_name} to FTP, will try again at the end of workflow")
+        except Exception as ftp_error:
+            print(f"Error with immediate FTP upload: {str(ftp_error)}")
+        
+        # Send email notification
+        send_email_notification(True, items_scrapped)
+    except Exception as final_error:
+        print(f"Error in final save and upload: {str(final_error)}")
+        print(traceback.format_exc())
     print(f"Scraping completed successfully. Updated {items_scrapped} items.")
     send_email_notification(True, items_scrapped)
     
