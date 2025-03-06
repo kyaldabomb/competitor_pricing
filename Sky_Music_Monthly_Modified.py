@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 import re, math, json
 from requests_html import HTMLSession
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium_stealth import stealth
 import os, time, traceback
 from datetime import datetime, timedelta
@@ -12,9 +14,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import sys
 import argparse
-
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Run monthly scraper for Sky Music')
@@ -60,16 +61,38 @@ def send_email_notification(success, items_count=0, error_msg=""):
         print(f"Failed to send email notification: {str(e)}")
         print(traceback.format_exc())
 
+# Load the Excel file upfront to avoid issues later
+file_path = "Pricing Spreadsheets/Sky_Music.xlsx"
+try:
+    wb = openpyxl.load_workbook(file_path)
+    sheet = wb['Sheet']
+    
+    # Get existing URLs to avoid duplicates
+    url_list = []
+    for x in range(2, sheet.max_row+1):
+        url = sheet['E'+str(x)].value
+        if url:
+            url_list.append(url)
+    
+    print(f"Found {len(url_list)} existing URLs in the spreadsheet")
+except Exception as e:
+    print(f"Error loading Excel file: {str(e)}")
+    send_email_notification(False, error_msg=f"Error loading Excel file: {str(e)}")
+    sys.exit(1)
+
 # Setup Chrome options for headless operation in GitHub Actions
-options = webdriver.ChromeOptions()
+options = Options()
 options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--disable-gpu")
+options.add_argument("--window-size=1920,1080")
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option('useAutomationExtension', False)
 
+driver = None
 try:
-    # Initialize WebDriver and HTMLSession
+    # Initialize WebDriver using webdriver_manager
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
     
@@ -82,35 +105,24 @@ try:
             fix_hairline=True,
             )
     
+    # Initialize HTML session for other requests
     session = HTMLSession()
-    
-    # Use local path instead of network path
-    file_path = "Pricing Spreadsheets/Sky_Music.xlsx"
-    wb = openpyxl.load_workbook(file_path)
-    sheet = wb['Sheet']
-    
-    # Get existing URLs to avoid duplicates
-    url_list = []
-    for x in range(2, sheet.max_row+1):
-        url = sheet['E'+str(x)].value
-        if url:
-            url_list.append(url)
-    
-    print(f"Found {len(url_list)} existing URLs in the spreadsheet")
     
     itemcounter = 0
     items_scrapped = 0
+    max_pages = 30  # Limit the number of pages we'll check
     
     # Loop through search result pages to find products
-    for page in range(50):  # Limit to 50 pages for testing, increase as needed
+    for page in range(max_pages):
         url = f'https://skymusic.com.au/search?page={page+1}&type=product&q=%20'
-        print(f"Processing page {page+1}")
+        print(f"Processing page {page+1} of {max_pages}")
         
         # Add retry logic for resilience
         max_retries = 3
         for retry in range(max_retries):
             try:
-                r = driver.get(url)
+                driver.get(url)
+                time.sleep(3)  # Wait for the page to load
                 break
             except Exception as e:
                 if retry == max_retries - 1:
@@ -129,6 +141,9 @@ try:
             if page > 0:  # Skip this check for the first page
                 break
         
+        # Count how many new items we found on this page
+        new_items_on_page = 0
+        
         for x in products:
             itemcounter += 1
             
@@ -140,20 +155,6 @@ try:
                 product_data_str = product_data_str.replace('\n', '')
                 product_data_json = json.loads(product_data_str)
                 
-                price = product_data_json['priceMin']
-                title = product_data_json['images'][0]['alt']
-                image = product_data_json['images'][0]['src']
-                
-                # Check stock status
-                stock = product_data_json['variants'].replace('\n', '')
-                stock = json.loads(stock)
-                stock = stock[0]['available']
-                
-                if stock is True:
-                    stock_avaliable = 'y'
-                else:
-                    stock_avaliable = 'n'
-                
                 # Get product URL
                 url2 = f'https://skymusic.com.au{x.find("a")["href"]}'
                 
@@ -163,61 +164,86 @@ try:
                     continue
                 
                 # Process new product
+                new_items_on_page += 1
                 items_scrapped += 1
                 
-                # Visit product page to get more details
+                # Extract basic data from search page
+                price = product_data_json['priceMin']
+                title = product_data_json['images'][0]['alt'] if product_data_json.get('images') and len(product_data_json['images']) > 0 else "No Title"
+                image = product_data_json['images'][0]['src'] if product_data_json.get('images') and len(product_data_json['images']) > 0 else "No Image"
+                
+                # Check stock status
+                stock_available = 'n'  # Default to not available
+                try:
+                    stock = product_data_json.get('variants', '{}')
+                    if isinstance(stock, str):
+                        stock = stock.replace('\n', '')
+                        stock = json.loads(stock)
+                    
+                    if isinstance(stock, list) and len(stock) > 0 and stock[0].get('available'):
+                        stock_available = 'y'
+                except Exception as stock_error:
+                    print(f"Error parsing stock data: {str(stock_error)}")
+                
+                # Visit product page to get more details with retry logic
+                brand = "Unknown"
+                sku = "Unknown"
+                description = "Not yet scraped"
+                
                 max_retries = 3
                 for retry in range(max_retries):
                     try:
-                        r = driver.get(url2)
+                        driver.get(url2)
+                        time.sleep(2)  # Wait for the page to load
+                        product_html = driver.page_source
+                        soup2 = BeautifulSoup(product_html, features="lxml")
+                        
+                        # Extract brand
+                        try:
+                            brand_elem = soup2.find(class_='vendor')
+                            if brand_elem:
+                                brand = brand_elem.text.strip()
+                        except Exception as e:
+                            print(f"Could not find brand for {url2}: {str(e)}")
+                            
+                        # Extract SKU
+                        try:
+                            sku_elem = soup2.find(class_='sku')
+                            if sku_elem:
+                                sku = sku_elem.text.strip()
+                        except Exception as e:
+                            print(f"Could not find SKU for {url2}: {str(e)}")
+                        
+                        # Special handling for certain brands
+                        if brand == 'Ernie Ball':
+                            sku = sku.replace('P0', '')
+                        
+                        if brand.lower() == 'orange':
+                            sku = f'{sku}AUSTRALIS'
+                        
+                        # Extract description
+                        try:
+                            desc_elem = soup2.find(class_='station-tabs-content-inner')
+                            if desc_elem:
+                                description = desc_elem.text
+                        except Exception as e:
+                            print(f"Could not find description for {url2}: {str(e)}")
+                        
                         break
                     except Exception as e:
                         if retry == max_retries - 1:
-                            raise
-                        print(f"Retry {retry+1}/{max_retries} for {url2}: {str(e)}")
+                            print(f"Failed to process product page after {max_retries} attempts: {str(e)}")
+                        print(f"Retry {retry+1}/{max_retries} for product {url2}: {str(e)}")
                         time.sleep(5)
                 
-                html = driver.page_source
-                soup2 = BeautifulSoup(html, features="lxml")
-                
-                # Extract brand
-                try:
-                    brand = soup2.find(class_='vendor').text.strip()
-                except:
-                    print(f"Could not find brand for {url2}, skipping")
-                    continue
-                    
-                print(f"Brand: {brand}")
-                
-                # Extract SKU
-                try:
-                    sku = soup2.find(class_='sku').text.strip()
-                except:
-                    print(f"Could not find SKU for {url2}, skipping")
-                    continue
-                
-                # Special handling for certain brands
-                if brand == 'Ernie Ball':
-                    sku = sku.replace('P0', '')
-                
-                if brand.lower() == 'orange':
-                    sku = f'{sku}AUSTRALIS'
-                
                 print(f'\nScraping Item {str(itemcounter)}\nSKU: {sku}\nPrice: {price}\n')
-                
-                # Extract description
-                description = 'Not yet scraped'
-                try:
-                    description = soup2.find(class_='station-tabs-content-inner').text
-                except:
-                    pass
                 
                 # Get current date
                 today = datetime.now()
                 date = today.strftime('%m %d %Y')
                 
                 # Add to spreadsheet
-                sheet.append([sku, brand, title, price, url2, image, description, date, stock_avaliable])
+                sheet.append([sku, brand, title, price, url2, image, description, date, stock_available])
                 url_list.append(url2)  # Add to our list to avoid duplicates
                 
                 print(f'Item {str(itemcounter)} scraped successfully')
@@ -232,12 +258,24 @@ try:
                         print(f"Error occurred while saving the Excel file: {str(e)}")
                 
                 # Add a pause to be gentle with the server
-                time.sleep(3)
+                time.sleep(2)
                 
             except Exception as product_error:
                 print(f"Error processing product {itemcounter}: {str(product_error)}")
                 print(traceback.format_exc())
                 # Continue with next product even if this one fails
+        
+        # If we didn't find any new items on this page, we might want to exit early
+        if new_items_on_page == 0 and page > 0:  # Skip this check for the first page
+            print(f"No new items found on page {page+1}, exiting early")
+            break
+        
+        # Save after each page
+        try:
+            wb.save(file_path)
+            print(f"Saved after page {page+1}")
+        except Exception as e:
+            print(f"Error saving after page {page+1}: {str(e)}")
     
     # Final save
     print("Scraping complete. Saving final results...")
@@ -261,7 +299,8 @@ except Exception as e:
     sys.exit(1)  # Exit with error code
 finally:
     # Always close the driver
-    try:
-        driver.quit()
-    except:
-        pass
+    if driver:
+        try:
+            driver.quit()
+        except:
+            pass
