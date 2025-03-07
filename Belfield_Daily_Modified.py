@@ -207,7 +207,7 @@ try:
             print(f"Error with immediate FTP upload: {str(ftp_error)}")
     
     # Send email notification
-    send_email_notification(True, items_scrapped)
+        send_email_notification(True, items_scrapped)
     except Exception as final_error:
         print(f"Error in final save and upload: {str(final_error)}")
         print(traceback.format_exc())
