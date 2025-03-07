@@ -59,7 +59,7 @@ jobs:
               exit $exit_code
             fi
           else
-            for scraper in belfield sky_music sounds_easy acoustic_centre apw billy_hyde better derringer dj_city mannys; do
+            for scraper in Belfield Sky_Music sounds_easy acoustic_centre apw billy_hyde better derringer dj_city mannys; do
               echo "Running $scraper scraper..."
               python ${scraper}_Daily_Modified.py $scraper
               exit_code=$?
