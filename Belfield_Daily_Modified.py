@@ -192,8 +192,8 @@ try:
     
     try:
     # Final save
-    wb.save(file_path)
-    print(f"Scraping completed successfully. Added {items_scrapped} new items.")
+        wb.save(file_path)
+        print(f"Scraping completed successfully. Added {items_scrapped} new items.")
     
     # Import the FTP helper and upload immediately
         try:
