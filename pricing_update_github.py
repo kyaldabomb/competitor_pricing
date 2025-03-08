@@ -82,7 +82,7 @@ def Alesis(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -180,7 +180,7 @@ def Ashton(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -240,7 +240,7 @@ def Armour(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -298,7 +298,7 @@ def AKG(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -355,7 +355,7 @@ def Arturia(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -404,7 +404,7 @@ def Aguilar(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -489,7 +489,7 @@ def Blackstar(RRP, title, sku, obsolete_stock):
     default_discount = 0.8
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -571,7 +571,7 @@ def Casio(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -650,7 +650,7 @@ def Behringer(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -677,7 +677,7 @@ def Behringer(RRP, title, sku, obsolete_stock):
         cost = cost = RRP * 0.7
 
     behringer_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Behringer.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Behringer.xlsx")
     behringer_sheet = behringer_workbook['Sheet1']
     for items in range(1, behringer_sheet.max_row + 1):
         behringer_sku = str(behringer_sheet['D' + str(items)].value)
@@ -1087,7 +1087,7 @@ def ESP(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.8
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1198,7 +1198,7 @@ def DBX(RRP, title, sku, obsolete_stock):
     default_discount = 0.85
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1250,7 +1250,7 @@ def Digitech(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1331,7 +1331,7 @@ def ErnieBall(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Ernie_Ball.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Ernie_Ball.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1410,7 +1410,7 @@ def MusicMan(RRP, title, sku, obsolete_stock):
     default_discount = 0.8
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Ernie_Ball.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Ernie_Ball.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1462,7 +1462,7 @@ def Sterling(RRP, title, sku, obsolete_stock):
     default_discount = 0.85
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Ernie_Ball.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Ernie_Ball.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1518,7 +1518,7 @@ def Epiphone(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1613,7 +1613,7 @@ def Gator(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1678,7 +1678,7 @@ def Gibson(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1798,7 +1798,7 @@ def Ibanez(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1893,7 +1893,7 @@ def JBL(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -1984,7 +1984,7 @@ def GHS(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -2156,7 +2156,7 @@ def Korg(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -2328,7 +2328,7 @@ def Martinez(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -2450,7 +2450,7 @@ def Monterey(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -2721,7 +2721,7 @@ def Orange(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -3298,7 +3298,7 @@ def SeymourDuncan(RRP, title, sku, obsolete_stock):
     default_discount = 0.85
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -3383,7 +3383,7 @@ def Tascam(RRP, title, sku, obsolete_stock):
     sku = sku
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -3453,7 +3453,7 @@ def TCElectronic(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -3519,7 +3519,7 @@ def TCHelicon(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -3625,7 +3625,7 @@ def UniversalAudio(RRP, title, sku, obsolete_stock):
     default_discount = 0.8
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -3785,7 +3785,7 @@ def SourceAudio(RRP, title, sku, obsolete_stock):
     default_discount = 0.8
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -3845,7 +3845,7 @@ def Spector(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.8
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -3905,7 +3905,7 @@ def Soundcraft(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.8
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -4234,7 +4234,7 @@ def UXL(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -5078,7 +5078,7 @@ def Duracell(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -5399,7 +5399,7 @@ def Alpine(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -5459,7 +5459,7 @@ def Aquarian(RRP, title, sku, obsolete_stock):
     try:
 
         gibson_workbook = openpyxl.load_workbook(
-            rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
         gibson_sheet = gibson_workbook['Sheet1']
         for items in range(1, gibson_sheet.max_row + 1):
             gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -5550,7 +5550,7 @@ def Modal(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -5709,7 +5709,7 @@ def Vox(RRP, title, sku, obsolete_stock):
     default_discount = 0.85
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
@@ -5886,7 +5886,7 @@ def Lag(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     gibson_workbook = openpyxl.load_workbook(
-        rf"\\SERVER\Python\Pricing\Pricing Spreadsheets\Pricing_spreadsheets_supplied_by_suppliers\Promotional_Prices.xlsx")
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
     for items in range(1, gibson_sheet.max_row + 1):
         gibson_sku = str(gibson_sheet['A' + str(items)].value)
