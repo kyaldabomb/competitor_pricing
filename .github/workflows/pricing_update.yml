@@ -2,7 +2,7 @@ name: Update Pricing Data
 
 on:
   schedule:
-    - cron: '0 2 * * 1'  # Run at 2 AM every Monday
+    - cron: '0 20 * * *' # Run at 2 AM every Monday
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
