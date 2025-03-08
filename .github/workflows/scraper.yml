@@ -26,17 +26,24 @@ jobs:
           
       - name: Install Chrome and Selenium dependencies
         run: |
+          # Update to newer method for adding the Chrome repository
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable chromium-driver
+          sudo apt-get install -y google-chrome-stable
           
+          # Check Chrome installation and print version
+          google-chrome --version
+          which google-chrome
+      
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install openpyxl requests beautifulsoup4 selenium selenium-stealth webdriver-manager send2trash
+          pip install openpyxl requests beautifulsoup4 selenium selenium-stealth requests-html
           pip install "lxml[html_clean]"
-          pip install requests-html
+          # Install webdriver-manager to handle ChromeDriver automatically
+          pip install webdriver-manager
+          pip install send2trash
           
       - name: Test FTP connection
         run: python test_ftp.py
@@ -59,7 +66,7 @@ jobs:
               exit $exit_code
             fi
           else
-            for scraper in Belfield Sky_Music sounds_easy acoustic_centre apw billy_hyde better derringer dj_city mannys; do
+            for scraper in belfield sky_music sounds_easy acoustic_centre apw billy_hyde better derringer dj_city mannys; do
               echo "Running $scraper scraper..."
               python ${scraper}_Daily_Modified.py $scraper
               exit_code=$?
