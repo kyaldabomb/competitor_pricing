@@ -1,9 +1,11 @@
 import openpyxl
-import requests, pprint
+import requests
 from bs4 import BeautifulSoup
 import re, math
 from requests_html import HTMLSession
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium_stealth import stealth
 import os, time, traceback
 from datetime import datetime, timedelta
@@ -66,8 +68,13 @@ options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option('useAutomationExtension', False)
 
 try:
-    # Initialize WebDriver and HTMLSession
-    driver = webdriver.Chrome(options=options)
+    # Initialize WebDriver using webdriver-manager
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
+    
+    # Print Chrome and ChromeDriver version for debugging
+    print(f"Chrome version: {driver.capabilities['browserVersion']}")
+    print(f"ChromeDriver version: {driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]}")
     
     stealth(driver,
             languages=["en-US", "en"],
@@ -218,29 +225,10 @@ try:
             print(traceback.format_exc())
             # Continue with next item even if this one fails
     
-    # After successful scraping and just before the final save
-    try:
-        # Final save
-        wb.save(file_path)
-        print(f"Scraping completed successfully. Added {items_scrapped} new items.")
-        
-        # Import the FTP helper and upload immediately
-        try:
-            from ftp_helper import upload_to_ftp
-            upload_success = upload_to_ftp(file_path, file_name)
-            if upload_success:
-                print(f"Uploaded {file_name} to FTP immediately after completion")
-            else:
-                print(f"Failed to upload {file_name} to FTP, will try again at the end of workflow")
-        except Exception as ftp_error:
-            print(f"Error with immediate FTP upload: {str(ftp_error)}")
-        
-        # Send email notification
-        send_email_notification(True, items_scrapped)
-    except Exception as final_error:
-        print(f"Error in final save and upload: {str(final_error)}")
-        print(traceback.format_exc())
+    # Final save
+    wb.save(file_path)
     print(f"Scraping completed successfully. Updated {items_scrapped} items.")
+    send_email_notification(True, items_scrapped)
     
 except Exception as e:
     error_message = str(e)
