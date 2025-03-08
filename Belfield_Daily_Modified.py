@@ -65,14 +65,6 @@ try:
     for sheet_line in range(2, sheet.max_row+1):
         further_break = ''
         item_number += 1
-
-        # Get date of last scrape
-        time_last_scrapped = sheet['H' + str(sheet_line)].value
-        if time_last_scrapped:
-            string_datetime_conversion = datetime.strptime(time_last_scrapped, '%m %d %Y')
-            if string_datetime_conversion + timedelta(days=7) > datetime.today():
-                print(f'Item {str(item_number)} scrapped less than 7 days ago, skipping...')
-                continue
         
         # Get the URL to scrape
         url = sheet['E'+str(sheet_line)].value
