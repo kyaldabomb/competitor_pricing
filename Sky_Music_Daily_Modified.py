@@ -94,17 +94,6 @@ try:
         try:
             item_number += 1
             
-            # Check when it was last scraped
-            time_last_scrapped = sheet['H' + str(sheet_line)].value
-            if not time_last_scrapped:
-                print(f"No last scrape date for item {item_number}, skipping")
-                continue
-                
-            string_datetime_conversion = datetime.strptime(time_last_scrapped, '%m %d %Y')
-            if string_datetime_conversion + timedelta(days=7) > datetime.today():
-                print(f'Item {str(item_number)} scrapped less than 7 days ago, skipping...')
-                continue
-            
             # Get the URL and fetch the page
             url = sheet['E'+str(sheet_line)].value
             if not url:
