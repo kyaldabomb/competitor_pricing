@@ -2207,6 +2207,34 @@ def LRBaggs(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
+    try:
+
+        gibson_workbook = openpyxl.load_workbook(
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
+        gibson_sheet = gibson_workbook['Sheet1']
+        for items in range(1, gibson_sheet.max_row + 1):
+            gibson_sku = str(gibson_sheet['A' + str(items)].value)
+            if gibson_sku is None:
+                continue
+            if gibson_sku.lower() == sku.lower():
+                RRP = str(gibson_sheet['L' + str(items)].value)
+                RRP = RRP.replace('$', '')
+                RRP = RRP.replace(',', '')
+                RRP = float(RRP)
+
+                cost = str(gibson_sheet['F' + str(items)].value)
+                cost = cost.replace('$', '')
+                cost = cost.replace(',', '')
+                cost = float(cost)
+                break
+
+        try:
+            cost
+
+        except:
+            cost = (RRP * 0.7) * 0.8
+    
+
     cost = (RRP * 0.7) * 0.9
 
     if RRP >= 50:
@@ -3353,6 +3381,8 @@ def Tanglewood(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
+    default_discount = 0.8
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -4311,6 +4341,7 @@ def BarnesMullins(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    default_discount = 0.8
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -4351,7 +4382,7 @@ def BarnesMullins(RRP, title, sku, obsolete_stock):
     else:
 
         if RRP >= 50:
-            return RRP, cost
+            return RRP*default_discount, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5213,6 +5244,8 @@ def DCM(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
+    default_discount = 1
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -5272,6 +5305,8 @@ def Hidersine(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
+    default_discount = 0.85
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -5311,7 +5346,7 @@ def Hidersine(RRP, title, sku, obsolete_stock):
     else:
 
         if RRP >= 50:
-            return RRP, cost
+            return RRP*default_discount, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6104,6 +6139,8 @@ def Eikon(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
+    default_discount = 0.8
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -6144,7 +6181,7 @@ def Eikon(RRP, title, sku, obsolete_stock):
     else:
 
         if RRP >= 50:
-            return RRP, cost
+            return RRP*default_discount, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6162,7 +6199,7 @@ def National(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
-    
+    default_discount = 0.85
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -6203,7 +6240,7 @@ def National(RRP, title, sku, obsolete_stock):
     else:
 
         if RRP >= 50:
-            return RRP, cost
+            return RRP*default_discount, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6252,6 +6289,7 @@ def Elixir(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    default_discount = 0.7
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -6294,7 +6332,7 @@ def Elixir(RRP, title, sku, obsolete_stock):
     else:
 
         if RRP >= 50:
-            return RRP, cost
+            return RRP*default_discount, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6310,6 +6348,8 @@ def Rotosound(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+
+    default_discount = 0.7
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -6368,6 +6408,7 @@ def Kink(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    default_discount = 0.83
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
