@@ -2233,9 +2233,9 @@ def LRBaggs(RRP, title, sku, obsolete_stock):
 
         except:
             cost = (RRP * 0.7) * 0.8
+    except:
+            cost = (RRP * 0.7) * 0.8
     
-
-    cost = (RRP * 0.7) * 0.9
 
     if RRP >= 50:
         return RRP * 0.8, cost
