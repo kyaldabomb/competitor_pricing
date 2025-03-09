@@ -5792,9 +5792,7 @@ def Onestage(RRP, title, sku, obsolete_stock):
 
     else:
 
-        if RRP >= 50:could not convert string to float: '2025-03-31 00:00:00'
-Error found. 
-TypeError("'>=' not supported between instances of 'str' and 'int'")
+        if RRP >= 50:
             return RRP, cost
         if 10 <= RRP < 50:
             return RRP, cost
