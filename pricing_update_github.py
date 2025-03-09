@@ -3380,6 +3380,7 @@ def Tanglewood(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
 
     try:
 
@@ -3655,6 +3656,43 @@ def Tech21(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+
+    original_RRP = float(RRP)
+
+    obsolete_stock = obsolete_stock
+
+    default_discount = 0.85
+
+    try:
+
+        gibson_workbook = openpyxl.load_workbook(
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
+        gibson_sheet = gibson_workbook['Sheet1']
+        for items in range(1, gibson_sheet.max_row + 1):
+            gibson_sku = str(gibson_sheet['A' + str(items)].value)
+            if gibson_sku is None:
+                continue
+            if gibson_sku.lower() == sku.lower():
+                RRP = str(gibson_sheet['L' + str(items)].value)
+                RRP = RRP.replace('$', '')
+                RRP = RRP.replace(',', '')
+                RRP = float(RRP)
+
+                cost = str(gibson_sheet['F' + str(items)].value)
+                cost = cost.replace('$', '')
+                cost = cost.replace(',', '')
+                cost = float(cost)
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
+                break
+
+        try:
+            cost
+
+        except:
+            cost = (RRP * 0.7) * 0.9
+    except:
+        cost = (RRP * 0.7) * 0.9
 
     cost = (RRP * 0.7) * 0.9
 
@@ -4354,6 +4392,8 @@ def BarnesMullins(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
     default_discount = 0.8
+    original_RRP = float(RRP)
+
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -5255,6 +5295,8 @@ def DCM(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
+
 
     default_discount = 1
 
@@ -5316,7 +5358,7 @@ def Hidersine(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
-
+    original_RRP = float(RRP)
     default_discount = 0.85
 
     gibson_workbook = openpyxl.load_workbook(
@@ -6150,7 +6192,7 @@ def Eikon(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
-
+    original_RRP = float(RRP)
     default_discount = 0.8
 
     gibson_workbook = openpyxl.load_workbook(
@@ -6208,7 +6250,7 @@ def National(RRP, title, sku, obsolete_stock):
     # super low range (0-25) = +5
 
     RRP = float(RRP)
-
+    original_RRP = float(RRP)
     obsolete_stock = obsolete_stock
 
     default_discount = 0.85
@@ -6299,7 +6341,7 @@ def Elixir(RRP, title, sku, obsolete_stock):
     # super low range (0-25) = +5
 
     RRP = float(RRP)
-
+    original_RRP = float(RRP)
     obsolete_stock = obsolete_stock
     default_discount = 0.7
 
@@ -6358,7 +6400,7 @@ def Rotosound(RRP, title, sku, obsolete_stock):
     # super low range (0-25) = +5
 
     RRP = float(RRP)
-
+    original_RRP = float(RRP)
     obsolete_stock = obsolete_stock
 
     default_discount = 0.7
@@ -6416,7 +6458,7 @@ def Kink(RRP, title, sku, obsolete_stock):
     # mid range (80-200) = *0.8
     # low range (25-80) = *1
     # super low range (0-25) = +5
-
+    original_RRP = float(RRP)
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
@@ -6903,10 +6945,10 @@ for x in range(1, sheet.max_row + 1):
         if SKU == 'J3102':
             continue
 
-        if 'TUT21E' in SKU:
-            pass
-        else:
-            continue
+        # if 'TUT21E' in SKU:
+        #     pass
+        # else:
+        #     continue
 
         ######vvvvvv DEBUG
         # if brand is None:
