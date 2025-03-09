@@ -6498,7 +6498,7 @@ completed_brands = {"tanglewood": Tanglewood, "orange": Orange, 'ernie ball': Er
                     'arturia': Arturia, 'jbl': JBL, 'epiphone': Epiphone, 'gibson': Gibson,
                     'tc electronic': TCElectronic, 'dbx': DBX, "daddario": Daddario, "planet waves": PlanetWaves,
                     "tech 21": Tech21, "lr baggs": LRBaggs, "aguilar": Aguilar, "universal audio": UniversalAudio,
-                    "ua": UniversalAudio
+                    "ua": UniversalAudio, "uaguitar": UniversalAudio
     , "soundcraft": Soundcraft, "avid": Avid, "behringer": Behringer, "casio": Casio, "akg": AKG, "drstrings": AKG,
                     "blackstar": Blackstar,
                     "tc helicon": TCHelicon, "seymour duncan": SeymourDuncan, "seymour": SeymourDuncan,
