@@ -5792,7 +5792,9 @@ def Onestage(RRP, title, sku, obsolete_stock):
 
     else:
 
-        if RRP >= 50:
+        if RRP >= 50:could not convert string to float: '2025-03-31 00:00:00'
+Error found. 
+TypeError("'>=' not supported between instances of 'str' and 'int'")
             return RRP, cost
         if 10 <= RRP < 50:
             return RRP, cost
@@ -6899,10 +6901,10 @@ for x in range(1, sheet.max_row + 1):
         if SKU == 'J3102':
             continue
 
-        if 'UA-OX' in SKU:
-            pass
-        else:
-            continue
+        # if 'UA-OX' in SKU:
+        #     pass
+        # else:
+        #     continue
 
         ######vvvvvv DEBUG
         # if brand is None:
