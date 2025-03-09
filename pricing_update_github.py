@@ -3669,6 +3669,8 @@ def UniversalAudio(RRP, title, sku, obsolete_stock):
     # low range (25-80) = *1
     # super low range (0-25) = +5
 
+  
+
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
@@ -3678,31 +3680,37 @@ def UniversalAudio(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.8
 
-    gibson_workbook = openpyxl.load_workbook(
-        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
-    gibson_sheet = gibson_workbook['Sheet1']
-    for items in range(1, gibson_sheet.max_row + 1):
-        gibson_sku = str(gibson_sheet['A' + str(items)].value)
-        if gibson_sku is None:
-            continue
-        if gibson_sku.lower() == sku.lower():
-            RRP = str(gibson_sheet['L' + str(items)].value)
-            RRP = RRP.replace('$', '')
-            RRP = RRP.replace(',', '')
-            RRP = float(RRP)
-
-            cost = str(gibson_sheet['F' + str(items)].value)
-            cost = cost.replace('$', '')
-            cost = cost.replace(',', '')
-            if original_RRP * default_discount > float(RRP):
-                default_discount = 1
-            break
-
     try:
-        cost
 
-    except:
-        cost = (RRP * 0.7) * 0.85
+        gibson_workbook = openpyxl.load_workbook(
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
+        gibson_sheet = gibson_workbook['Sheet1']
+        for items in range(1, gibson_sheet.max_row + 1):
+            gibson_sku = str(gibson_sheet['A' + str(items)].value)
+            if gibson_sku is None:
+                continue
+            if gibson_sku.lower() == sku.lower():
+                RRP = str(gibson_sheet['L' + str(items)].value)
+                RRP = RRP.replace('$', '')
+                RRP = RRP.replace(',', '')
+                RRP = float(RRP)
+    
+                cost = str(gibson_sheet['F' + str(items)].value)
+                cost = cost.replace('$', '')
+                cost = cost.replace(',', '')
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
+                break
+    
+        try:
+            cost
+    
+        except:
+            cost = (RRP * 0.7) * 0.85
+
+    except Exception as e:
+
+        print(e)
 
     if obsolete_stock == "Y":
 
@@ -6891,10 +6899,10 @@ for x in range(1, sheet.max_row + 1):
         if SKU == 'J3102':
             continue
 
-        # if '8000206' in SKU:
-        #     pass
-        # else:
-        #     continue
+        if 'UA-OX' in SKU:
+            pass
+        else:
+            continue
 
         ######vvvvvv DEBUG
         # if brand is None:
