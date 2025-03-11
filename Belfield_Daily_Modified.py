@@ -12,8 +12,17 @@ import traceback
 
 
 # Email notification function
-def send_email_notification(success, items_count=0, error_msg=""):
-    print("Sending email notification...")
+def send_email_notification(success, items_count=0, error_msg="", scraper_name="Belfield"):
+    """
+    Send email notification about scraper results
+    
+    Parameters:
+    - success: Boolean indicating if the scraper completed successfully
+    - items_count: Number of items processed/scraped
+    - error_msg: Error message if any
+    - scraper_name: Name of the scraper (defaults to "Belfield")
+    """
+    print(f"Sending {scraper_name} email notification...")
     try:
         # Email settings
         sender = "kyal@scarlettmusic.com.au"
@@ -24,7 +33,7 @@ def send_email_notification(success, items_count=0, error_msg=""):
             return
             
         host = "mail.scarlettmusic.com.au"
-        port = 587  # Try different ports if this doesn't work: 25, 465
+        port = 587
         
         # Create message
         msg = MIMEMultipart()
@@ -32,12 +41,13 @@ def send_email_notification(success, items_count=0, error_msg=""):
         msg['To'] = receiver
         
         if success:
-            msg['Subject'] = f"Belfield Scraper Success: {items_count} items scraped"
-            body = f"The Belfield web scraper ran successfully and processed {items_count} items."
+            msg['Subject'] = f"{scraper_name} Scraper Success: {items_count} items processed"
+            body = f"The {scraper_name} web scraper ran successfully and processed {items_count} items."
         else:
-            msg['Subject'] = "Belfield Scraper Failed"
-            body = f"The Belfield web scraper encountered an error: {error_msg}"
+            msg['Subject'] = f"{scraper_name} Scraper Failed"
+            body = f"The {scraper_name} web scraper encountered an error: {error_msg}"
         
+        # Ensure no additional text gets mixed into the body
         msg.attach(MIMEText(body, 'plain'))
         
         # Send email
@@ -49,6 +59,7 @@ def send_email_notification(success, items_count=0, error_msg=""):
         print("Email notification sent successfully")
     except Exception as e:
         print(f"Failed to send email notification: {str(e)}")
+        print(traceback.format_exc())
 
 # Initialize HTML session
 session = HTMLSession()
