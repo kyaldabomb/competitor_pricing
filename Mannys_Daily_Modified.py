@@ -134,7 +134,7 @@ try:
             
             # Extract price
             try:
-                price = soup.find(class_='selling-price').text
+                price = soup.find(class_='price').text
                 price = price.replace('\n', '')
                 price = price.replace('$', '')
                 price = price.replace(',', '')
