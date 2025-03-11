@@ -191,6 +191,9 @@ try:
                         break
             except Exception as e:
                 print(f"Error checking stock: {str(e)}")
+
+
+            print(f'\nScraping Item {str(item_number)}\nSKU: {sku}\nPrice: {price}\n Stock Avaliable: {stock_avaliable}')
             
             # Get current date
             today = datetime.now()
