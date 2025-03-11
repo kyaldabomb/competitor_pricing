@@ -134,17 +134,204 @@ try:
             
             # Extract price
             try:
-                price = soup.find(class_='price').text
+                price = soup.find(class_='selling-price').text
                 price = price.replace('\n', '')
-                price = price.replace('$', '')
-                price = price.replace(',', '')
-            except:
-                price = "N/A"
-                print(f"Could not find price for {url}")
+                price = price.replace('
             
             # Extract description
             try:
-                description = soup.find(class_='text-block product-description').text
+                description = soup.find(class_='productInfo-content').text
+            except:
+                description = 'N/A'
+                print(f"Could not find description for {url}")
+            
+            # Extract image
+            try:
+                image_element = soup.find(class_='product-detail-img')
+                if image_element and 'src' in image_element.attrs:
+                    image = f"https://www.mannys.com.au/{image_element['src']}"
+                else:
+                    image = "N/A"
+            except Exception as e:
+                image = "N/A"
+                print(f"Error getting image: {str(e)}")
+            
+            # Check stock availability
+            stock_avaliable = 'n'
+            try:
+                stock = soup.find(class_='online-stock-status in-stock')
+                if stock and 'In Stock' in stock.text:
+                    stock_avaliable = 'y'
+            except:
+                try:
+                    stock = soup.find(class_='online-stock-statusin-stock')
+                    if stock:
+                        stock_avaliable = 'y'
+                except:
+                    pass
+            
+            # Get current date
+            today = datetime.now()
+            date = today.strftime('%m %d %Y')
+            
+            # Update the Excel sheet
+            sheet['D' + str(sheet_line)].value = price
+            sheet['F' + str(sheet_line)].value = image
+            sheet['G' + str(sheet_line)].value = description
+            sheet['H' + str(sheet_line)].value = date
+            sheet['I' + str(sheet_line)].value = stock_avaliable
+            
+            items_scrapped += 1
+            print(f'Item {str(item_number)} scraped successfully')
+            
+            # Add a pause to be gentle with the server
+            time.sleep(3)
+            
+            # Save periodically
+            if int(items_scrapped) % 10 == 0:
+                print(f'Saving Sheet... Please wait....')
+                try:
+                    wb.save(file_path)
+                    print("Sheet saved successfully")
+                except Exception as e:
+                    print(f"Error occurred while saving the Excel file: {str(e)}")
+        
+        except Exception as item_error:
+            print(f"Error processing item {item_number}: {str(item_error)}")
+            print(traceback.format_exc())
+            # Continue with next item even if this one fails
+    
+    # Final save
+    wb.save(file_path)
+    print(f"Scraping completed successfully. Updated {items_scrapped} items.")
+    send_email_notification(True, items_scrapped)
+    
+except Exception as e:
+    error_message = str(e)
+    full_traceback = traceback.format_exc()
+    print(f"Error in scraping: {error_message}")
+    print(f"Traceback:\n{full_traceback}")
+    
+    try:
+        wb.save(file_path)
+        print("Saved progress before error")
+    except Exception as save_error:
+        print(f"Could not save progress after error: {str(save_error)}")
+    
+    send_email_notification(False, error_msg=f"{error_message}\n\nFull traceback:\n{full_traceback}")
+    sys.exit(1)  # Exit with error code
+finally:
+    # Always close the driver
+    try:
+        driver.quit()
+    except:
+        pass
+, '')
+                price = price.replace(',', '')
+            except:
+                # Fallback to older item-price class in case the site has different templates
+                try:
+                    price = soup.find(class_='item-price').text
+                    price = price.replace('\n', '')
+                    price = price.replace('
+            
+            # Extract description
+            try:
+                description = soup.find(class_='productInfo-content').text
+            except:
+                description = 'N/A'
+                print(f"Could not find description for {url}")
+            
+            # Extract image
+            try:
+                image_element = soup.find(class_='product-detail-img')
+                if image_element and 'src' in image_element.attrs:
+                    image = f"https://www.mannys.com.au/{image_element['src']}"
+                else:
+                    image = "N/A"
+            except Exception as e:
+                image = "N/A"
+                print(f"Error getting image: {str(e)}")
+            
+            # Check stock availability
+            stock_avaliable = 'n'
+            try:
+                stock = soup.find(class_='online-stock-status in-stock')
+                if stock and 'In Stock' in stock.text:
+                    stock_avaliable = 'y'
+            except:
+                try:
+                    stock = soup.find(class_='online-stock-statusin-stock')
+                    if stock:
+                        stock_avaliable = 'y'
+                except:
+                    pass
+            
+            # Get current date
+            today = datetime.now()
+            date = today.strftime('%m %d %Y')
+            
+            # Update the Excel sheet
+            sheet['D' + str(sheet_line)].value = price
+            sheet['F' + str(sheet_line)].value = image
+            sheet['G' + str(sheet_line)].value = description
+            sheet['H' + str(sheet_line)].value = date
+            sheet['I' + str(sheet_line)].value = stock_avaliable
+            
+            items_scrapped += 1
+            print(f'Item {str(item_number)} scraped successfully')
+            
+            # Add a pause to be gentle with the server
+            time.sleep(3)
+            
+            # Save periodically
+            if int(items_scrapped) % 10 == 0:
+                print(f'Saving Sheet... Please wait....')
+                try:
+                    wb.save(file_path)
+                    print("Sheet saved successfully")
+                except Exception as e:
+                    print(f"Error occurred while saving the Excel file: {str(e)}")
+        
+        except Exception as item_error:
+            print(f"Error processing item {item_number}: {str(item_error)}")
+            print(traceback.format_exc())
+            # Continue with next item even if this one fails
+    
+    # Final save
+    wb.save(file_path)
+    print(f"Scraping completed successfully. Updated {items_scrapped} items.")
+    send_email_notification(True, items_scrapped)
+    
+except Exception as e:
+    error_message = str(e)
+    full_traceback = traceback.format_exc()
+    print(f"Error in scraping: {error_message}")
+    print(f"Traceback:\n{full_traceback}")
+    
+    try:
+        wb.save(file_path)
+        print("Saved progress before error")
+    except Exception as save_error:
+        print(f"Could not save progress after error: {str(save_error)}")
+    
+    send_email_notification(False, error_msg=f"{error_message}\n\nFull traceback:\n{full_traceback}")
+    sys.exit(1)  # Exit with error code
+finally:
+    # Always close the driver
+    try:
+        driver.quit()
+    except:
+        pass
+, '')
+                    price = price.replace(',', '')
+                except:
+                    price = "N/A"
+                    print(f"Could not find price for {url}")
+            
+            # Extract description
+            try:
+                description = soup.find(class_='productInfo-content').text
             except:
                 description = 'N/A'
                 print(f"Could not find description for {url}")
