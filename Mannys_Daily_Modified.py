@@ -67,23 +67,6 @@ options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option('useAutomationExtension', False)
 
 try:
-    # Initialize WebDriver using webdriver-manager
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
-    
-    # Print Chrome and ChromeDriver version for debugging
-    print(f"Chrome version: {driver.capabilities['browserVersion']}")
-    print(f"ChromeDriver version: {driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]}")
-    
-    stealth(driver,
-            languages=["en-US", "en"],
-            vendor="Google Inc.",
-            platform="Win32",
-            webgl_vendor="Intel Inc.",
-            renderer="Intel Iris OpenGL Engine",
-            fix_hairline=True,
-            )
-    
     # Use local path instead of network path
     file_path = "Pricing Spreadsheets/Mannys.xlsx"
     wb = openpyxl.load_workbook(file_path)
@@ -91,13 +74,47 @@ try:
     
     item_number = 0
     items_scrapped = 0
+    driver = None
+    
+    # Function to create a fresh WebDriver
+    def create_webdriver():
+        print("Creating fresh WebDriver instance...")
+        driver_instance = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        stealth(driver_instance,
+            languages=["en-US", "en"],
+            vendor="Google Inc.",
+            platform="Win32",
+            webgl_vendor="Intel Inc.",
+            renderer="Intel Iris OpenGL Engine",
+            fix_hairline=True,
+        )
+        # Set page load timeout to prevent hanging
+        driver_instance.set_page_load_timeout(60)
+        print(f"New WebDriver created - Chrome version: {driver_instance.capabilities['browserVersion']}")
+        return driver_instance
+    
+    # Create initial WebDriver
+    driver = create_webdriver()
+    restart_counter = 0
     
     print(f"Starting to process {sheet.max_row-1} items")
     
     for sheet_line in range(2, sheet.max_row+1):
         try:
             item_number += 1
+            restart_counter += 1
             
+            # Restart WebDriver every 50 items to prevent resource exhaustion
+            if restart_counter >= 50:
+                print("Restarting WebDriver to prevent resource exhaustion...")
+                try:
+                    driver.quit()
+                except:
+                    pass
+                time.sleep(5)  # Give system time to clean up resources
+                driver = create_webdriver()
+                restart_counter = 0
+                
             # Check if we need to scrape this item (based on last scrape date)
             time_last_scrapped = sheet['H' + str(sheet_line)].value
             if time_last_scrapped:
@@ -111,7 +128,6 @@ try:
             
             # Get the URL and fetch the page
             url = sheet['E'+str(sheet_line)].value
-            sku = sheet['A'+str(sheet_line)].value
             if not url:
                 print(f"No URL for item {item_number}, skipping")
                 continue
@@ -120,18 +136,46 @@ try:
             
             # Add retry logic for resilience
             max_retries = 3
+            success = False
+            
             for retry in range(max_retries):
                 try:
+                    print(f"Attempt {retry+1} for {url}")
+                    # Set a lower timeout for page load
+                    driver.set_page_load_timeout(60)
                     r = driver.get(url)
                     # Add a small delay to let JS execute
-                    time.sleep(2)
+                    time.sleep(3)
+                    success = True
                     break
                 except Exception as e:
-                    if retry == max_retries - 1:
-                        raise
                     print(f"Retry {retry+1}/{max_retries} for {url}: {str(e)}")
-                    time.sleep(5)
+                    time.sleep(5 * (retry + 1))  # Exponential backoff
+                    # If we're on the last retry, try restarting the driver
+                    if retry == max_retries - 1:
+                        try:
+                            print("Restarting WebDriver after failed attempts...")
+                            driver.quit()
+                        except:
+                            pass
+                        time.sleep(5)
+                        driver = create_webdriver()
+                        restart_counter = 0
+                        
+                        # One last attempt with fresh driver
+                        try:
+                            driver.set_page_load_timeout(60)
+                            r = driver.get(url)
+                            time.sleep(3)
+                            success = True
+                        except Exception as final_e:
+                            print(f"Final attempt failed: {str(final_e)}")
             
+            # Skip this item if all attempts failed
+            if not success:
+                print(f"Skipping item {item_number} after all attempts failed")
+                continue
+                
             html = driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
             
@@ -192,9 +236,6 @@ try:
                         break
             except Exception as e:
                 print(f"Error checking stock: {str(e)}")
-
-
-            print(f'\nScraping Item {str(item_number)}\nSKU: {sku}\nPrice: {price}\n Stock Avaliable: {stock_avaliable}')
             
             # Get current date
             today = datetime.now()
@@ -210,8 +251,11 @@ try:
             items_scrapped += 1
             print(f'Item {str(item_number)} scraped successfully')
             
-            # Add a pause to be gentle with the server
-            time.sleep(3)
+            # Add a longer pause between requests to avoid overloading the server
+            # Randomize slightly to appear more like human behavior
+            sleep_time = 5 + (item_number % 3)
+            print(f"Waiting {sleep_time} seconds before next request...")
+            time.sleep(sleep_time)
             
             # Save periodically
             if int(items_scrapped) % 10 == 0:
@@ -249,6 +293,7 @@ except Exception as e:
 finally:
     # Always close the driver
     try:
-        driver.quit()
+        if driver:
+            driver.quit()
     except:
         pass
