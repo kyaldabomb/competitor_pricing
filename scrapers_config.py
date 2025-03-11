@@ -35,6 +35,12 @@ SCRAPERS = {
         "description": "Sky Music Store (Monthly)",
         "type": "monthly"
     },
+    "mannys_monthly": {
+    "file_name": "Mannys.xlsx",
+    "script_name": "Mannys_Monthly_Modified.py", 
+    "description": "Mannys Music Store (Monthly)",
+    "type": "monthly"
+},
     # Add other monthly scrapers here
 }
 
