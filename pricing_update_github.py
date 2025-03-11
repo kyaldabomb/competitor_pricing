@@ -6573,7 +6573,7 @@ completed_brands = {"tanglewood": Tanglewood, "orange": Orange, 'ernie ball': Er
                     'schaller': Schaller, 'jargar': Jargar, 'pirastro': Pirastro, 'sonic drive': SonicDrive,
                     'xvive': Xvive,
                     'beale': Beale, 'snark': Snark, 'kaces': Kaces, 'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,
-                    'esp ltd': ESP,
+                    'esp ltd': ESP,'espltd': ESP,
                     'ghs': GHS, 'strymon': Strymon, 'warwick rockboard': Rockboard, 'sterling': Sterling,
                     'sterling by mm': Sterling
     , 'sterling by mus': Sterling, 'sterling by music man': Sterling, 'ernie ball music man': MusicMan,
