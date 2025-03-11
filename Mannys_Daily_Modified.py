@@ -145,7 +145,8 @@ try:
                     price = price.replace('\n', '')
                     price = price.replace('$', '')
                     price = price.replace(',', '')
-                except:
+                except Exception as e:
+                    print (e)
                     price = "N/A"
                     print(f"Could not find price for {url}")
             
