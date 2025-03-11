@@ -105,34 +105,35 @@ try:
 
     # Pre-defined URL and brand filtering
     pre_url = 'https://www.mannys.com.au'
-    url = 'https://www.mannys.com.au/brands'
-
-    # Add retry logic for resilience
-    max_retries = 3
-    for retry in range(max_retries):
-        try:
-            response = requests.get(url)
-            response.raise_for_status()  # Raise exception for 4XX/5XX status codes
-            break
-        except Exception as e:
-            if retry == max_retries - 1:
-                raise
-            print(f"Retry {retry + 1}/{max_retries} for {url}: {str(e)}")
-            time.sleep(5)
-
-    soup = BeautifulSoup(response.content, 'html.parser')
-
+    url = 'https://www.mannys.com.au/pages/brands'  # Note: might need to be /pages/brands instead of /brands
+    driver.get(url)
+    time.sleep(5)  # Give time for JavaScript to render the content
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+    
     # Find brand links section
     brand_links = soup.find(class_='brand-list')
-
+    
+    if not brand_links:
+        # Try looking in nested structure
+        all_brands_section = soup.find(class_='all-brands')
+        if all_brands_section:
+            brand_links = all_brands_section.find('ul', class_='brand-list')
+            
     if not brand_links:
         raise Exception("Could not find brand links section on the page")
 
     # Process each brand
     for x in brand_links.find_all('li'):
-        brand = x.text
-        brand_url = x.find('a')['href']
-        url = f'{pre_url}{brand_url}'
+    
+      link = x.find('a')
+      if link:
+          brand = link.text.strip()
+          brand_url = link['href']
+          
+          # Ensure brand_url is properly formatted for the site
+          if brand_url.startswith('/collections/'):
+              url = f'{pre_url}{brand_url}'
 
         # Filter for specific brands - this is a key part of the original script
         if brand.lower() == 'orange' or brand.lower() == 'ernie ball' or brand.lower() == 'morely' or brand.lower() == 'blue microphones' or brand.lower() == 'soundbrenner' or brand.lower() == 'strandberg' or brand.lower() == 'korg' or brand.lower() == 'arturia' or 'tc electronic' in brand.lower() or brand.lower() == 'jbl' or brand.lower() == 'epiphone' or 'gibson' in brand.lower() or brand.lower() == 'dbx' or brand.lower() == "d'addario" or brand.lower() == "tech 21" or brand.lower() == "lr baggs" or brand.lower() == "universal audio" or brand.lower() == "soundcraft" or brand.lower() == "aguilar" or brand.lower() == "casio" or brand.lower() == "akg" or "seymour" in brand.lower() or "helicon" in brand.lower() or "kyser" in brand.lower() or "gruv" in brand.lower() or "akai" in brand.lower() or "marshall" in brand.lower() or "nord" in brand.lower() or "hercules" in brand.lower() or "headrush" in brand.lower() or "boss" in brand.lower() or "ashton" in brand.lower() or "ibanez" in brand.lower() or "evans" in brand.lower() or "tascam" in brand.lower() or "gator" in brand.lower() or "valencia" in brand.lower() or "xtreme" in brand.lower() or "cnb" in brand.lower() or "v-case" in brand.lower() or "mahalo" in brand.lower() or "dxp" in brand.lower() or "dunlop" in brand.lower() or "mano" in brand.lower() or "carson" in brand.lower() or "mxr" in brand.lower() or "armour" in brand.lower() or "dimarzio" in brand.lower() or 'auralex' in brand.lower() or 'alesis' in brand.lower() or 'digitech' in brand.lower() or 'crown' in brand.lower() or 'samson' in brand.lower() or 'x-vive' in brand.lower() or 'beale' in brand.lower() or 'snark' in brand.lower() or 'esp' in brand.lower() or 'ghs' in brand.lower() or 'strymon' in brand.lower() or 'rockboard' in brand.lower() or 'vic firth' in brand.lower() or 'ik multimedia' in brand.lower() or 'remo' in brand.lower() or 'darkglass' in brand.lower() or 'martin' in brand.lower() or 'm-audio' in brand.lower() or 'native instruments' in brand.lower() or 'source audio' in brand.lower() or 'emg' in brand.lower() or 'mapex' in brand.lower() or 'udg' in brand.lower() or 'alto' in brand.lower() or 'nektar' in brand.lower() or brand.lower() == 'se' or 'radial' in brand.lower() or 'teenage' in brand.lower() or 'tama' in brand.lower() or 'roland' in brand.lower() or 'hosa' in brand.lower() or 'oskar' in brand.lower() or 'hotone' in brand.lower() or 'vox' in brand.lower() or 'ampeg' in brand.lower() or 'singular' in brand.lower():
