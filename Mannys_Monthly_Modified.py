@@ -123,7 +123,7 @@ try:
     soup = BeautifulSoup(response.content, 'html.parser')
 
     # Find brand links section
-    brand_links = soup.find(class_='brand-links')
+    brand_links = soup.find(class_='brand-list')
 
     if not brand_links:
         raise Exception("Could not find brand links section on the page")
