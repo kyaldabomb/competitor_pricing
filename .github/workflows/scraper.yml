@@ -28,10 +28,10 @@ jobs:
     env:
       FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.9'
           
@@ -55,7 +55,7 @@ jobs:
           fi
       
       - name: Upload downloaded files as artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: pricing-spreadsheets
           path: Pricing Spreadsheets/
@@ -64,7 +64,7 @@ jobs:
         id: get-scrapers
         run: |
           python -c "
-          import json, sys
+          import json, sys, os
           from scrapers_config import DAILY_SCRAPERS, MONTHLY_SCRAPERS
           
           type_input = '${{ github.event.inputs.type }}'
@@ -88,7 +88,9 @@ jobs:
                   scrapers = DAILY_SCRAPERS
           
           scrapers_json = json.dumps(list(scrapers.keys()))
-          print(f'::set-output name=scrapers_json::{scrapers_json}')
+          # Use the new GITHUB_OUTPUT environment file instead of set-output command
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'scrapers_json={scrapers_json}')
           "
   
   # Run each scraper as a separate job
@@ -116,7 +118,7 @@ jobs:
           python-version: '3.9'
       
       - name: Download pricing spreadsheets
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: pricing-spreadsheets
           path: Pricing Spreadsheets/
@@ -139,14 +141,16 @@ jobs:
         id: get-scraper-details
         run: |
           python -c "
-          import json
+          import json, os
           from scrapers_config import SCRAPERS
           scraper = '${{ matrix.scraper }}'
           if scraper in SCRAPERS:
               details = SCRAPERS[scraper]
-              print(f'::set-output name=script_name::{details[\"script_name\"]}')
-              print(f'::set-output name=file_name::{details[\"file_name\"]}')
-              print(f'::set-output name=description::{details[\"description\"]}')
+              # Use the new GITHUB_OUTPUT environment file instead of set-output command
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                  f.write(f'script_name={details[\"script_name\"]}\n')
+                  f.write(f'file_name={details[\"file_name\"]}\n')
+                  f.write(f'description={details[\"description\"]}\n')
           else:
               print(f'Scraper {scraper} not found')
               exit(1)
@@ -158,7 +162,7 @@ jobs:
           python ${{ steps.get-scraper-details.outputs.script_name }} ${{ matrix.scraper }}
       
       - name: Upload updated file
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: updated-${{ matrix.scraper }}
           path: Pricing Spreadsheets/${{ steps.get-scraper-details.outputs.file_name }}
@@ -178,7 +182,7 @@ jobs:
           python-version: '3.9'
       
       - name: Download all updated files
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           path: artifacts/
       
