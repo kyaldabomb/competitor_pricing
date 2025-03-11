@@ -111,6 +111,7 @@ try:
             
             # Get the URL and fetch the page
             url = sheet['E'+str(sheet_line)].value
+            sku = sheet['A'+str(sheet_line)].value
             if not url:
                 print(f"No URL for item {item_number}, skipping")
                 continue
