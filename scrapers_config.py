@@ -14,6 +14,13 @@ SCRAPERS = {
         "type": "daily"
     },
     # Add other daily scrapers here
+
+    "mannys_daily": {
+    "file_name": "Mannys.xlsx",
+    "script_name": "Mannys_Daily_Modified.py", 
+    "description": "Mannys Music Store (Daily)",
+    "type": "daily"
+},
     
     # Monthly scrapers find new items
     "belfield_monthly": {
