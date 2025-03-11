@@ -6,16 +6,27 @@ on:
   workflow_dispatch:
     inputs:
       scraper:
-        description: 'Scraper to run (leave empty to run all)'
+        description: 'Specific scraper to run (leave empty to run all)'
         required: false
         default: ''
+      type:
+        description: 'Type of scrapers to run (daily, monthly, or both)'
+        required: false
+        default: 'daily'
+        type: choice
+        options:
+          - daily
+          - monthly
+          - both
 
 jobs:
-  scrape:
+  # Job to prepare the environment and download files
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      scrapers_json: ${{ steps.get-scrapers.outputs.scrapers_json }}
     env:
       FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       
@@ -24,63 +35,172 @@ jobs:
         with:
           python-version: '3.9'
           
+      - name: Install basic dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install openpyxl requests
+      
+      - name: Test FTP connection
+        run: python test_ftp.py
+      
+      - name: Download files from FTP
+        run: |
+          if [ "${{ github.event.inputs.type }}" == "both" ]; then
+            python download_files.py
+            python download_files.py --type monthly
+          elif [ "${{ github.event.inputs.type }}" == "monthly" ]; then
+            python download_files.py --type monthly
+          else
+            python download_files.py
+          fi
+      
+      - name: Upload downloaded files as artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: pricing-spreadsheets
+          path: Pricing Spreadsheets/
+      
+      - name: Determine scrapers to run
+        id: get-scrapers
+        run: |
+          python -c "
+          import json, sys
+          from scrapers_config import DAILY_SCRAPERS, MONTHLY_SCRAPERS
+          
+          type_input = '${{ github.event.inputs.type }}'
+          scraper_input = '${{ github.event.inputs.scraper }}'
+          
+          if scraper_input:
+              # Run a specific scraper
+              from scrapers_config import SCRAPERS
+              if scraper_input in SCRAPERS:
+                  scrapers = {scraper_input: SCRAPERS[scraper_input]}
+              else:
+                  print(f'Scraper {scraper_input} not found')
+                  sys.exit(1)
+          else:
+              # Run all scrapers of the specified type
+              if type_input == 'both':
+                  scrapers = {**DAILY_SCRAPERS, **MONTHLY_SCRAPERS}
+              elif type_input == 'monthly':
+                  scrapers = MONTHLY_SCRAPERS
+              else:
+                  scrapers = DAILY_SCRAPERS
+          
+          scrapers_json = json.dumps(list(scrapers.keys()))
+          print(f'::set-output name=scrapers_json::{scrapers_json}')
+          "
+  
+  # Run each scraper as a separate job
+  run_scraper:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        scraper: ${{ fromJson(needs.prepare.outputs.scrapers_json) }}
+      # Allow other scrapers to continue running even if one fails
+      fail-fast: false
+      # Run up to 5 scrapers in parallel
+      max-parallel: 5
+    
+    env:
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      
+      - name: Download pricing spreadsheets
+        uses: actions/download-artifact@v2
+        with:
+          name: pricing-spreadsheets
+          path: Pricing Spreadsheets/
+      
       - name: Install Chrome and Selenium dependencies
         run: |
-          # Update to newer method for adding the Chrome repository
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          
-          # Check Chrome installation and print version
-          google-chrome --version
-          which google-chrome
+          sudo apt-get install -y google-chrome-stable chromium-driver
       
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install openpyxl requests beautifulsoup4 selenium selenium-stealth requests-html
+          pip install openpyxl requests beautifulsoup4 selenium selenium-stealth webdriver-manager send2trash
           pip install "lxml[html_clean]"
-          # Install webdriver-manager to handle ChromeDriver automatically
-          pip install webdriver-manager
-          pip install send2trash
-          
-      - name: Test FTP connection
-        run: python test_ftp.py
-          
-      - name: Download files from FTP
+          pip install requests-html
+      
+      - name: Get scraper details
+        id: get-scraper-details
         run: |
-          if [ -n "${{ github.event.inputs.scraper }}" ]; then
-            python download_files.py ${{ github.event.inputs.scraper }}
-          else
-            python download_files.py
-          fi
-          
-      - name: Run scrapers
+          python -c "
+          import json
+          from scrapers_config import SCRAPERS
+          scraper = '${{ matrix.scraper }}'
+          if scraper in SCRAPERS:
+              details = SCRAPERS[scraper]
+              print(f'::set-output name=script_name::{details[\"script_name\"]}')
+              print(f'::set-output name=file_name::{details[\"file_name\"]}')
+              print(f'::set-output name=description::{details[\"description\"]}')
+          else:
+              print(f'Scraper {scraper} not found')
+              exit(1)
+          "
+      
+      - name: Run scraper
         run: |
-          if [ -n "${{ github.event.inputs.scraper }}" ]; then
-            python $SCRAPER_SCRIPT ${{ github.event.inputs.scraper }}
-            exit_code=$?
-            if [ $exit_code -ne 0 ]; then
-              echo "Scraper failed with exit code $exit_code"
-              exit $exit_code
-            fi
-          else
-            for scraper in belfield sky_music sounds_easy acoustic_centre apw billy_hyde better derringer dj_city mannys; do
-              echo "Running $scraper scraper..."
-              python ${scraper}_Daily_Modified.py $scraper
-              exit_code=$?
-              if [ $exit_code -ne 0 ]; then
-                echo "$scraper scraper failed with exit code $exit_code"
-                # Continue with other scrapers even if one fails
-              fi
-            done
-          fi
-        
-      - name: Upload results to FTP
+          echo "Running ${{ steps.get-scraper-details.outputs.description }} (${{ matrix.scraper }})"
+          python ${{ steps.get-scraper-details.outputs.script_name }} ${{ matrix.scraper }}
+      
+      - name: Upload updated file
+        uses: actions/upload-artifact@v2
+        with:
+          name: updated-${{ matrix.scraper }}
+          path: Pricing Spreadsheets/${{ steps.get-scraper-details.outputs.file_name }}
+  
+  # Final job to upload all files to FTP
+  upload_results:
+    needs: run_scraper
+    runs-on: ubuntu-latest
+    env:
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      
+      - name: Download all updated files
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts/
+      
+      - name: Organize files
+        run: |
+          mkdir -p "Pricing Spreadsheets"
+          find artifacts/ -name "*.xlsx" -exec cp {} "Pricing Spreadsheets/" \;
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install openpyxl ftplib
+      
+      - name: Upload to FTP
         run: |
           if [ -n "${{ github.event.inputs.scraper }}" ]; then
             python upload_files.py ${{ github.event.inputs.scraper }}
+          elif [ "${{ github.event.inputs.type }}" == "both" ]; then
+            python upload_files.py
+            python upload_files.py --type monthly
+          elif [ "${{ github.event.inputs.type }}" == "monthly" ]; then
+            python upload_files.py --type monthly
           else
             python upload_files.py
           fi
