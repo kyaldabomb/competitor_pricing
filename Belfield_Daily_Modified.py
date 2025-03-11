@@ -5,67 +5,61 @@ from requests_html import HTMLSession
 import os, time
 from pathlib import Path
 from datetime import datetime, timedelta
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import traceback
 
-
-# Email notification function
-def send_email_notification(success, items_count=0, error_msg="", scraper_name="Belfield"):
-    """
-    Send email notification about scraper results
+# Import the standardized email notification function
+try:
+    from email_notifications import send_email_notification
+except ImportError:
+    # Fallback to local definition if module not available
+    import smtplib
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
     
-    Parameters:
-    - success: Boolean indicating if the scraper completed successfully
-    - items_count: Number of items processed/scraped
-    - error_msg: Error message if any
-    - scraper_name: Name of the scraper (defaults to "Belfield")
-    """
-    print(f"Sending {scraper_name} email notification...")
-    try:
-        # Email settings
-        sender = "kyal@scarlettmusic.com.au"
-        receiver = "kyal@scarlettmusic.com.au"
-        password = os.environ.get('EMAIL_PASSWORD')
-        if not password:
-            print("Email password not found in environment variables")
-            return
+    def send_email_notification(success, items_count=0, error_msg="", scraper_name="Belfield"):
+        print("Sending email notification...")
+        try:
+            # Email settings
+            sender = "kyal@scarlettmusic.com.au"
+            receiver = "kyal@scarlettmusic.com.au"
+            password = os.environ.get('EMAIL_PASSWORD')
+            if not password:
+                print("Email password not found in environment variables")
+                return
+                
+            host = "mail.scarlettmusic.com.au"
+            port = 587
             
-        host = "mail.scarlettmusic.com.au"
-        port = 587
-        
-        # Create message
-        msg = MIMEMultipart()
-        msg['From'] = sender
-        msg['To'] = receiver
-        
-        if success:
-            msg['Subject'] = f"{scraper_name} Scraper Success: {items_count} items processed"
-            body = f"The {scraper_name} web scraper ran successfully and processed {items_count} items."
-        else:
-            msg['Subject'] = f"{scraper_name} Scraper Failed"
-            body = f"The {scraper_name} web scraper encountered an error: {error_msg}"
-        
-        # Ensure no additional text gets mixed into the body
-        msg.attach(MIMEText(body, 'plain'))
-        
-        # Send email
-        server = smtplib.SMTP(host, port)
-        server.starttls()
-        server.login(sender, password)
-        server.send_message(msg)
-        server.quit()
-        print("Email notification sent successfully")
-    except Exception as e:
-        print(f"Failed to send email notification: {str(e)}")
-        print(traceback.format_exc())
+            # Create message
+            msg = MIMEMultipart()
+            msg['From'] = sender
+            msg['To'] = receiver
+            
+            if success:
+                msg['Subject'] = f"{scraper_name} Scraper Success: {items_count} items processed"
+                body = f"The {scraper_name} web scraper ran successfully and processed {items_count} items."
+            else:
+                msg['Subject'] = f"{scraper_name} Scraper Failed"
+                body = f"The {scraper_name} web scraper encountered an error: {error_msg}"
+            
+            msg.attach(MIMEText(body, 'plain'))
+            
+            # Send email
+            server = smtplib.SMTP(host, port)
+            server.starttls()
+            server.login(sender, password)
+            server.send_message(msg)
+            server.quit()
+            print("Email notification sent successfully")
+        except Exception as e:
+            print(f"Failed to send email notification: {str(e)}")
 
 # Initialize HTML session
 session = HTMLSession()
 
 # Use local path instead of network path
 file_path = "Pricing Spreadsheets/Belfield.xlsx"
+file_name = "Belfield.xlsx"
 wb = openpyxl.load_workbook(file_path)
 sheet = wb['Sheet']
 
@@ -194,11 +188,11 @@ try:
                 print(f"Error occurred while saving the Excel file: {str(e)}")
     
     try:
-    # Final save
+        # Final save
         wb.save(file_path)
         print(f"Scraping completed successfully. Added {items_scrapped} new items.")
     
-    # Import the FTP helper and upload immediately
+        # Import the FTP helper and upload immediately
         try:
             from ftp_helper import upload_to_ftp
             upload_success = upload_to_ftp(file_path, file_name)
@@ -209,8 +203,8 @@ try:
         except Exception as ftp_error:
             print(f"Error with immediate FTP upload: {str(ftp_error)}")
     
-    # Send email notification
-        send_email_notification(True, items_scrapped)
+        # Send email notification with explicit scraper name
+        send_email_notification(True, items_scrapped, scraper_name="Belfield Daily")
     except Exception as final_error:
         print(f"Error in final save and upload: {str(final_error)}")
         print(traceback.format_exc())
@@ -227,4 +221,4 @@ except Exception as e:
     except:
         print("Could not save progress after error")
     
-    send_email_notification(False, error_msg=f"{error_message}\n\nFull traceback:\n{full_traceback}")
+    send_email_notification(False, error_msg=f"{error_message}\n\nFull traceback:\n{full_traceback}", scraper_name="Belfield Daily")
