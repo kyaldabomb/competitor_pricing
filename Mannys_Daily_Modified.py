@@ -144,7 +144,7 @@ try:
             
             # Extract description
             try:
-                description = soup.find(class_='productInfo-content').text
+                description = soup.find(class_='text-block product-description').text
             except:
                 description = 'N/A'
                 print(f"Could not find description for {url}")
