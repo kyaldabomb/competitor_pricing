@@ -97,6 +97,7 @@ jobs:
   run_scraper:
     needs: prepare
     runs-on: ubuntu-latest
+    timeout-minutes: 1440
     strategy:
       matrix:
         scraper: ${{ fromJson(needs.prepare.outputs.scrapers_json) }}
