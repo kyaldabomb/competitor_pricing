@@ -21,7 +21,7 @@ except ImportError:
     sys.exit(1)
 
 # Run each scraper with timeout
-MAX_SCRAPER_RUNTIME = 2880 * 60  # 15 minutes max per scraper
+MAX_SCRAPER_RUNTIME = 5600 * 60  # 15 minutes max per scraper
 success_count = 0
 failure_count = 0
 skipped_count = 0
