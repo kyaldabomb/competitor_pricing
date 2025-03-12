@@ -177,6 +177,9 @@ def Ashton(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
+    original_RRP = float(RRP)
+    default_discount = 0.85
+
     try:
 
         gibson_workbook = openpyxl.load_workbook(
@@ -196,6 +199,8 @@ def Ashton(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
                 break
 
         try:
@@ -236,6 +241,8 @@ def Armour(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
+    default_discount = 1
 
     try:
 
@@ -256,6 +263,8 @@ def Armour(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
                 break
 
         try:
@@ -296,6 +305,8 @@ def AKG(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
+    default_discount = 0.85
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -313,6 +324,8 @@ def AKG(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
             break
 
     try:
@@ -334,7 +347,7 @@ def AKG(RRP, title, sku, obsolete_stock):
     else:
 
         if RRP >= 50:
-            return RRP, cost
+            return RRP*default_discount, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -351,6 +364,8 @@ def Arturia(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
+    default_discount = 0.85
 
     try:
 
@@ -371,6 +386,8 @@ def Arturia(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
                 break
 
         try:
@@ -383,7 +400,7 @@ def Arturia(RRP, title, sku, obsolete_stock):
         cost = (RRP * 0.7) * 0.95
 
     if RRP >= 100:
-        return RRP * 0.85, cost
+        return RRP * default_discount, cost
     if 10 <= RRP < 100:
         return RRP, cost
 
@@ -400,6 +417,8 @@ def Aguilar(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
+    default_discount = 0.85
 
     try:
 
@@ -420,6 +439,8 @@ def Aguilar(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
                 break
 
         try:
@@ -432,7 +453,7 @@ def Aguilar(RRP, title, sku, obsolete_stock):
         cost = (RRP * 0.7) * 0.85
 
     if RRP >= 100:
-        return RRP * 0.85, cost
+        return RRP * default_discount, cost
     if 10 <= RRP < 100:
         return RRP, cost
 
@@ -569,6 +590,7 @@ def Casio(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -586,6 +608,8 @@ def Casio(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
             break
 
     try:
@@ -646,6 +670,8 @@ def Behringer(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
     sku = sku
+    original_RRP = float(RRP)
+    default_discount = 1
 
     try:
 
@@ -666,6 +692,8 @@ def Behringer(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
                 return RRP, cost
 
         try:
@@ -1607,8 +1635,10 @@ def Gator(RRP, title, sku, obsolete_stock):
     # super low range (0-25) = +5
 
     RRP = float(RRP)
+    default_discount = 1
 
     obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
 
     try:
 
@@ -1629,6 +1659,8 @@ def Gator(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
                 break
 
         try:
@@ -1889,6 +1921,8 @@ def JBL(RRP, title, sku, obsolete_stock):
     sku = sku
 
     RRP = float(RRP)
+    default_discount = 1
+    original_RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
 
@@ -1908,6 +1942,8 @@ def JBL(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
             break
 
     try:
@@ -1980,6 +2016,8 @@ def GHS(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    default_discount = 1
+    original_RRP = float(RRP)
 
     try:
 
@@ -2000,6 +2038,8 @@ def GHS(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
                 break
 
         try:
@@ -2152,6 +2192,8 @@ def Korg(RRP, title, sku, obsolete_stock):
     title = title
 
     RRP = float(RRP)
+    default_discount = 0.9
+    original_RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
 
@@ -2172,6 +2214,8 @@ def Korg(RRP, title, sku, obsolete_stock):
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
             cost = float(cost) * 1.1
+            if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
             break
 
     try:
@@ -2189,7 +2233,7 @@ def Korg(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7) * 0.85
 
     if RRP >= 100:
-        return RRP * 0.9, cost
+        return RRP * default_discount, cost
     if 10 <= RRP < 100:
         return RRP, cost
 
@@ -2206,6 +2250,8 @@ def LRBaggs(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
+    default_discount = 0.8
 
     try:
 
@@ -2226,6 +2272,8 @@ def LRBaggs(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
                 break
 
         try:
@@ -2238,7 +2286,7 @@ def LRBaggs(RRP, title, sku, obsolete_stock):
     
 
     if RRP >= 50:
-        return RRP * 0.8, cost
+        return RRP * default_discount, cost
     if 10 <= RRP < 50:
         return RRP, cost
 
@@ -2745,6 +2793,7 @@ def Orange(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    default_discount = 0.9
 
     try:
 
@@ -2765,6 +2814,8 @@ def Orange(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
                 break
 
         try:
@@ -2800,7 +2851,7 @@ def Orange(RRP, title, sku, obsolete_stock):
     else:
 
         if RRP >= 50:
-            return RRP, cost
+            return RRP* default_discount, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
