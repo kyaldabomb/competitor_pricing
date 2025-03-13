@@ -20,7 +20,45 @@ parser = argparse.ArgumentParser(description='Run daily scraper for Sky Music')
 parser.add_argument('scraper', nargs='?', default='sky_music_daily', 
                     help='Scraper name from config')
 args = parser.parse_args()
-
+def upload_to_ftp(file_path, file_name):
+    print(f"\n==== Uploading {file_name} to FTP ====")
+    try:
+        # Get FTP password from environment
+        ftp_password = os.environ.get('FTP_PASSWORD')
+        if not ftp_password:
+            print("FTP_PASSWORD not found in environment variables")
+            return False
+            
+        # Connect and upload
+        session = ftplib.FTP('ftp.drivehq.com', 'kyaldabomb', ftp_password)
+        
+        # Check if directory exists
+        if 'competitor_pricing' not in session.nlst():
+            print("competitor_pricing directory not found, creating it...")
+            session.mkd('competitor_pricing')
+        
+        # Change to the directory
+        session.cwd('competitor_pricing')
+        
+        # Upload the file
+        with open(file_path, 'rb') as file:
+            session.storbinary(f'STOR {file_name}', file)
+            
+        # Create timestamp file for verification
+        with open('upload_timestamp.txt', 'w') as f:
+            f.write(f"Upload of {file_name} completed at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            
+        with open('upload_timestamp.txt', 'rb') as file:
+            session.storbinary('STOR upload_timestamp.txt', file)
+            
+        session.quit()
+        print(f"File {file_name} uploaded to FTP successfully")
+        return True
+    except Exception as e:
+        print(f"Error uploading to FTP: {str(e)}")
+        print(traceback.format_exc())
+        return False
+      
 # Email notification function
 def send_email_notification(success, items_count=0, error_msg=""):
     print("Sending email notification...")
@@ -89,6 +127,7 @@ try:
     
     # Use local path instead of network path
     file_path = "Pricing Spreadsheets/Sky_Music.xlsx"
+    file_name = Sky_Music.xlsx
     wb = openpyxl.load_workbook(file_path)
     sheet = wb['Sheet']
     
@@ -212,10 +251,12 @@ try:
             time.sleep(5)
             
             # Save periodically
-            if int(items_scrapped) % 10 == 0:
+            if int(items_scrapped) % 100 == 0:
                 print(f'Saving Sheet... Please wait....')
                 try:
                     wb.save(file_path)
+                    upload_to_ftp(file_path, file_name)
+
                     print("Sheet saved successfully")
                 except Exception as e:
                     print(f"Error occurred while saving the Excel file: {str(e)}")
@@ -227,6 +268,8 @@ try:
     
     # Final save
     wb.save(file_path)
+    upload_to_ftp(file_path, file_name)
+
     print(f"Scraping completed successfully. Updated {items_scrapped} items.")
     send_email_notification(True, items_scrapped)
     
