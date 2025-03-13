@@ -2868,8 +2868,37 @@ def Paytons(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
 
-    cost = (RRP * 0.7) * 0.9
+    obsolete_stock = obsolete_stock
+
+    default_discount = 1
+
+    gibson_workbook = openpyxl.load_workbook(
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
+    gibson_sheet = gibson_workbook['Sheet1']
+    for items in range(1, gibson_sheet.max_row + 1):
+        gibson_sku = str(gibson_sheet['A' + str(items)].value)
+        if gibson_sku is None:
+            continue
+        if gibson_sku.lower() == sku.lower():
+            RRP = str(gibson_sheet['L' + str(items)].value)
+            RRP = RRP.replace('$', '')
+            RRP = RRP.replace(',', '')
+            RRP = float(RRP)
+
+            cost = str(gibson_sheet['F' + str(items)].value)
+            cost = cost.replace('$', '')
+            cost = cost.replace(',', '')
+            if original_RRP * default_discount > float(RRP):
+                default_discount = 1
+            break
+
+    try:
+        cost
+
+    except:
+        cost = (RRP * 0.7)*0.9
 
     if obsolete_stock == 'Y':
 
