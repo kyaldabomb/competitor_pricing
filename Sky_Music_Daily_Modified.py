@@ -241,6 +241,11 @@ try:
                 if 'In Stock' in x.text or "Low Stock" in x.text:
                     stock_avaliable = 'y'
                     break
+            try:
+              if 'In Stock' in soup.find(class_='iia-location-info').text:
+                stock_avaliable = 'y'
+              except:
+                pass
             
             # Get current date
             today = datetime.now()
