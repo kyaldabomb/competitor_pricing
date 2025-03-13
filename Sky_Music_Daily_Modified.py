@@ -14,6 +14,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import sys
 import argparse
+import ftplib
+
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Run daily scraper for Sky Music')
@@ -127,7 +129,7 @@ try:
     
     # Use local path instead of network path
     file_path = "Pricing Spreadsheets/Sky_Music.xlsx"
-    file_name = Sky_Music.xlsx
+    file_name = "Sky_Music.xlsx"
     wb = openpyxl.load_workbook(file_path)
     sheet = wb['Sheet']
     
