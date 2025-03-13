@@ -139,6 +139,16 @@ try:
     for sheet_line in range(2, sheet.max_row+1):
         try:
             item_number += 1
+
+            time_last_scrapped = sheet['H' + str(sheet_line)].value
+            if time_last_scrapped:
+                try:
+                    string_datetime_conversion = datetime.strptime(time_last_scrapped, '%m %d %Y')
+                    if string_datetime_conversion + timedelta(days=3) > datetime.today():
+                        print(f'Item {str(item_number)} scrapped less than 7 days ago, skipping...')
+                        continue
+                except Exception as date_error:
+                    print(f"Error parsing date {time_last_scrapped}: {str(date_error)}")
             
             # Get the URL and fetch the page
             url = sheet['E'+str(sheet_line)].value
