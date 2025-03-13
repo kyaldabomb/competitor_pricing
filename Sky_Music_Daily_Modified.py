@@ -244,7 +244,7 @@ try:
             try:
               if 'In Stock' in soup.find(class_='iia-location-info').text:
                 stock_avaliable = 'y'
-              except:
+            except:
                 pass
             
             # Get current date
