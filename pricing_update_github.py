@@ -1397,6 +1397,10 @@ def ErnieBall(RRP, title, sku, obsolete_stock):
         elif 'paradigm' in title.lower():
             cost = (RRP * 0.7) * 0.85
 
+        elif 'm-steel' in title.lower():
+            cost = (RRP * 0.7) * 0.8
+
+
         else:
 
             cost = (RRP * 0.7) * 0.6
