@@ -9,6 +9,8 @@ import sys
 import argparse
 import openpyxl
 from send2trash import send2trash
+import ftplib
+
 
 from selenium import webdriver
 from selenium_stealth import stealth
