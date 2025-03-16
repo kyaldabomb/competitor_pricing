@@ -13,6 +13,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import ftplib
+
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Run daily scraper for Mannys')
