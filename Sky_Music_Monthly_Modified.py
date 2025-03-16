@@ -84,6 +84,7 @@ try:
     session = HTMLSession()
     
     # Use local path instead of network path
+    file_name = "Sky_Music.xlsx"
     file_path = "Pricing Spreadsheets/Sky_Music.xlsx"
     wb = openpyxl.load_workbook(file_path)
     sheet = wb['Sheet']
