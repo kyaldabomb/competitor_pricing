@@ -143,9 +143,11 @@ try:
     
     print(f"Found {len(url_list)} existing URLs in the spreadsheet")
     
-    # Better Music brands page
-    url = 'https://www.bettermusic.com.au/brands'
-    print(f"Accessing brands page: {url}")
+    # Better Music brands page - try the main page and search instead
+    # The brands page might have changed or be protected
+    print("Trying alternative approach to find products...")
+    url = 'https://www.bettermusic.com.au/catalogsearch/result/?q=&product_list_limit=36'
+    print(f"Accessing search page: {url}")
     
     # Add retry logic for resilience
     max_retries = 3
@@ -159,15 +161,41 @@ try:
             print(f"Retry {retry+1}/{max_retries} for {url}: {str(e)}")
             time.sleep(5)
     
+    # Wait for the page to load properly
+    time.sleep(10)
     html = driver.page_source
+    
+    # Debug the HTML to see what we're getting
+    print("Parsing HTML response...")
+    
+    # Try different parsing approaches
     soup = BeautifulSoup(html, features="lxml")
+    
+    # Debug the page structure
+    print("Page title:", soup.title.text if soup.title else "No title found")
     
     item_number = 0
     items_scrapped = 0
     
-    # Loop through all brands
+    # Loop through all brands - try multiple selectors to find brands
     print("Starting to process brands")
     brands_links = soup.find_all(class_='brands-grid__link')
+    
+    # If no brands found with the first selector, try alternatives
+    if len(brands_links) == 0:
+        print("Trying alternative brand selectors...")
+        brands_links = soup.find_all('a', class_='brand-item')
+        
+        if len(brands_links) == 0:
+            # Try a more general approach
+            brand_container = soup.find('div', class_='brandContainer')
+            if brand_container:
+                brands_links = brand_container.find_all('a')
+            else:
+                # Try even more general approach - look for links with 'brand' in URL
+                all_links = soup.find_all('a', href=True)
+                brands_links = [link for link in all_links if 'brand' in link['href'].lower()]
+                
     print(f"Found {len(brands_links)} brands to process")
     
     for x in brands_links:
@@ -319,7 +347,48 @@ try:
         except Exception as brand_error:
             print(f"Error processing brand {brand}: {str(brand_error)}")
             print(traceback.format_exc())
-            # Continue with next brand even if this one fails
+                # End of product processing
+            
+        # After processing all products on this page, check if there's a next page
+        try:
+            # Find the next page link and navigate to it
+            next_page_link = soup.find('a', class_='action next')
+            if next_page_link and 'href' in next_page_link.attrs:
+                next_page_url = next_page_link['href']
+                print(f"Moving to next page: {next_page_url}")
+                
+                # Add retry logic for next page access
+                max_retries = 3
+                for retry in range(max_retries):
+                    try:
+                        r = driver.get(next_page_url)
+                        break
+                    except Exception as e:
+                        if retry == max_retries - 1:
+                            raise
+                        print(f"Retry {retry+1}/{max_retries} for page {page_num+1}: {str(e)}")
+                        time.sleep(5)
+                
+                # Wait for page to load
+                time.sleep(5)
+                html = driver.page_source
+                soup = BeautifulSoup(html, features="lxml")
+                
+                # Find products on the new page
+                products = soup.find_all(class_='item product product-item')
+                if len(products) == 0:
+                    products = soup.find_all(class_='product-item-info')
+                if len(products) == 0:
+                    products = soup.find_all('li', class_='product')
+                
+                page_num += 1
+            else:
+                print("No next page found, ending pagination")
+                break
+        except Exception as page_error:
+            print(f"Error moving to next page: {str(page_error)}")
+            print(traceback.format_exc())
+            break
     
     # Final save
     wb.save(file_path)
