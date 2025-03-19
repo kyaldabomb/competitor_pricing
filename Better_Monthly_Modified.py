@@ -109,6 +109,9 @@ options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option('useAutomationExtension', False)
 
 try:
+    # Base URL for the website
+    base_url = 'https://www.bettermusic.com.au'
+    
     # Initialize WebDriver using webdriver-manager
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
@@ -143,94 +146,59 @@ try:
     
     print(f"Found {len(url_list)} existing URLs in the spreadsheet")
     
-    # Better Music brands page - try the main page and search instead
-    # The brands page might have changed or be protected
-    print("Trying alternative approach to find products...")
-    url = 'https://www.bettermusic.com.au/catalogsearch/result/?q=&product_list_limit=36'
-    print(f"Accessing search page: {url}")
-    
-    # Add retry logic for resilience
-    max_retries = 3
-    for retry in range(max_retries):
-        try:
-            r = driver.get(url)
-            break
-        except Exception as e:
-            if retry == max_retries - 1:
-                raise
-            print(f"Retry {retry+1}/{max_retries} for {url}: {str(e)}")
-            time.sleep(5)
-    
-    # Wait for the page to load properly
-    time.sleep(10)
-    html = driver.page_source
-    
-    # Debug the HTML to see what we're getting
-    print("Parsing HTML response...")
-    
-    # Try different parsing approaches
-    soup = BeautifulSoup(html, features="lxml")
-    
-    # Debug the page structure
-    print("Page title:", soup.title.text if soup.title else "No title found")
-    
+    # Go directly to product listing pages since that's more reliable than the brands page
     item_number = 0
     items_scrapped = 0
     
-    # Loop through all brands - try multiple selectors to find brands
-    print("Starting to process brands")
-    brands_links = soup.find_all(class_='brands-grid__link')
+    # Process products from search listings (with pagination)
+    max_pages = 25  # Limit to 25 pages for testing
     
-    # If no brands found with the first selector, try alternatives
-    if len(brands_links) == 0:
-        print("Trying alternative brand selectors...")
-        brands_links = soup.find_all('a', class_='brand-item')
+    for page_num in range(1, max_pages + 1):
+        # Construct the URL for the current page
+        search_url = f"{base_url}/catalogsearch/result/?p={page_num}&q=&product_list_limit=36"
+        print(f"\nProcessing search page {page_num}: {search_url}")
         
-        if len(brands_links) == 0:
-            # Try a more general approach
-            brand_container = soup.find('div', class_='brandContainer')
-            if brand_container:
-                brands_links = brand_container.find_all('a')
-            else:
-                # Try even more general approach - look for links with 'brand' in URL
-                all_links = soup.find_all('a', href=True)
-                brands_links = [link for link in all_links if 'brand' in link['href'].lower()]
-                
-    print(f"Found {len(brands_links)} brands to process")
-    
-    for x in brands_links:
         try:
-            brand_url = x['href']
-            brand = x.text.strip()
-            print(f"\nProcessing brand: {brand} at {brand_url}")
-            
-            # Add retry logic for brand page access
+            # Add retry logic for page access
             max_retries = 3
             for retry in range(max_retries):
                 try:
-                    r = driver.get(brand_url)
+                    driver.get(search_url)
                     break
                 except Exception as e:
                     if retry == max_retries - 1:
                         raise
-                    print(f"Retry {retry+1}/{max_retries} for brand {brand}: {str(e)}")
+                    print(f"Retry {retry+1}/{max_retries} for search page {page_num}: {str(e)}")
                     time.sleep(5)
             
+            # Wait for page to load
+            time.sleep(5)
             html = driver.page_source
             soup2 = BeautifulSoup(html, features="lxml")
             
-            # Find all products for this brand
+            # Find all products on the page
             products = soup2.find_all(class_='item product product-item')
-            print(f"Found {len(products)} products for brand {brand}")
             
-            for xx in products:
+            if not products:
+                products = soup2.find_all(class_='product-item-info')
+            
+            if not products:
+                print(f"No products found on page {page_num}, ending pagination")
+                break
+                
+            print(f"Found {len(products)} products on page {page_num}")
+            
+            for product in products:
                 try:
                     item_number += 1
                     
-                    # Get product URL
-                    product_link = xx.find(class_='product-item-link')
+                    # Find the product link
+                    product_link = product.find('a', class_='product-item-link')
                     if not product_link:
-                        print(f"Could not find product link for item {item_number}, skipping")
+                        product_link = product.find('a', class_='product-item-photo')
+                        
+                    if not product_link or 'href' not in product_link.attrs:
+                        print(f"Could not find product URL for item {item_number}, skipping")
                         continue
                         
                     product_url = product_link['href']
@@ -239,14 +207,14 @@ try:
                     if product_url in url_list:
                         print(f'Item {str(item_number)} already in sheet, skipping')
                         continue
-                    
+                        
                     print(f"Processing new product: {product_url}")
                     
                     # Add retry logic for product page access
                     max_retries = 3
                     for retry in range(max_retries):
                         try:
-                            r = driver.get(product_url)
+                            driver.get(product_url)
                             break
                         except Exception as e:
                             if retry == max_retries - 1:
@@ -254,6 +222,8 @@ try:
                             print(f"Retry {retry+1}/{max_retries} for product {item_number}: {str(e)}")
                             time.sleep(5)
                     
+                    # Wait for product page to load
+                    time.sleep(2)
                     html = driver.page_source
                     soup3 = BeautifulSoup(html, features="lxml")
                     
@@ -267,51 +237,119 @@ try:
                         print(f"Could not find title for {product_url}, skipping")
                         continue
                     
+                    # Extract brand - try to find it on the product page
+                    try:
+                        brand_element = soup3.find(class_='product-brand')
+                        if brand_element:
+                            brand = brand_element.text.strip()
+                        else:
+                            # Try to find in breadcrumbs
+                            breadcrumbs = soup3.find(class_='breadcrumbs')
+                            if breadcrumbs:
+                                brand_links = breadcrumbs.find_all('a')
+                                if len(brand_links) >= 2:
+                                    brand = brand_links[1].text.strip()
+                                else:
+                                    brand = "Better Music"  # Default fallback
+                            else:
+                                brand = "Better Music"  # Default fallback
+                    except:
+                        brand = "Better Music"  # Default fallback
+                    
                     # Extract SKU and RRP
                     try:
-                        sku_rrp = soup3.find(class_='musipos-msrp').text
-                    except:
-                        print(f"Could not find SKU for {product_url}, skipping")
-                        continue
-                        
-                    sku_rrp = sku_rrp.split(' - RRP $')
-                    sku = sku_rrp[0]
-                    
-                    try:
-                        rrp = sku_rrp[1]
-                    except:
-                        print(f"Could not parse RRP from {sku_rrp}, skipping")
-                        continue
+                        sku_element = soup3.find(class_='musipos-msrp')
+                        if sku_element:
+                            sku_text = sku_element.text
+                            if ' - RRP $' in sku_text:
+                                sku_rrp = sku_text.split(' - RRP $')
+                                sku = sku_rrp[0].strip()
+                                rrp = sku_rrp[1].strip()
+                            else:
+                                sku = sku_text.strip()
+                                rrp = "N/A"
+                        else:
+                            # Try alternative approach to find SKU
+                            sku_element = soup3.find(class_='product attribute sku')
+                            if sku_element:
+                                sku_value = sku_element.find(class_='value')
+                                if sku_value:
+                                    sku = sku_value.text.strip()
+                                else:
+                                    sku = "Unknown"
+                            else:
+                                sku = "Unknown"
+                                
+                            rrp = "N/A"
+                    except Exception as sku_error:
+                        print(f"Error extracting SKU: {str(sku_error)}")
+                        sku = "Unknown"
+                        rrp = "N/A"
                     
                     # Extract price
                     try:
                         price_container = soup3.find(class_='product-add-form')
-                        price = price_container.find(class_='price').text
-                        price = price.replace('$', '')
-                        price = price.replace(',', '')
+                        if price_container:
+                            price_element = price_container.find(class_='price')
+                            if price_element:
+                                price = price_element.text.replace('$', '').replace(',', '').strip()
+                            else:
+                                price = "N/A"
+                        else:
+                            # Try alternative price selectors
+                            price_element = soup3.find(class_='price-box price-final_price')
+                            if price_element:
+                                price_span = price_element.find(class_='price')
+                                if price_span:
+                                    price = price_span.text.replace('$', '').replace(',', '').strip()
+                                else:
+                                    price = "N/A"
+                            else:
+                                price = "N/A"
                     except:
                         price = "N/A"
-                        print(f"Could not find price for {product_url}")
                     
                     # Extract image
                     try:
                         image_container = soup3.find(class_='gallery__item')
-                        image = image_container.find('img')['src']
+                        if image_container:
+                            image_tag = image_container.find('img')
+                            if image_tag and 'src' in image_tag.attrs:
+                                image = image_tag['src']
+                            else:
+                                image = "N/A"
+                        else:
+                            # Try alternative image selectors
+                            image_tag = soup3.find('img', class_='product-image-photo')
+                            if image_tag and 'src' in image_tag.attrs:
+                                image = image_tag['src']
+                            else:
+                                image = "N/A"
                     except:
                         image = "N/A"
-                        print(f"Could not find image for {product_url}")
                     
                     # Extract description
                     try:
-                        description = soup3.find(class_='data item content').text
+                        description_container = soup3.find(class_='data item content')
+                        if description_container:
+                            description = description_container.text.strip()
+                        else:
+                            # Try alternative description selectors
+                            description_container = soup3.find(class_='product attribute description')
+                            if description_container:
+                                description = description_container.text.strip()
+                            else:
+                                description = "No description available."
                     except:
                         description = "No description available."
-                        print(f"Could not find description for {product_url}")
                     
                     # Check stock availability
                     try:
-                        stock = soup3.find(class_='stock available').text
-                        stock_avaliable = 'y'
+                        stock_element = soup3.find(class_='stock available')
+                        if stock_element:
+                            stock_avaliable = 'y'
+                        else:
+                            stock_avaliable = 'n'
                     except:
                         stock_avaliable = 'n'
                     
@@ -338,57 +376,16 @@ try:
                     
                     # Add a pause to be gentle with the server
                     time.sleep(3)
-                
+                    
                 except Exception as product_error:
                     print(f"Error processing product {item_number}: {str(product_error)}")
                     print(traceback.format_exc())
                     # Continue with next product even if this one fails
-        
-        except Exception as brand_error:
-            print(f"Error processing brand {brand}: {str(brand_error)}")
-            print(traceback.format_exc())
-                # End of product processing
             
-        # After processing all products on this page, check if there's a next page
-        try:
-            # Find the next page link and navigate to it
-            next_page_link = soup.find('a', class_='action next')
-            if next_page_link and 'href' in next_page_link.attrs:
-                next_page_url = next_page_link['href']
-                print(f"Moving to next page: {next_page_url}")
-                
-                # Add retry logic for next page access
-                max_retries = 3
-                for retry in range(max_retries):
-                    try:
-                        r = driver.get(next_page_url)
-                        break
-                    except Exception as e:
-                        if retry == max_retries - 1:
-                            raise
-                        print(f"Retry {retry+1}/{max_retries} for page {page_num+1}: {str(e)}")
-                        time.sleep(5)
-                
-                # Wait for page to load
-                time.sleep(5)
-                html = driver.page_source
-                soup = BeautifulSoup(html, features="lxml")
-                
-                # Find products on the new page
-                products = soup.find_all(class_='item product product-item')
-                if len(products) == 0:
-                    products = soup.find_all(class_='product-item-info')
-                if len(products) == 0:
-                    products = soup.find_all('li', class_='product')
-                
-                page_num += 1
-            else:
-                print("No next page found, ending pagination")
-                break
         except Exception as page_error:
-            print(f"Error moving to next page: {str(page_error)}")
+            print(f"Error processing page {page_num}: {str(page_error)}")
             print(traceback.format_exc())
-            break
+            # Continue with next page even if this one fails
     
     # Final save
     wb.save(file_path)
