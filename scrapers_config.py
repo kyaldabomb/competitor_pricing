@@ -7,6 +7,12 @@ SCRAPERS = {
         "description": "Belfield Music Store (Daily)",
         "type": "daily"
     },
+    "better_monthly": {
+    "file_name": "Better.xlsx",
+    "script_name": "Better_Monthly_Modified.py", 
+    "description": "Better Music Store (Monthly)",
+    "type": "monthly"
+},
     "better_daily": {
     "file_name": "Better.xlsx",
     "script_name": "Better_Daily_Modified.py", 
