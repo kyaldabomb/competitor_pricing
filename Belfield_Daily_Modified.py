@@ -6,6 +6,47 @@ import os, time
 from pathlib import Path
 from datetime import datetime, timedelta
 import traceback
+import ftplib
+
+
+def upload_to_ftp(file_path, file_name):
+    print(f"\n==== Uploading {file_name} to FTP ====")
+    try:
+        # Get FTP password from environment
+        ftp_password = os.environ.get('FTP_PASSWORD')
+        if not ftp_password:
+            print("FTP_PASSWORD not found in environment variables")
+            return False
+            
+        # Connect and upload
+        session = ftplib.FTP('ftp.drivehq.com', 'kyaldabomb', ftp_password)
+        
+        # Check if directory exists
+        if 'competitor_pricing' not in session.nlst():
+            print("competitor_pricing directory not found, creating it...")
+            session.mkd('competitor_pricing')
+        
+        # Change to the directory
+        session.cwd('competitor_pricing')
+        
+        # Upload the file
+        with open(file_path, 'rb') as file:
+            session.storbinary(f'STOR {file_name}', file)
+            
+        # Create timestamp file for verification
+        with open('upload_timestamp.txt', 'w') as f:
+            f.write(f"Upload of {file_name} completed at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            
+        with open('upload_timestamp.txt', 'rb') as file:
+            session.storbinary('STOR upload_timestamp.txt', file)
+            
+        session.quit()
+        print(f"File {file_name} uploaded to FTP successfully")
+        return True
+    except Exception as e:
+        print(f"Error uploading to FTP: {str(e)}")
+        print(traceback.format_exc())
+        return False
 
 # Import the standardized email notification function
 try:
@@ -184,12 +225,14 @@ try:
             print(f'Saving Sheet... Please wait....')
             try:
                 wb.save(file_path)
+                upload_to_ftp(file_path, file_name)
             except Exception as e:
                 print(f"Error occurred while saving the Excel file: {str(e)}")
     
     try:
         # Final save
         wb.save(file_path)
+        upload_to_ftp(file_path, file_name)
         print(f"Scraping completed successfully. Added {items_scrapped} new items.")
     
         # Import the FTP helper and upload immediately
@@ -217,6 +260,7 @@ except Exception as e:
     
     try:
         wb.save(file_path)
+        upload_to_ftp(file_path, file_name)
         print("Saved progress before error")
     except:
         print("Could not save progress after error")
