@@ -7,6 +7,12 @@ SCRAPERS = {
         "description": "Belfield Music Store (Daily)",
         "type": "daily"
     },
+    "better_daily": {
+    "file_name": "Better.xlsx",
+    "script_name": "Better_Daily_Modified.py", 
+    "description": "Better Music Store (Daily)",
+    "type": "daily"
+},
     "sky_music_daily": {
         "file_name": "Sky_Music.xlsx",
         "script_name": "Sky_Music_Daily_Modified.py", 
