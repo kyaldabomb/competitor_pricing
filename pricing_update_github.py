@@ -2838,7 +2838,7 @@ def Orange(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7) * 0.75
 
         if 'uk' in title.lower() and 'pedal' not in title.lower():
-            cost = (RRP * 0.7) * 0.9
+            cost = (RRP * 0.7)
         else:
             cost = (RRP * 0.7) * 0.85
 
