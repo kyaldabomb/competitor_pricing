@@ -1,4 +1,7 @@
-import openpyxl
+# Skip if already in the spreadsheet (check after fixing URL)
+                    if product_url in url_list:
+                        print(f'Item {str(item_number)} already in sheet, skipping')
+                        continueimport openpyxl
 import requests
 from bs4 import BeautifulSoup
 import re, math
@@ -113,12 +116,17 @@ try:
     base_url = 'https://www.bettermusic.com.au'
     
     # Initialize WebDriver using webdriver-manager
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
-    
-    # Print Chrome and ChromeDriver version for debugging
-    print(f"Chrome version: {driver.capabilities['browserVersion']}")
-    print(f"ChromeDriver version: {driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]}")
+    try:
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=options)
+        
+        # Print Chrome and ChromeDriver version for debugging
+        print(f"Chrome version: {driver.capabilities['browserVersion']}")
+        print(f"ChromeDriver version: {driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]}")
+    except Exception as driver_error:
+        print(f"Error initializing Chrome driver: {str(driver_error)}")
+        print(traceback.format_exc())
+        raise
     
     stealth(driver,
             languages=["en-US", "en"],
@@ -146,35 +154,55 @@ try:
     
     print(f"Found {len(url_list)} existing URLs in the spreadsheet")
     
-    # Go directly to product listing pages since that's more reliable than the brands page
+    # Try a simpler approach directly using the direct URLs 
     item_number = 0
     items_scrapped = 0
     
-    # Process products from search listings (with pagination)
-    max_pages = 25  # Limit to 25 pages for testing
+    # List of specific category pages to try
+    category_urls = [
+        "https://www.bettermusic.com.au/guitars",
+        "https://www.bettermusic.com.au/guitar-amps",
+        "https://www.bettermusic.com.au/bass",
+        "https://www.bettermusic.com.au/keyboards",
+        "https://www.bettermusic.com.au/drums",
+        "https://www.bettermusic.com.au/recording",
+        "https://www.bettermusic.com.au/pa-live-sound",
+        "https://www.bettermusic.com.au/accessories"
+    ]
     
-    for page_num in range(1, max_pages + 1):
-        # Construct the URL for the current page
-        search_url = f"{base_url}/catalogsearch/result/?p={page_num}&q=&product_list_limit=36"
-        print(f"\nProcessing search page {page_num}: {search_url}")
+    # Process each category
+    for category_url in category_urls:
+        print(f"\nProcessing category: {category_url}")
         
-        try:
-            # Add retry logic for page access
-            max_retries = 3
-            for retry in range(max_retries):
-                try:
-                    driver.get(search_url)
-                    break
-                except Exception as e:
-                    if retry == max_retries - 1:
-                        raise
-                    print(f"Retry {retry+1}/{max_retries} for search page {page_num}: {str(e)}")
-                    time.sleep(5)
+        page_num = 1
+        max_pages_per_category = 5  # Limit pages per category
+        
+        while page_num <= max_pages_per_category:
+            # Construct page URL (add page parameter if not the first page)
+            if page_num == 1:
+                current_url = category_url
+            else:
+                current_url = f"{category_url}?p={page_num}"
+                
+            print(f"Processing page {page_num}: {current_url}")
             
-            # Wait for page to load
-            time.sleep(5)
-            html = driver.page_source
-            soup2 = BeautifulSoup(html, features="lxml")
+            try:
+                # Add retry logic for page access
+                max_retries = 3
+                for retry in range(max_retries):
+                    try:
+                        driver.get(current_url)
+                        break
+                    except Exception as e:
+                        if retry == max_retries - 1:
+                            raise
+                        print(f"Retry {retry+1}/{max_retries} for page {page_num}: {str(e)}")
+                        time.sleep(5)
+                
+                # Wait for page to load
+                time.sleep(5)
+                html = driver.page_source
+                soup2 = BeautifulSoup(html, features="lxml")
             
             # Find all products on the page
             products = soup2.find_all(class_='item product product-item')
@@ -203,11 +231,15 @@ try:
                         
                     product_url = product_link['href']
                     
-                    # Skip if already in the spreadsheet
-                    if product_url in url_list:
-                        print(f'Item {str(item_number)} already in sheet, skipping')
-                        continue
-                        
+                    # Fix URL format (handle protocol-relative URLs)
+                    if product_url.startswith('//'):
+                        product_url = 'https:' + product_url
+                    elif not product_url.startswith('http'):
+                        if product_url.startswith('/'):
+                            product_url = base_url + product_url
+                        else:
+                            product_url = base_url + '/' + product_url
+                            
                     print(f"Processing new product: {product_url}")
                     
                     # Add retry logic for product page access
@@ -382,10 +414,19 @@ try:
                     print(traceback.format_exc())
                     # Continue with next product even if this one fails
             
-        except Exception as page_error:
-            print(f"Error processing page {page_num}: {str(page_error)}")
-            print(traceback.format_exc())
-            # Continue with next page even if this one fails
+                # Check if we have a next page
+                next_page = soup2.find('a', class_='next')
+                
+                if not next_page or 'href' not in next_page.attrs:
+                    print(f"No next page found for category {category_url}")
+                    break
+                    
+                page_num += 1
+                
+            except Exception as page_error:
+                print(f"Error processing page {page_num}: {str(page_error)}")
+                print(traceback.format_exc())
+                break
     
     # Final save
     wb.save(file_path)
