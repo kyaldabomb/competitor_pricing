@@ -3591,7 +3591,7 @@ def TCElectronic(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
-    default_discount = 0.9
+    default_discount = 1
 
     try:
 
