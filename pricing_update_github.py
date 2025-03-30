@@ -493,6 +493,38 @@ def Beale(RRP, title, sku, obsolete_stock):
         if 0 <= RRP < 10:
             return RRP + 5, cost
 
+def Dean(RRP, title, sku, obsolete_stock):
+    # High end (>200) = *0.7
+    # mid range (80-200) = *0.8
+    # low range (25-80) = *1
+    # super low range (0-25) = +5
+
+    RRP = float(RRP)
+
+    obsolete_stock = obsolete_stock
+
+    cost = (RRP * 0.7)*0.9
+
+    if obsolete_stock == 'Y':
+
+        if RRP >= 50:
+            return cost * 1.1, cost
+        if 10 <= RRP < 50:
+            return RRP, cost
+
+        if 0 <= RRP < 10:
+            return RRP + 5, cost
+
+    else:
+
+        if RRP >= 50:
+            return RRP*0.9, cost
+        if 10 <= RRP < 50:
+            return RRP, cost
+
+        if 0 <= RRP < 10:
+            return RRP + 5, cost
+
 
 def Blackstar(RRP, title, sku, obsolete_stock):
     # High end (>200) = *0.7
@@ -6632,7 +6664,7 @@ def SwiffAudio(RRP, title, sku, obsolete_stock):
 
 
 
-completed_brands = {"tanglewood": Tanglewood, "orange": Orange, 'ernie ball': ErnieBall, 'korg': Korg,
+completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "orange": Orange, 'ernie ball': ErnieBall, 'korg': Korg,
                     'arturia': Arturia, 'jbl': JBL, 'epiphone': Epiphone, 'gibson': Gibson,
                     'tc electronic': TCElectronic, 'dbx': DBX, "daddario": Daddario, "planet waves": PlanetWaves,
                     "tech 21": Tech21, "lr baggs": LRBaggs, "aguilar": Aguilar, "universal audio": UniversalAudio,
@@ -6909,6 +6941,9 @@ for y in all_files:
         if 'korg' in sheet_brand.lower():
             if 'CMI' not in sheet_sku:
                 sheet_sku = f'{sheet_sku}CMI'
+        if sheet_brand.lower() == 'dean':
+            if 'DUNIM' not in sheet_sku:
+                sheet_sku = f'{sheet_sku}DUNIM'
 
         if 'crown' in sheet_brand.lower():
             if 'metronome' in sheet_title.lower() or 'piano' in sheet_title.lower() or 'keyboard' in sheet_title.lower() or 'bench' in sheet_title.lower() or 'seat' in sheet_title.lower():
