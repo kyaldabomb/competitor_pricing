@@ -263,7 +263,7 @@ except Exception as e:
             print("Attempting to save progress before exiting due to error...")
             wb.save(file_path)
             print("Progress saved locally.")
-            # upload_to_ftp(file_path, file_name) # Optionally upload partial file
+            upload_to_ftp(file_path, file_name) # Optionally upload partial file
         except Exception as save_error:
             print(f"Could not save progress after error: {save_error}")
 
