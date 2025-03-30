@@ -47,6 +47,12 @@ SCRAPERS = {
         "description": "Belfield Music Store (Monthly)",
         "type": "monthly"
     },
+    "apw_monthly": {
+        "file_name": "APW.xlsx", # Same file as daily
+        "script_name": "APW_Monthly_Modified.py", # New script name
+        "description": "Australian Piano Warehouse (Monthly)",
+        "type": "monthly"
+    },
     "sky_music_monthly": {
         "file_name": "Sky_Music.xlsx",
         "script_name": "Sky_Music_Monthly_Modified.py", 
