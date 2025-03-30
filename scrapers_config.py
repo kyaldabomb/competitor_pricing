@@ -13,6 +13,12 @@ SCRAPERS = {
     "description": "Better Music Store (Monthly)",
     "type": "monthly"
 },
+    "apw_daily": {
+        "file_name": "APW.xlsx",
+        "script_name": "APW_Daily_Modified.py", 
+        "description": "Australian Piano Warehouse (Daily)",
+        "type": "daily"
+    },
     "better_daily": {
     "file_name": "Better.xlsx",
     "script_name": "Better_Daily_Modified.py", 
