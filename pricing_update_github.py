@@ -6754,7 +6754,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "orange": Orange, 'er
     , 'ida maria grassi': National, 'w.e. hill & sons': National, 'dycem': National, 'kirlin': National,
                     'kna': National, 'kna pickups': National,
                     'luna': National, 'ogb': National, 'promuco': National, 'pratley': Kink, 'rotosound': Rotosound,
-                    'ampeg': National, 'boveda': Boveda, 'kink': Kink, 'northstar': Kink, 'levinson': Kink, 'swiff audio': SwiffAudio}
+                    'ampeg': National, 'boveda': Boveda, 'kink': Kink, 'northstar': Kink, 'levinson': Kink, 'swiff audio': SwiffAudio, 'ams': Valencia, 'angel': Valencia, 'applecreek': Valencia, 'australasian': Valencia}
 
 print('Loading Inventory worksheet...')
 
