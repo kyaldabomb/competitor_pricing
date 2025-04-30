@@ -6754,7 +6754,41 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "orange": Orange, 'er
     , 'ida maria grassi': National, 'w.e. hill & sons': National, 'dycem': National, 'kirlin': National,
                     'kna': National, 'kna pickups': National,
                     'luna': National, 'ogb': National, 'promuco': National, 'pratley': Kink, 'rotosound': Rotosound,
-                    'ampeg': National, 'boveda': Boveda, 'kink': Kink, 'northstar': Kink, 'levinson': Kink, 'swiff audio': SwiffAudio, 'ams': Valencia, 'angel': Valencia, 'applecreek': Valencia, 'australasian': Valencia}
+                    'ampeg': National, 'boveda': Boveda, 'kink': Kink, 'northstar': Kink, 'levinson': Kink, 'swiff audio': SwiffAudio, 'ams': Valencia, 'angel': Valencia, 'applecreek': Valencia, 'australasian': Valencia,
+                    # Added from AMS_Brand_LIST.csv
+                    '1st note': Valencia, 'amsalfred': Valencia, 'amshal leonard': Valencia, 'amsleem': Valencia,
+                    'amspromark': Valencia, 'amsrotosound': Valencia, 'amsschott': Valencia, 'amx': Valencia,
+                    'arcadia': Valencia, 'atomic': Valencia, 'bandstand': Valencia, 'bandstandlp': Valencia,
+                    'bausch': Valencia, 'beadbrain': Valencia, 'bill russell': Valencia, 'brixton': Valencia,
+                    'bryden': Valencia, 'clip it': Valencia, 'cpk': Valencia, 'ctb': Valencia, 'ctk': Valencia,
+                    'cub': Valencia, 'custom eagle': Valencia, 'dadi': Valencia, 'dan electro': Valencia,
+                    'danelectro': Valencia, 'danoelectric': Valencia, 'deluke': Valencia, 'denio': Valencia,
+                    'dr parts': Valencia, 'dr partsalfred': Valencia, 'dr. parts': Valencia, 'dresden': Valencia,
+                    'd-tronic': Valencia, 'eagle': Valencia, 'eaglealfredalfred': Valencia, 'energizer': Valencia,
+                    'esperanto': Valencia, 'essexkjos': Valencia, 'eveready': Valencia, 'evh': Valencia,
+                    'extreme': Valencia, 'first note': Valencia, 'fontaine': Valencia, 'foundry': Valencia,
+                    'galli': Valencia, 'glockenspiel': Valencia, 'graph tech': Valencia, 'greg bennett': Valencia,
+                    'groovetech': Valencia, 'guarneri': Valencia, 'handy': Valencia, 'hearos': Valencia,
+                    'helin': Valencia, 'hemingway': Valencia, 'heos': Valencia, 'herco': Valencia,
+                    'herdim': Valencia, 'hogalo': Valencia, 'hot line': Valencia, 'iec': Valencia,
+                    'jim dunlopthomastik': Valencia, 'kwik fret': Valencia, 'kwikfret': Valencia, 'laney\\t': Valencia,
+                    'leemleem': Valencia, 'linnd lunna': Valencia, 'lm': Valencia, 'lm products': Valencia,
+                    'lmp': Valencia, 'lup-x': Valencia, 'mahaloroland': Valencia, 'major': Valencia,
+                    'mannys': Valencia, 'mano percussionmaton': Valencia, 'mp': Valencia, 'mrx': Valencia,
+                    'nichols': Valencia, 'opticare': Valencia, 'ozark': Valencia, 'p&h': Valencia,
+                    'paganini': Valencia, 'partsland': Valencia, 'pearl': Valencia, 'platinum': Valencia,
+                    'playmaster': Valencia, 'polys': Valencia, 'razz': Valencia, 'redding': Valencia,
+                    'rev willy': Valencia, 'rhythm tech': Valencia, 'rocklines': Valencia, 'roswell': Valencia,
+                    'samick guitar w': Valencia, 'scottys': Valencia, 'sg style': Valencia, 'sgw': Valencia,
+                    'shadow': Valencia, 'slider': Valencia, 'snoopy': Valencia, 'soodlums': Valencia,
+                    'stenor': Valencia, 'stentor': Valencia, 'sterisol': Valencia, 'stu box': Valencia,
+                    'stuart box': Valencia, 'studio plus': Valencia, 'sx lapsteel': Valencia, 'taktell': Valencia,
+                    'teka': Valencia, 'tonica': Valencia, 'tortex': Valencia, 'total': Valencia,
+                    'total percussio': Valencia, 'total percussion': Valencia, 'tourte': Valencia, 'trophy': Valencia,
+                    'v case': Valencia, 'v parts': Valencia, 'valenciaalfred': Valencia, 'versa': Valencia,
+                    'vitoos': Valencia, 'v-parts': Valencia, 'waltons': Valencia, 'wsc': Valencia, 'wylde': Valencia,
+                    'x guard': Valencia, 'xrt': Valencia, 'zakk wylde': Valencia
+}
 
 print('Loading Inventory worksheet...')
 
