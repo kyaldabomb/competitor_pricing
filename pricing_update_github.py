@@ -7478,13 +7478,13 @@ for x in range(1, sheet.max_row + 1):
                     #     final_price = RRP
                     #     price_a = float(RRP)-0.05
 
-                    if RRP < 5 and final_price_a < RRP:
-                        final_price_a = RRP
-                        price_a = RRP
+                    if RRP < 10 and final_price_a < RRP:
+                        final_price_a = RRP+2
+                        price_a = RRP+2
 
-                    if RRP < 5 and final_price_b < RRP:
-                        final_price_b = RRP
-                        price_b = RRP
+                    if RRP < 10 and final_price_b < RRP:
+                        final_price_b = RRP+2
+                        price_b = RRP+2
 
                     if RRP < 15 and price_a < 15 and 'mano' in brand.lower():
                         price_a = RRP + 5
