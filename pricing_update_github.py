@@ -1032,7 +1032,7 @@ def Darkglass(RRP, title, sku, obsolete_stock):
     else:
 
         if RRP >= 50:
-            return RRP, cost
+            return RRP*0.78, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
