@@ -2052,6 +2052,8 @@ def JBL(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
+    promo_success = 'n'
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -2068,6 +2070,7 @@ def JBL(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                     default_discount = 1
             break
@@ -2078,6 +2081,9 @@ def JBL(RRP, title, sku, obsolete_stock):
     except:
 
         cost = (RRP * 0.8)
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == 'Y':
 
@@ -2145,6 +2151,8 @@ def GHS(RRP, title, sku, obsolete_stock):
     default_discount = 1
     original_RRP = float(RRP)
 
+    promo_success = 'n'
+
     try:
 
         gibson_workbook = openpyxl.load_workbook(
@@ -2164,6 +2172,7 @@ def GHS(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -2175,6 +2184,9 @@ def GHS(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7) * 0.8
     except:
         cost = (RRP * 0.7) * 0.8
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == 'Y':
 
@@ -2323,6 +2335,8 @@ def Korg(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
+    promo_success = 'n'
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -2340,6 +2354,7 @@ def Korg(RRP, title, sku, obsolete_stock):
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
             cost = float(cost) * 1.1
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                     default_discount = 1
             break
@@ -2357,7 +2372,8 @@ def Korg(RRP, title, sku, obsolete_stock):
                 cost = (RRP * 0.7) * 0.65
         else:
             cost = (RRP * 0.7) * 0.85
-
+    if promo_success == 'y':
+        return RRP, cost
     if RRP >= 100:
         return RRP * default_discount, cost
     if 10 <= RRP < 100:
@@ -2378,7 +2394,7 @@ def LRBaggs(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
     original_RRP = float(RRP)
     default_discount = 0.8
-
+    promo_success = 'n'
     try:
 
         gibson_workbook = openpyxl.load_workbook(
@@ -2398,6 +2414,7 @@ def LRBaggs(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -2410,7 +2427,8 @@ def LRBaggs(RRP, title, sku, obsolete_stock):
     except:
             cost = (RRP * 0.7) * 0.8
     
-
+    if promo_success == 'y':
+        return RRP, cost
     if RRP >= 50:
         return RRP * default_discount, cost
     if 10 <= RRP < 50:
@@ -2528,6 +2546,7 @@ def Martinez(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    promo_success = 'n'
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -2546,6 +2565,7 @@ def Martinez(RRP, title, sku, obsolete_stock):
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
             cost = float(cost) * 1.1
+            promo_success = 'y'
             break
 
     try:
@@ -2553,7 +2573,8 @@ def Martinez(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7) * 0.7
-
+    if promo_success == 'y':
+        return RRP, cost
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
@@ -2651,6 +2672,8 @@ def Monterey(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
+    promo_success = 'n'
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -2668,6 +2691,7 @@ def Monterey(RRP, title, sku, obsolete_stock):
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
             cost = float(cost)
+            promo_success = 'y'
             break
 
     try:
@@ -2676,6 +2700,9 @@ def Monterey(RRP, title, sku, obsolete_stock):
 
         cost = (RRP * 0.7) * 0.75
 
+    if promo_success == 'y':
+            return RRP, cost
+    
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
@@ -2920,6 +2947,7 @@ def Orange(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
     default_discount = 0.9
+    promo_success = 'n'
 
     try:
 
@@ -2940,6 +2968,7 @@ def Orange(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -2963,7 +2992,8 @@ def Orange(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7)
         else:
             cost = (RRP * 0.7) * 0.85
-
+    if promo_success == 'y':
+        return RRP, cost
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
@@ -2999,6 +3029,7 @@ def Paytons(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     default_discount = 1
+    promo_success = 'n'
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -3016,6 +3047,7 @@ def Paytons(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                 default_discount = 1
             break
@@ -3025,6 +3057,9 @@ def Paytons(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7)*0.9
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == 'Y':
 
@@ -3530,6 +3565,7 @@ def SeymourDuncan(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     default_discount = 0.85
+    promo_success = 'n'
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -3547,6 +3583,7 @@ def SeymourDuncan(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                 default_discount = 1
             break
@@ -3556,7 +3593,8 @@ def SeymourDuncan(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7)
-
+    if promo_success == 'y':
+        return RRP, cost
     if obsolete_stock == "Y":
 
         if RRP >= 50:
@@ -3587,6 +3625,7 @@ def Tanglewood(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
     original_RRP = float(RRP)
+    promo_success = 'n'
 
     try:
 
@@ -3608,6 +3647,7 @@ def Tanglewood(RRP, title, sku, obsolete_stock):
                 cost = str(gibson_sheet['F' + str(items)].value)
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -3619,7 +3659,8 @@ def Tanglewood(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7) * 0.8
     except Exception as e:
         print(e)
-
+    if promo_success == 'y':
+        return RRP, cost
     if RRP >= 200:
         return RRP * 0.8, cost
     if 80 <= float(RRP) < 200:
@@ -3646,7 +3687,7 @@ def Tascam(RRP, title, sku, obsolete_stock):
     default_discount = 0.8
 
     sku = sku
-
+    promo_success = 'n'
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -3663,6 +3704,7 @@ def Tascam(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                 default_discount = 1
             break
@@ -3672,7 +3714,8 @@ def Tascam(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7) * 0.85
-
+    if promo_success == 'y':
+        return RRP, cost
     if obsolete_stock == "Y":
 
         if RRP >= 50:
@@ -3714,6 +3757,7 @@ def TCElectronic(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     default_discount = 1
+    promo_success = 'n'
 
     try:
 
@@ -3734,6 +3778,7 @@ def TCElectronic(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -3745,6 +3790,9 @@ def TCElectronic(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.75)
     except:
         cost = (RRP * 0.75)
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == "Y":
 
@@ -3781,6 +3829,8 @@ def TCHelicon(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.9
 
+    promo_success = 'n'
+
     try:
 
         gibson_workbook = openpyxl.load_workbook(
@@ -3800,6 +3850,7 @@ def TCHelicon(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -3811,6 +3862,9 @@ def TCHelicon(RRP, title, sku, obsolete_stock):
             cost = cost = (RRP * 0.75)
     except:
         cost = (RRP * 0.75)
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == "Y":
 
@@ -3868,6 +3922,7 @@ def Tech21(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     default_discount = 0.85
+    promo_success = 'n'
 
     try:
 
@@ -3888,6 +3943,7 @@ def Tech21(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -3901,6 +3957,9 @@ def Tech21(RRP, title, sku, obsolete_stock):
         cost = (RRP * 0.7) * 0.9
 
     cost = (RRP * 0.7) * 0.9
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if RRP >= 50:
         return RRP * 0.8, cost
@@ -3927,6 +3986,7 @@ def UniversalAudio(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     default_discount = 0.8
+    promo_success = 'n'
 
     try:
 
@@ -3946,6 +4006,7 @@ def UniversalAudio(RRP, title, sku, obsolete_stock):
                 cost = str(gibson_sheet['F' + str(items)].value)
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -3959,6 +4020,9 @@ def UniversalAudio(RRP, title, sku, obsolete_stock):
     except Exception as e:
 
         print(e)
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == "Y":
 
@@ -4094,6 +4158,8 @@ def SourceAudio(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.8
 
+    promo_success = 'n'
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -4110,6 +4176,7 @@ def SourceAudio(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                 default_discount = 1
             break
@@ -4119,6 +4186,9 @@ def SourceAudio(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7) * 0.85
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == "Y":
 
@@ -4152,6 +4222,7 @@ def Spector(RRP, title, sku, obsolete_stock):
     original_RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    promo_success = 'n'
 
     default_discount = 0.8
     gibson_workbook = openpyxl.load_workbook(
@@ -4170,6 +4241,7 @@ def Spector(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                 default_discount = 1
             break
@@ -4179,6 +4251,9 @@ def Spector(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7) * 0.85
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == "Y":
 
