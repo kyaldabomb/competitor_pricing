@@ -78,7 +78,7 @@ def Alesis(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     default_discount = 0.9
-
+    promo_success = 'n'
     try:
 
         gibson_workbook = openpyxl.load_workbook(
@@ -98,6 +98,7 @@ def Alesis(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -109,6 +110,10 @@ def Alesis(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.75)
     except:
         cost = (RRP * 0.75)
+
+    if promo_success == 'y':
+        return RRP, cost
+    
 
     if obsolete_stock == "Y":
 
@@ -179,6 +184,8 @@ def Ashton(RRP, title, sku, obsolete_stock):
 
     original_RRP = float(RRP)
     default_discount = 0.85
+    promo_success = 'y'
+
 
     try:
 
@@ -199,6 +206,8 @@ def Ashton(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'n'
+
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -210,6 +219,9 @@ def Ashton(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7) * 0.85
     except:
         cost = (RRP * 0.7) * 0.85
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == 'Y':
 
@@ -243,6 +255,7 @@ def Armour(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
     original_RRP = float(RRP)
     default_discount = 1
+    promo_success = 'n'
 
     try:
 
@@ -263,6 +276,7 @@ def Armour(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -274,6 +288,9 @@ def Armour(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7) * 0.8
     except:
         cost = (RRP * 0.7) * 0.8
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == 'Y':
 
@@ -307,6 +324,8 @@ def AKG(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
     original_RRP = float(RRP)
     default_discount = 0.85
+    promo_success = 'n'
+
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -324,6 +343,7 @@ def AKG(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                     default_discount = 1
             break
@@ -333,6 +353,8 @@ def AKG(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7) * 0.85
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == 'Y':
 
@@ -366,6 +388,7 @@ def Arturia(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
     original_RRP = float(RRP)
     default_discount = 0.85
+    promo_success = 'n'
 
     try:
 
@@ -386,6 +409,7 @@ def Arturia(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'n'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -398,6 +422,9 @@ def Arturia(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7) * 0.95
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if RRP >= 100:
         return RRP * default_discount, cost
@@ -6396,6 +6423,12 @@ def National(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7) * 0.9
+
+    try:
+        gibson_workbook
+        return RRP, cost
+    except:
+        pass
 
     if obsolete_stock == 'Y':
 
