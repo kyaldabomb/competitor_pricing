@@ -446,6 +446,7 @@ def Aguilar(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
     original_RRP = float(RRP)
     default_discount = 0.85
+    promo_success = 'n'
 
     try:
 
@@ -466,6 +467,7 @@ def Aguilar(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -478,6 +480,8 @@ def Aguilar(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7) * 0.85
+    if promo_success == 'y':
+        return RRP, cost
 
     if RRP >= 100:
         return RRP * default_discount, cost
@@ -568,6 +572,8 @@ def Blackstar(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.8
 
+    promo_success = 'n'
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -584,6 +590,7 @@ def Blackstar(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                 default_discount = 1
             break
@@ -598,6 +605,9 @@ def Blackstar(RRP, title, sku, obsolete_stock):
         else:
 
             cost = (RRP * 0.7) * 0.85
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == "Y":
 
@@ -651,6 +661,8 @@ def Casio(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
     original_RRP = float(RRP)
 
+    promo_success = 'n'
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -667,6 +679,7 @@ def Casio(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                     default_discount = 1
             break
@@ -676,6 +689,9 @@ def Casio(RRP, title, sku, obsolete_stock):
 
     except:
         cost = RRP * 0.7
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == 'Y':
 
@@ -731,7 +747,7 @@ def Behringer(RRP, title, sku, obsolete_stock):
     sku = sku
     original_RRP = float(RRP)
     default_discount = 1
-
+    promo_success = 'n'
     try:
 
         gibson_workbook = openpyxl.load_workbook(
@@ -751,6 +767,7 @@ def Behringer(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 return RRP, cost
@@ -762,6 +779,7 @@ def Behringer(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7)
     except:
         cost = cost = RRP * 0.7
+    
 
     behringer_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Behringer.xlsx")
@@ -782,7 +800,8 @@ def Behringer(RRP, title, sku, obsolete_stock):
 
     except:
         cost = RRP * 0.7
-
+    if promo_success == 'y':
+        return RRP, cost
     if RRP >= 35:
         return RRP, cost
 
@@ -1173,6 +1192,7 @@ def ESP(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     default_discount = 0.8
+    promo_success = 'n'
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -1189,6 +1209,7 @@ def ESP(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                 default_discount = 1
             break
@@ -1203,7 +1224,8 @@ def ESP(RRP, title, sku, obsolete_stock):
 
         else:
             cost = (RRP * 0.7) * 0.85
-
+    if promo_success == 'y':
+        return RRP, cost
     if obsolete_stock == "Y":
         if RRP >= 100:
             return cost * 1.1, cost
@@ -1283,6 +1305,7 @@ def DBX(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     default_discount = 0.85
+    promo_success = 'n'
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -1300,6 +1323,7 @@ def DBX(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['F' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                 default_discount = 1
             break
@@ -1309,7 +1333,8 @@ def DBX(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7) * 0.85
-
+    if promo_success == 'y':
+        return RRP, cost
     if RRP >= 100:
         return RRP * default_discount, cost
     if 10 <= RRP < 100:
@@ -1333,6 +1358,7 @@ def Digitech(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     default_discount = 0.85
+    promo_success = 'n'
 
     try:
 
@@ -1353,6 +1379,7 @@ def Digitech(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -1365,7 +1392,8 @@ def Digitech(RRP, title, sku, obsolete_stock):
 
     except:
         cost = (RRP * 0.7) * 0.85
-
+    if promo_success == 'y':
+        return RRP, cost
     if obsolete_stock == "Y":
         if RRP >= 100:
             return cost * 1.1, cost
@@ -1416,6 +1444,7 @@ def ErnieBall(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
+    promo_success = 'n'
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Ernie_Ball.xlsx")
@@ -1433,6 +1462,7 @@ def ErnieBall(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['D' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             break
 
     try:
@@ -1463,6 +1493,9 @@ def ErnieBall(RRP, title, sku, obsolete_stock):
         else:
 
             cost = (RRP * 0.7) * 0.6
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == 'Y':
 
@@ -1500,6 +1533,8 @@ def MusicMan(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.8
 
+    promo_success = 'n'
+
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Ernie_Ball.xlsx")
     gibson_sheet = gibson_workbook['Sheet1']
@@ -1516,6 +1551,7 @@ def MusicMan(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['D' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                 default_discount = 1
             break
@@ -1527,7 +1563,9 @@ def MusicMan(RRP, title, sku, obsolete_stock):
         cost = (RRP * 0.7)
 
     # cost = (RRP * 0.7)
-
+    if promo_success == 'y':
+        return RRP, cost
+        
     if RRP >= 100:
         return RRP * default_discount, cost
     if 10 <= RRP < 100:
@@ -1551,6 +1589,7 @@ def Sterling(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
 
     default_discount = 0.85
+    promo_success = 'n'
 
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Ernie_Ball.xlsx")
@@ -1568,6 +1607,7 @@ def Sterling(RRP, title, sku, obsolete_stock):
             cost = str(gibson_sheet['D' + str(items)].value)
             cost = cost.replace('$', '')
             cost = cost.replace(',', '')
+            promo_success = 'y'
             if original_RRP * default_discount > float(RRP):
                 default_discount = 1
             break
@@ -1579,7 +1619,8 @@ def Sterling(RRP, title, sku, obsolete_stock):
         cost = (RRP * 0.7) * 0.85
 
     # cost = (RRP * 0.7)*0.85
-
+    if promo_success == 'y':
+        return RRP, cost
     if RRP >= 50:
         return RRP * default_discount, cost
     if 10 <= RRP < 50:
@@ -1605,7 +1646,7 @@ def Epiphone(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.8
     #######################################
-
+    promo_success = 'n'
     try:
 
         gibson_workbook = openpyxl.load_workbook(
@@ -1625,6 +1666,7 @@ def Epiphone(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -1636,6 +1678,9 @@ def Epiphone(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7) * 0.9
     except:
         cost = (RRP * 0.7) * 0.9
+
+    if promo_success == 'y':
+        return RRP, cost
 
     #########################################################
     if obsolete_stock == "Y":
@@ -1703,6 +1748,8 @@ def Gator(RRP, title, sku, obsolete_stock):
     obsolete_stock = obsolete_stock
     original_RRP = float(RRP)
 
+    promo_success = 'n'
+
     try:
 
         gibson_workbook = openpyxl.load_workbook(
@@ -1722,6 +1769,7 @@ def Gator(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -1733,6 +1781,9 @@ def Gator(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7) * 0.85
     except:
         cost = (RRP * 0.7) * 0.85
+    if promo_success == 'y':
+        return RRP, cost
+
 
     if obsolete_stock == 'Y':
 
@@ -1770,6 +1821,8 @@ def Gibson(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.85
 
+    promo_success = 'n'
+
     try:
 
         gibson_workbook = openpyxl.load_workbook(
@@ -1789,6 +1842,7 @@ def Gibson(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
                 break
@@ -1800,6 +1854,9 @@ def Gibson(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7) * 0.9
     except:
         cost = (RRP * 0.7) * 0.9
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == "Y":
         if RRP >= 100:
@@ -1890,6 +1947,8 @@ def Ibanez(RRP, title, sku, obsolete_stock):
 
     default_discount = 0.85
 
+    promo_success = 'n'
+
     try:
 
         gibson_workbook = openpyxl.load_workbook(
@@ -1909,6 +1968,7 @@ def Ibanez(RRP, title, sku, obsolete_stock):
                 cost = cost.replace('$', '')
                 cost = cost.replace(',', '')
                 cost = float(cost)
+                promo_success = 'y'
                 if original_RRP * default_discount > float(RRP):
                     default_discount = 1
 
@@ -1921,6 +1981,9 @@ def Ibanez(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7) * 0.8
     except:
         cost = (RRP * 0.7) * 0.8
+
+    if promo_success == 'y':
+        return RRP, cost
 
     if obsolete_stock == "Y":
         if RRP >= 100:
