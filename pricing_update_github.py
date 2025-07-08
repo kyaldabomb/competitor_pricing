@@ -6896,7 +6896,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "orange": Orange, 'er
                     "gruv gear": GruvGear, "kyser": Kyser,
                     "akai": Akai, 'marshall': Marshall, 'nord': Nord, 'hercules': Hercules, 'celestion': Celestion
     , 'boss': Boss, 'ashton': Ashton, 'headrush': Headrush, 'ibanez': Ibanez, 'cordoba': Cordoba, 'evans': Evans
-    , 'promark': Promark, 'rico': Rico, 'gator cases': Gator, 'paytons': Paytons, 'admira': Paytons, 'hills': Paytons, 'tascam': Tascam,
+    , 'promark': Promark, 'rico': Rico, 'gator cases': Gator, 'paytons': Paytons, 'admira': Paytons, 'hills': Paytons,'beam accessories': Paytons,'carl martin': Paytons,'ecostrap': Paytons,'limousine': Paytons, 'tascam': Tascam,
                     'valencia': Valencia, 'xtreme': Xtreme, 'cnb': CNB, 'v-case': VCase, 'mahalo': Mahalo,
                     '1880 ukulele co': Mahalo, 'dxp': DXP
     , 'dunlop': Dunlop, 'jim dunlop': Dunlop, 'xtr': XTR, 'mano percussion': Mano, 'mano': Mano, 'bluegrass': Bluegrass,
