@@ -7095,6 +7095,7 @@ final_worksheet['J1'] = 'Margin'
 final_worksheet['K1'] = 'Postage Type'
 final_worksheet['L1'] = 'Price (E)'  ## 12% Cofund eBay price
 final_worksheet['M1'] = 'Obsolete'
+final_worksheet['N1'] = 'Category'
 
 postage_type_dictionary = []
 
@@ -7692,7 +7693,14 @@ for x in range(1, sheet.max_row + 1):
                         price_b = math.ceil(float(final_price_b)) - 1.05
 
                     if obsolete_stock == 'Y':
-                        price_b = price_a * 1.05
+                        if RRP > 50:
+                            price_a = cost * 1.1
+                            price_b = cost * 1.1
+                            final_price_a = cost * 1.1
+                            final_price_b = cost * 1.1
+                        else:
+                            # Keep existing logic for items with RRP <= 50
+                            price_b = price_a * 1.05
 
                     ##### Price exceptions #####
 
@@ -8019,9 +8027,15 @@ for x in range(1, sheet.max_row + 1):
                     price_c = math.ceil(float(final_price_b) * 1.05) - 0.05
                     price_e = math.ceil(float(final_price_b) * 1.12) - 0.05
 
+                    # Determine category for clearance items
+                    if obsolete_stock == 'Y' and RRP > 50:
+                        category = 'Clearance Sale'
+                    else:
+                        category = ''
+
                     final_worksheet.append(
                         [SKU, brand, title, RRP, price_a, price_b, price_c, price_d, cost, str(margin), postage,
-                         price_e, obsolete_stock])
+                         price_e, obsolete_stock, category])
 
                     print(
                         f'\n{SKU} repriced:\nRRP: {RRP}\nPrice A/C: {price_a}\nPrice B: {price_b}\nPrice D: {price_d}\n')
