@@ -6886,7 +6886,7 @@ def SwiffAudio(RRP, title, sku, obsolete_stock):
 
 
 completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "orange": Orange, 'ernie ball': ErnieBall, 'korg': Korg,
-                    'arturia': Arturia, 'jbl': JBL, 'epiphone': Epiphone, 'gibson': Gibson,
+                    'arturia': Arturia, 'strandberg': Arturia, 'jbl': JBL, 'epiphone': Epiphone, 'gibson': Gibson,
                     'tc electronic': TCElectronic, 'dbx': DBX, "daddario": Daddario, "planet waves": PlanetWaves,
                     "tech 21": Tech21, "lr baggs": LRBaggs, "aguilar": Aguilar, "universal audio": UniversalAudio,
                     "ua": UniversalAudio, "uaguitar": UniversalAudio
