@@ -7393,6 +7393,10 @@ for x in range(1, sheet.max_row + 1):
                     min_margin_a = 1.07
                     min_margin_b = 1.15
 
+                    if 'ibanez' in brand.lower():
+                        min_margin_a = 1.15
+                        min_margin_b = 1.15
+
                     if RRP < 30:
                         min_sell = float(cost) * 1.15
                         min_margin_a = 1.15
