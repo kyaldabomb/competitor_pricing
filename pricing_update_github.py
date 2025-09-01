@@ -1945,7 +1945,7 @@ def Ibanez(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
-    default_discount = 0.85
+    default_discount = 0.80
 
     promo_success = 'n'
 
