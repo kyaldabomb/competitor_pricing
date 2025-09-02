@@ -4944,7 +4944,7 @@ def Alto(RRP, title, sku, obsolete_stock):
     cost = (RRP * 0.7) * 0.8
 
     if RRP >= 50:
-        return RRP * 0.8, cost
+        return RRP * 0.85, cost
     if 10 <= RRP < 50:
         return RRP, cost
 
