@@ -642,7 +642,7 @@ def Boss(RRP, title, sku, obsolete_stock):
     cost = RRP * 0.75
 
     if RRP >= 150:
-        return RRP*0.82, cost
+        return RRP*0.85, cost
     if 25 <= RRP < 150:
         return RRP, cost
 
@@ -6895,7 +6895,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "orange": Orange, 'er
                     "tc helicon": TCHelicon, "seymour duncan": SeymourDuncan, "seymour": SeymourDuncan,
                     "gruv gear": GruvGear, "kyser": Kyser,
                     "akai": Akai, 'marshall': Marshall, 'nord': Nord, 'hercules': Hercules, 'celestion': Celestion
-    , 'boss': Boss, 'ashton': Ashton, 'headrush': Headrush, 'ibanez': Ibanez, 'cordoba': Cordoba, 'evans': Evans
+    , 'boss': Boss, 'general products': Boss, 'ashton': Ashton, 'headrush': Headrush, 'ibanez': Ibanez, 'cordoba': Cordoba, 'evans': Evans
     , 'promark': Promark, 'rico': Rico, 'gator cases': Gator, 'paytons': Paytons, 'admira': Paytons, 'hills': Paytons,'beam accessories': Paytons,'carl martin': Paytons,'ecostrap': Paytons,'limousine': Paytons, 'tascam': Tascam,
                     'valencia': Valencia, 'xtreme': Xtreme, 'cnb': CNB, 'v-case': VCase, 'mahalo': Mahalo,
                     '1880 ukulele co': Mahalo, 'dxp': DXP
