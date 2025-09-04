@@ -69,13 +69,8 @@ jobs:
         timeout-minutes: 1000
         run: |
           if [ -n "${{ github.event.inputs.scraper }}" ]; then
-            # Run specific scraper
-            python "${scraper_name}_Monthly_Modified.py" ${{ github.event.inputs.scraper }}
-            exit_code=$?
-            if [ $exit_code -ne 0 ]; then
-              echo "Scraper failed with exit code $exit_code"
-              exit $exit_code
-            fi
+            # Run specific scraper using run_scrapers.py
+            python run_scrapers.py --scraper ${{ github.event.inputs.scraper }}
           else
             # Run all monthly scrapers
             python run_scrapers.py --type monthly
