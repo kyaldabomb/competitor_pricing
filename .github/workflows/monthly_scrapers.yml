@@ -25,10 +25,26 @@ jobs:
           
       - name: Install Chrome and Selenium dependencies
         run: |
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+          # Update package list
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable chromium-driver
+          
+          # Install wget if not present
+          sudo apt-get install -y wget
+          
+          # Download and install Chrome
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          
+          # Create symbolic link where Selenium expects Chrome
+          sudo ln -sf /usr/bin/google-chrome-stable /usr/bin/google-chrome
+          
+          # Verify Chrome installation
+          google-chrome --version
+          which google-chrome
+          
+          # Install ChromeDriver using webdriver-manager will handle version matching
           
       - name: Install Python dependencies
         run: |
@@ -37,7 +53,7 @@ jobs:
           pip install "lxml[html_clean]"
           pip install requests-html
           
-      # Initialize requests-html Chromium
+      # Initialize requests-html Chromium (for scrapers that use it)
       - name: Initialize requests-html Chromium
         run: |
           python -c "
