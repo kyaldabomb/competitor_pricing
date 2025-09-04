@@ -1,5 +1,4 @@
 name: Run Monthly Web Scrapers
-
 on:
   schedule:
     - cron: '0 0 1 * *'  # Run at midnight on the 1st day of each month
@@ -9,7 +8,6 @@ on:
         description: 'Monthly scraper to run (leave empty to run all)'
         required: false
         default: ''
-
 jobs:
   scrape:
     runs-on: ubuntu-latest
@@ -39,6 +37,23 @@ jobs:
           pip install "lxml[html_clean]"
           pip install requests-html
           
+      # Initialize requests-html Chromium
+      - name: Initialize requests-html Chromium
+        run: |
+          python -c "
+          from requests_html import HTMLSession
+          import sys
+          print('Initializing Chromium for requests-html...')
+          try:
+              session = HTMLSession()
+              r = session.get('https://example.com')
+              r.html.render(timeout=30)
+              print('Chromium successfully initialized')
+          except Exception as e:
+              print(f'Chromium initialization: {e}')
+              sys.exit(0)  # Don't fail the workflow
+          "
+          
       - name: Test FTP connection
         run: python test_ftp.py
           
@@ -54,8 +69,8 @@ jobs:
         timeout-minutes: 300
         run: |
           if [ -n "${{ github.event.inputs.scraper }}" ]; then
-            # Run specific scraper
-            python "${scraper_name}_Monthly_Modified.py" ${{ github.event.inputs.scraper }}
+            # Run specific scraper using the helper script
+            python run_single_scraper.py ${{ github.event.inputs.scraper }}
             exit_code=$?
             if [ $exit_code -ne 0 ]; then
               echo "Scraper failed with exit code $exit_code"
