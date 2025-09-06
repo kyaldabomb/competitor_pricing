@@ -122,7 +122,13 @@ try:
     consecutive_empty_pages = 0
     max_empty_pages = 3  # Stop after 3 consecutive pages with no new products
     
-    for page_num in range(1, 1001):  # Start from page 1, max 1000 pages
+    # Use page range from arguments
+    start_page = args.start_page
+    end_page = min(start_page + args.max_pages - 1, 1000)
+    
+    print(f"Scraping pages {start_page} to {end_page}")
+    
+    for page_num in range(start_page, end_page + 1):  # Use the specified range
         try:
             time.sleep(1)  # Be gentle with the server
             print(f'Scraping page {page_num}...')
