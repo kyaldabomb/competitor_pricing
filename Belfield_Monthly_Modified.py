@@ -18,6 +18,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from scrapers_config import SCRAPERS
 
+# Import FTP helper at the start
+try:
+    from ftp_helper import upload_to_ftp
+    FTP_AVAILABLE = True
+except ImportError:
+    FTP_AVAILABLE = False
+    print("Warning: FTP helper not available, will only save locally")
+
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Run monthly scraper for Belfield')
 parser.add_argument('scraper', nargs='?', default='belfield_monthly', 
@@ -292,14 +300,36 @@ try:
                             print(f'Failed to scrape product after {max_retries} attempts: {product_url}')
                             print(f'Error: {str(e)}')
                 
-                # Save periodically
+                # Save locally every 10 items
                 if items_scrapped > 0 and items_scrapped % 10 == 0:
-                    print(f'Saving progress... ({items_scrapped} items scraped so far)')
+                    print(f'Saving progress locally... ({items_scrapped} items scraped so far)')
                     try:
                         wb.save(file_path)
-                        print('Progress saved successfully')
+                        print('Local save successful')
                     except Exception as e:
                         print(f"Error saving Excel file: {str(e)}")
+                
+                # Upload to FTP every 500 items as backup
+                if items_scrapped > 0 and items_scrapped % 500 == 0:
+                    print(f'\n{"="*60}')
+                    print(f'=== FTP BACKUP: Uploading after {items_scrapped} items ===')
+                    print(f'{"="*60}')
+                    try:
+                        # Save before uploading
+                        wb.save(file_path)
+                        
+                        if FTP_AVAILABLE:
+                            if upload_to_ftp(file_path, file_name):
+                                print(f'✓ FTP backup successful ({items_scrapped} items uploaded)')
+                            else:
+                                print('✗ FTP backup failed, continuing with local saves')
+                        else:
+                            print('FTP not available, continuing with local saves only')
+                    except Exception as ftp_err:
+                        print(f'✗ FTP backup error: {str(ftp_err)}')
+                        print('Continuing with local saves only...')
+                    finally:
+                        print(f'{"="*60}\n')
                         
         except Exception as page_error:
             print(f"Error on page {page_num}: {str(page_error)}")
