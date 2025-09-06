@@ -1,0 +1,83 @@
+name: Run Monthly Web Scrapers - Part 2
+on:
+  schedule:
+    - cron: '0 7 1 * *'  # Run at 7 AM on the 1st day of each month (7 hours after Part 1)
+  workflow_dispatch:
+    inputs:
+      scraper:
+        description: 'Monthly scraper to run (leave empty to run all)'
+        required: false
+        default: ''
+      start_page:
+        description: 'Starting page number'
+        required: false
+        default: '501'
+
+jobs:
+  scrape_continuation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350  # Just under 6 hours
+    env:
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          
+      - name: Install Chrome and Selenium dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          sudo ln -sf /usr/bin/google-chrome-stable /usr/bin/google-chrome
+          google-chrome --version
+          
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install openpyxl requests beautifulsoup4 selenium selenium-stealth webdriver-manager send2trash
+          pip install "lxml[html_clean]"
+          
+      - name: Test FTP connection
+        run: python test_ftp.py
+          
+      - name: Download files from FTP (with Part 1 updates)
+        run: |
+          if [ -n "${{ github.event.inputs.scraper }}" ]; then
+            python download_files.py ${{ github.event.inputs.scraper }}
+          else
+            python download_files.py --type monthly
+          fi
+          
+      - name: Run monthly scrapers - Continuation
+        timeout-minutes: 340
+        run: |
+          if [ -n "${{ github.event.inputs.scraper }}" ]; then
+            # Run specific scraper starting from page 501
+            python Belfield_Monthly_Modified.py ${{ github.event.inputs.scraper }} --start-page ${{ github.event.inputs.start_page || '501' }} --max-pages 500
+          else
+            echo "Please specify a scraper for continuation"
+            exit 1
+          fi
+      
+      - name: Upload files as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pricing-spreadsheets-part2
+          path: Pricing Spreadsheets/*.xlsx
+        if: always()
+        
+      - name: Upload results to FTP
+        run: |
+          if [ -n "${{ github.event.inputs.scraper }}" ]; then
+            python upload_files.py ${{ github.event.inputs.scraper }}
+          else
+            python upload_files.py --type monthly
+          fi
