@@ -310,12 +310,14 @@ try:
         
         # Import the FTP helper and upload immediately
         try:
-            from ftp_helper import upload_to_ftp
-            upload_success = upload_to_ftp(file_path, file_name)
-            if upload_success:
-                print(f"Uploaded {file_name} to FTP immediately after completion")
+            if FTP_AVAILABLE:
+                upload_success = upload_to_ftp(file_path, file_name)
+                if upload_success:
+                    print(f"Uploaded {file_name} to FTP immediately after completion")
+                else:
+                    print(f"Failed to upload {file_name} to FTP, will try again at the end of workflow")
             else:
-                print(f"Failed to upload {file_name} to FTP, will try again at the end of workflow")
+                print("FTP not available, file saved locally only")
         except Exception as ftp_error:
             print(f"Error with immediate FTP upload: {str(ftp_error)}")
         
