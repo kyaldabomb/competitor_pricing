@@ -22,6 +22,10 @@ from scrapers_config import SCRAPERS
 parser = argparse.ArgumentParser(description='Run monthly scraper for Belfield')
 parser.add_argument('scraper', nargs='?', default='belfield_monthly', 
                     help='Scraper name from config')
+parser.add_argument('--start-page', type=int, default=1,
+                    help='Starting page number')
+parser.add_argument('--max-pages', type=int, default=1000,
+                    help='Maximum number of pages to process')
 args = parser.parse_args()
 
 # Get scraper config
