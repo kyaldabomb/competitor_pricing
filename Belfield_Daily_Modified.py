@@ -196,12 +196,49 @@ try:
         except:
             description = 'N/A'
         
-        # Check stock availability
+        # Check stock availability at Bass Hill, Online Stock, or BM 3PL - VIC
         try:
-            stock = soup.find(class_='purchase-details__buttons purchase-details__spb--false product-is-unavailable').text
-            stock_avaliable = 'n'
-        except:
-            stock_avaliable = 'y'
+            stock_avaliable = 'n'  # Default to not available
+            
+            # Look for the CNC results container that has store-specific stock info
+            cnc_container = soup.find('div', id='cnc-results-container')
+            
+            if cnc_container:
+                # Find all store outlets
+                outlets = cnc_container.find_all('li')
+                
+                for outlet in outlets:
+                    # Check if this is Bass Hill, Online Stock, or BM 3PL - VIC
+                    store_details = outlet.find('div', class_='cnc-store-details')
+                    if store_details:
+                        store_text = store_details.get_text()
+                        
+                        # Check if it's Bass Hill, Online Stock, or BM 3PL - VIC
+                        if 'Bass Hill' in store_text or 'Online Stock' in store_text or 'BM 3PL' in store_text:
+                            # Check the availability status for this outlet
+                            availability = outlet.find('p', class_='cnc-heading-availability')
+                            if availability:
+                                # If it has the 'available' class (not 'unavailable'), mark as in stock
+                                if 'cnc-heading-available' in availability.get('class', []) and \
+                                   'cnc-heading-unavailable' not in availability.get('class', []):
+                                    stock_avaliable = 'y'
+                                    break  # Found stock at one location, no need to check others
+            else:
+                # Fallback to the old method if CNC container not found
+                unavailable = soup.find(class_='purchase-details__buttons purchase-details__spb--false product-is-unavailable')
+                
+                # Also check for the "IN STOCK" text that appears when item is available
+                in_stock_elem = soup.find('p', class_='in-stock')
+                if in_stock_elem and 'IN STOCK' in in_stock_elem.get_text().upper():
+                    stock_avaliable = 'y'
+                elif not unavailable:
+                    stock_avaliable = 'y'
+                else:
+                    stock_avaliable = 'n'
+                    
+        except Exception as e:
+            print(f"Error checking stock availability: {str(e)}")
+            stock_avaliable = 'y'  # Default to available if error
         
         # Get current date
         today = datetime.now()
