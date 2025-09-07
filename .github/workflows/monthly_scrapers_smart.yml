@@ -67,7 +67,8 @@ jobs:
           elif [ -n "${{ github.event.inputs.scraper }}" ]; then
             # Run specific scraper normally
             echo "Running specific scraper: ${{ github.event.inputs.scraper }}"
-            python "${{{ github.event.inputs.scraper }}}_Monthly_Modified.py" ${{ github.event.inputs.scraper }}
+            scraper_script="${{ github.event.inputs.scraper }}_Monthly_Modified.py"
+            python "$scraper_script" ${{ github.event.inputs.scraper }}
           else
             # Run all scrapers normally (non-chunked) and chunk 1 of chunked scrapers
             echo "Running all non-chunked scrapers..."
