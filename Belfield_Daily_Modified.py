@@ -198,7 +198,7 @@ try:
         
         # Check stock availability at Bass Hill, Online Stock, or BM 3PL - VIC
         try:
-            stock_avaliable = 'n'  # Default to not available
+            stock_avaliable = 'y'  # Default to not available
             
             # Look for the CNC results container that has store-specific stock info
             cnc_container = soup.find('div', id='cnc-results-container')
@@ -234,7 +234,7 @@ try:
                 elif not unavailable:
                     stock_avaliable = 'y'
                 else:
-                    stock_avaliable = 'n'
+                    stock_avaliable = 'y'
                     
         except Exception as e:
             print(f"Error checking stock availability: {str(e)}")
