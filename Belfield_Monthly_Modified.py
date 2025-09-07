@@ -272,50 +272,98 @@ try:
                         except:
                             description = 'N/A'
                             
-                        # Check stock availability at Bass Hill, Online Stock, or BM 3PL - VIC
+                        # Check stock availability - need to use Selenium since stock is loaded dynamically
                         try:
                             stock_available = 'n'  # Default to not available
+                            print(f"  === STOCK CHECK START for: {title[:50]}...")
                             
-                            # Look for the CNC results container that has store-specific stock info
-                            cnc_container = soup.find('div', id='cnc-results-container')
+                            # Use Selenium to load the page and click the stock check button
+                            driver.get(product_url)
+                            time.sleep(2)  # Let page load
+                            print(f"  Page loaded, looking for stock button...")
                             
-                            if cnc_container:
-                                # Find all store outlets
-                                outlets = cnc_container.find_all('li')
+                            # Try to click the "Check stock in store" button
+                            try:
+                                stock_button = WebDriverWait(driver, 5).until(
+                                    EC.element_to_be_clickable((By.CSS_SELECTOR, "#cnc-container button"))
+                                )
+                                driver.execute_script("arguments[0].click();", stock_button)
+                                print(f"  Stock button clicked, waiting for data...")
+                                
+                                # Wait for stock info to load
+                                WebDriverWait(driver, 10).until(
+                                    EC.presence_of_element_located((By.CSS_SELECTOR, "#cnc-outlets li"))
+                                )
+                                time.sleep(1)  # Extra wait for all elements to load
+                                
+                                # Now check the stock across all locations
+                                outlets = driver.find_elements(By.CSS_SELECTOR, "#cnc-outlets li")
+                                print(f"  Found {len(outlets)} store locations")
                                 
                                 for outlet in outlets:
-                                    # Check if this is Bass Hill, Online Stock, or BM 3PL - VIC
-                                    store_details = outlet.find('div', class_='cnc-store-details')
-                                    if store_details:
-                                        store_text = store_details.get_text()
+                                    try:
+                                        store_text = outlet.find_element(By.CSS_SELECTOR, ".cnc-store-details").text
+                                        store_name = store_text.split('\n')[0]  # Get first line
                                         
-                                        # Check if it's Bass Hill, Online Stock, or BM 3PL - VIC
-                                        if 'Bass Hill' in store_text or 'Online Stock' in store_text or 'BM 3PL' in store_text:
-                                            # Check the availability status for this outlet
-                                            availability = outlet.find('p', class_='cnc-heading-availability')
-                                            if availability:
-                                                # If it has the 'available' class (not 'unavailable'), mark as in stock
-                                                if 'cnc-heading-available' in availability.get('class', []) and \
-                                                   'cnc-heading-unavailable' not in availability.get('class', []):
-                                                    stock_available = 'y'
-                                                    break  # Found stock at one location, no need to check others
-                            else:
-                                # Fallback to the old method if CNC container not found
-                                unavailable = soup.find(class_='product-is-unavailable')
-                                out_of_stock = soup.find(string=lambda text: 'out of stock' in text.lower() if text else False)
+                                        # Get availability status
+                                        availability = outlet.find_element(By.CSS_SELECTOR, ".cnc-heading-availability")
+                                        availability_text = availability.text
+                                        availability_classes = availability.get_attribute("class")
+                                        
+                                        # Determine if available
+                                        is_available = ('cnc-heading-available' in availability_classes and 
+                                                       'cnc-heading-unavailable' not in availability_classes)
+                                        
+                                        print(f"    - {store_name}: {availability_text} (Available: {is_available})")
+                                        
+                                        # Check if it's one of our target locations and has stock
+                                        if ('Bass Hill' in store_text or 'Online Stock' in store_text or 'BM 3PL' in store_text):
+                                            if is_available:
+                                                stock_available = 'y'
+                                                print(f"  ✓ STOCK FOUND at {store_name}!")
+                                                break
+                                    except Exception as outlet_error:
+                                        print(f"    - Error checking outlet: {str(outlet_error)}")
+                                        continue
                                 
-                                # Also check for the "IN STOCK" text that appears when item is available
-                                in_stock_elem = soup.find('p', class_='in-stock')
-                                if in_stock_elem and 'IN STOCK' in in_stock_elem.get_text().upper():
-                                    stock_available = 'y'
-                                elif not (unavailable or out_of_stock):
-                                    stock_available = 'y'
-                                else:
-                                    stock_available = 'n'
+                                if stock_available == 'n':
+                                    print(f"  ✗ NO STOCK at any checked location")
+                                        
+                            except TimeoutException:
+                                print(f"  Stock button not found or data didn't load, checking static text...")
+                                # Button not found or stock info didn't load, check static "IN STOCK" text
+                                try:
+                                    in_stock = driver.find_element(By.CSS_SELECTOR, "p.in-stock")
+                                    if "IN STOCK" in in_stock.text.upper():
+                                        stock_available = 'y'
+                                        print(f"  ✓ Static 'IN STOCK' text found")
+                                    else:
+                                        print(f"  ✗ No stock indicator found")
+                                except:
+                                    print(f"  ✗ No static stock text found")
                                     
+                            # Now get the rest of the product data from the loaded page
+                            soup = BeautifulSoup(driver.page_source, 'html.parser')
+                            print(f"  === STOCK CHECK COMPLETE: {'IN STOCK' if stock_available == 'y' else 'OUT OF STOCK'}")
+                            
                         except Exception as e:
-                            print(f"Error checking stock availability: {str(e)}")
-                            stock_available = 'y'  # Default to available if error
+                            print(f"  ERROR in Selenium stock check: {str(e)}")
+                            print(f"  Falling back to requests method...")
+                            # Fallback to requests method
+                            r = requests.get(product_url, timeout=30, headers={
+                                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                            })
+                            soup = BeautifulSoup(r.content, 'html.parser')
+                            
+                            # Simple fallback check
+                            in_stock_elem = soup.find('p', class_='in-stock')
+                            if in_stock_elem and 'IN STOCK' in in_stock_elem.get_text().upper():
+                                stock_available = 'y'
+                                print(f"  ✓ Fallback: IN STOCK text found")
+                            else:
+                                # DEFAULT TO IN STOCK if we can't determine status
+                                stock_available = 'y'
+                                print(f"  ⚠ Cannot determine stock status - DEFAULTING TO IN STOCK")
                             
                         # Get current date
                         today = datetime.now()
