@@ -2,6 +2,13 @@ import openpyxl
 from bs4 import BeautifulSoup
 import requests, pprint
 from requests_html import HTMLSession
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 import os, time
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -47,6 +54,96 @@ def upload_to_ftp(file_path, file_name):
         print(f"Error uploading to FTP: {str(e)}")
         print(traceback.format_exc())
         return False
+
+
+def check_stock_availability_selenium(url, driver):
+    """
+    Check stock availability using Selenium to handle JavaScript
+    Uses passed driver instance to avoid creating/destroying driver for each product
+    """
+    try:
+        print("  Checking stock availability with Selenium...")
+        
+        # Load the page
+        driver.get(url)
+        
+        # Wait for page to load
+        time.sleep(3)
+        
+        # Try to click the "Check stock in store" button
+        try:
+            button = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "#cnc-container button"))
+            )
+            driver.execute_script("arguments[0].click();", button)
+            
+            # Wait for stock info to load
+            time.sleep(3)
+            
+            # Wait for the results container
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, "cnc-results"))
+            )
+            
+        except Exception as e:
+            # Button might already be clicked or stock info already loaded
+            pass
+        
+        # Get the page source after JavaScript execution
+        page_source = driver.page_source
+        soup = BeautifulSoup(page_source, 'html.parser')
+        
+        # Look for the CNC results container
+        cnc_container = soup.find('div', id='cnc-results-container')
+        
+        if cnc_container:
+            # Find all store outlets
+            outlets = cnc_container.find_all('li')
+            
+            stock_info = {}
+            
+            for outlet in outlets:
+                # Get store details
+                store_details = outlet.find('div', class_='cnc-store-details')
+                if store_details:
+                    # Extract store name from the strong tag
+                    store_name_elem = store_details.find('strong')
+                    if store_name_elem:
+                        store_name = store_name_elem.get_text().strip()
+                        
+                        # Check availability status
+                        availability = outlet.find('p', class_='cnc-heading-availability')
+                        if availability:
+                            # Check if available
+                            classes = availability.get('class', [])
+                            status_text = availability.get_text().strip()
+                            
+                            if 'cnc-heading-available' in classes and 'cnc-heading-unavailable' not in classes:
+                                stock_info[store_name] = f"Available ({status_text})"
+                            else:
+                                stock_info[store_name] = "Out of stock"
+            
+            # Check if available at any target location
+            target_stores = ['Bass Hill', 'Online Stock', 'BM 3PL - VIC']
+            for store in target_stores:
+                if store in stock_info and "Available" in stock_info[store]:
+                    print(f"    Stock available at {store}")
+                    return 'y'
+            
+            return 'n'
+            
+        else:
+            # Check if generally in stock
+            in_stock_elem = soup.find('p', class_='in-stock')
+            if in_stock_elem and 'IN STOCK' in in_stock_elem.get_text().upper():
+                return 'y'
+            
+            return 'n'
+            
+    except Exception as e:
+        print(f"  Error checking stock availability: {str(e)}")
+        return 'y'  # Default to available if error
+
 
 # Import the standardized email notification function
 try:
@@ -107,7 +204,24 @@ sheet = wb['Sheet']
 item_number = 0
 items_scrapped = 0
 
+# Initialize Selenium driver once for all products
+driver = None
 try:
+    # Setup Chrome options
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')  # Run in background
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--window-size=1920,1080')
+    chrome_options.add_argument('--log-level=3')  # Suppress logs
+    
+    # Initialize driver with automatic ChromeDriver management
+    print("Initializing Chrome driver (auto-downloading if needed)...")
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    print("Chrome driver initialized successfully")
+    
     for sheet_line in range(2, sheet.max_row+1):
         further_break = ''
         item_number += 1
@@ -115,14 +229,16 @@ try:
         # Get the URL to scrape
         url = sheet['E'+str(sheet_line)].value
         
-        # Handle HTTP requests with retry logic
+        print(f"\nProcessing item {item_number}: {url}")
+        
+        # Handle HTTP requests with retry logic for basic product info
         max_retries = 3
         for retry in range(max_retries):
             try:
                 r = requests.get(url, timeout=30)
                 
                 if r.status_code == 430:
-                    print('Page limit reached, waitng 5 mins')
+                    print('Page limit reached, waiting 5 mins')
                     time.sleep(300)
                     continue
                 elif r.status_code == 404:
@@ -141,7 +257,7 @@ try:
         if further_break == 'true':
             continue
             
-        # Parse the page with BeautifulSoup
+        # Parse the page with BeautifulSoup for basic product info
         soup = BeautifulSoup(r.content, 'html.parser')
         
         try:
@@ -196,49 +312,8 @@ try:
         except:
             description = 'N/A'
         
-        # Check stock availability at Bass Hill, Online Stock, or BM 3PL - VIC
-        try:
-            stock_avaliable = 'y'  # Default to not available
-            
-            # Look for the CNC results container that has store-specific stock info
-            cnc_container = soup.find('div', id='cnc-results-container')
-            
-            if cnc_container:
-                # Find all store outlets
-                outlets = cnc_container.find_all('li')
-                
-                for outlet in outlets:
-                    # Check if this is Bass Hill, Online Stock, or BM 3PL - VIC
-                    store_details = outlet.find('div', class_='cnc-store-details')
-                    if store_details:
-                        store_text = store_details.get_text()
-                        
-                        # Check if it's Bass Hill, Online Stock, or BM 3PL - VIC
-                        if 'Bass Hill' in store_text or 'Online Stock' in store_text or 'BM 3PL' in store_text:
-                            # Check the availability status for this outlet
-                            availability = outlet.find('p', class_='cnc-heading-availability')
-                            if availability:
-                                # If it has the 'available' class (not 'unavailable'), mark as in stock
-                                if 'cnc-heading-available' in availability.get('class', []) and \
-                                   'cnc-heading-unavailable' not in availability.get('class', []):
-                                    stock_avaliable = 'y'
-                                    break  # Found stock at one location, no need to check others
-            else:
-                # Fallback to the old method if CNC container not found
-                unavailable = soup.find(class_='purchase-details__buttons purchase-details__spb--false product-is-unavailable')
-                
-                # Also check for the "IN STOCK" text that appears when item is available
-                in_stock_elem = soup.find('p', class_='in-stock')
-                if in_stock_elem and 'IN STOCK' in in_stock_elem.get_text().upper():
-                    stock_avaliable = 'y'
-                elif not unavailable:
-                    stock_avaliable = 'y'
-                else:
-                    stock_avaliable = 'y'
-                    
-        except Exception as e:
-            print(f"Error checking stock availability: {str(e)}")
-            stock_avaliable = 'y'  # Default to available if error
+        # Check stock availability using Selenium
+        stock_avaliable = check_stock_availability_selenium(url, driver)
         
         # Get current date
         today = datetime.now()
@@ -255,7 +330,7 @@ try:
         sheet['I' + str(sheet_line)].value = stock_avaliable
         
         items_scrapped += 1
-        print(f'Item {str(item_number)} scraped successfully')
+        print(f'Item {str(item_number)} scraped successfully - Stock: {"Available" if stock_avaliable == "y" else "Not Available"}')
         
         # Save periodically
         if int(items_scrapped) % 10 == 0:
@@ -303,3 +378,12 @@ except Exception as e:
         print("Could not save progress after error")
     
     send_email_notification(False, error_msg=f"{error_message}\n\nFull traceback:\n{full_traceback}", scraper_name="Belfield Daily")
+
+finally:
+    # Always close the driver when done
+    if driver:
+        try:
+            driver.quit()
+            print("Chrome driver closed successfully")
+        except:
+            pass
