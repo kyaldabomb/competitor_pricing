@@ -149,7 +149,7 @@ def Akai(RRP, title, sku, obsolete_stock):
 
         cost = (RRP * 0.7) * 0.82
     else:
-        cost = (RRP * 0.7) * 0.95
+        cost = (RRP * 0.7) * 5
 
     if obsolete_stock == 'Y':
 
@@ -418,10 +418,10 @@ def Arturia(RRP, title, sku, obsolete_stock):
             cost
 
         except:
-            cost = (RRP * 0.7) * 0.95
+            cost = (RRP * 0.7) * 5
 
     except:
-        cost = (RRP * 0.7) * 0.95
+        cost = (RRP * 0.7) * 5
 
     if promo_success == 'y':
         return RRP, cost
@@ -6885,7 +6885,7 @@ def SwiffAudio(RRP, title, sku, obsolete_stock):
 
 
 
-completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "orange": Orange, 'ernie ball': ErnieBall, 'korg': Korg,
+completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean, "orange": Orange, 'ernie ball': ErnieBall, 'korg': Korg,
                     'arturia': Arturia, 'strandberg': Arturia, 'jbl': JBL, 'epiphone': Epiphone, 'gibson': Gibson,
                     'tc electronic': TCElectronic, 'dbx': DBX, "daddario": Daddario, "planet waves": PlanetWaves,
                     "tech 21": Tech21, "lr baggs": LRBaggs, "aguilar": Aguilar, "universal audio": UniversalAudio,
