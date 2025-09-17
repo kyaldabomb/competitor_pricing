@@ -149,7 +149,7 @@ def Akai(RRP, title, sku, obsolete_stock):
 
         cost = (RRP * 0.7) * 0.82
     else:
-        cost = (RRP * 0.7) * 5
+        cost = (RRP * 0.7) * 0.95
 
     if obsolete_stock == 'Y':
 
@@ -418,10 +418,10 @@ def Arturia(RRP, title, sku, obsolete_stock):
             cost
 
         except:
-            cost = (RRP * 0.7) * 5
+            cost = (RRP * 0.7) * 0.95
 
     except:
-        cost = (RRP * 0.7) * 5
+        cost = (RRP * 0.7) * 0.95
 
     if promo_success == 'y':
         return RRP, cost
