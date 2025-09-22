@@ -7999,6 +7999,11 @@ for x in range(1, sheet.max_row + 1):
                         price_b = 1499
                         final_price_b = 1499
 
+                    if SKU == 'LEC-VOXPACKCMI':
+                        price_a = 499
+                        price_b = 499
+                        final_price_b = 499
+
                     if SKU == 'MEA-17NCMI':
                         price_a = 99
                         price_b = 99
