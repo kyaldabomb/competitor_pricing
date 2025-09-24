@@ -45,7 +45,7 @@ def Auralex(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -118,7 +118,7 @@ def Alesis(RRP, title, sku, obsolete_stock):
     if obsolete_stock == "Y":
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -154,7 +154,7 @@ def Akai(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -226,7 +226,7 @@ def Ashton(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -295,7 +295,7 @@ def Armour(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -359,7 +359,7 @@ def AKG(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -507,7 +507,7 @@ def Beale(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -539,7 +539,7 @@ def Dean(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -612,7 +612,7 @@ def Blackstar(RRP, title, sku, obsolete_stock):
     if obsolete_stock == "Y":
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -696,7 +696,7 @@ def Casio(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -824,7 +824,7 @@ def Bluegrass(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -878,7 +878,7 @@ def Celestion(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -911,7 +911,7 @@ def Carson(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -944,7 +944,7 @@ def CNB(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -978,7 +978,7 @@ def Crossfire(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -1068,7 +1068,7 @@ def Darkglass(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -1124,7 +1124,7 @@ def DXP(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -1160,7 +1160,7 @@ def Dunlop(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -1228,7 +1228,7 @@ def ESP(RRP, title, sku, obsolete_stock):
         return RRP, cost
     if obsolete_stock == "Y":
         if RRP >= 100:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 100:
             return RRP, cost
 
@@ -1396,7 +1396,7 @@ def Digitech(RRP, title, sku, obsolete_stock):
         return RRP, cost
     if obsolete_stock == "Y":
         if RRP >= 100:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 100:
             return RRP, cost
 
@@ -1500,7 +1500,7 @@ def ErnieBall(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -1685,7 +1685,7 @@ def Epiphone(RRP, title, sku, obsolete_stock):
     #########################################################
     if obsolete_stock == "Y":
         if RRP >= 100:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 100:
             return RRP, cost
 
@@ -1718,7 +1718,7 @@ def Evans(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -1788,7 +1788,7 @@ def Gator(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -1860,7 +1860,7 @@ def Gibson(RRP, title, sku, obsolete_stock):
 
     if obsolete_stock == "Y":
         if RRP >= 100:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 100:
             return RRP, cost
 
@@ -1914,7 +1914,7 @@ def Hercules(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -1987,7 +1987,7 @@ def Ibanez(RRP, title, sku, obsolete_stock):
 
     if obsolete_stock == "Y":
         if RRP >= 100:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 100:
             return RRP, cost
 
@@ -2020,7 +2020,7 @@ def Jargar(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2088,7 +2088,7 @@ def JBL(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2121,7 +2121,7 @@ def GruvGear(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2191,7 +2191,7 @@ def GHS(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2245,7 +2245,7 @@ def Kaces(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2299,7 +2299,7 @@ def Kyser(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2453,7 +2453,7 @@ def Mahalo(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2515,7 +2515,7 @@ def Mano(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2578,7 +2578,7 @@ def Martinez(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2611,7 +2611,7 @@ def MartinStrings(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2644,7 +2644,7 @@ def MAudio(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2706,7 +2706,7 @@ def Monterey(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2739,7 +2739,7 @@ def Mitello(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2856,7 +2856,7 @@ def Nektar(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -2997,7 +2997,7 @@ def Orange(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3064,7 +3064,7 @@ def Paytons(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3097,7 +3097,7 @@ def Pirastro(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3130,7 +3130,7 @@ def Promark(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3163,7 +3163,7 @@ def Powerbeat(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3196,7 +3196,7 @@ def Radial(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3229,7 +3229,7 @@ def Rapco(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3262,7 +3262,7 @@ def Rico(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3302,7 +3302,7 @@ def Remo(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3335,7 +3335,7 @@ def Rockboard(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3368,7 +3368,7 @@ def Sanchez(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3401,7 +3401,7 @@ def Samson(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3434,7 +3434,7 @@ def Schaller(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3467,7 +3467,7 @@ def Steinhoff(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3500,7 +3500,7 @@ def Snark(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3533,7 +3533,7 @@ def Strauss(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3598,7 +3598,7 @@ def SeymourDuncan(RRP, title, sku, obsolete_stock):
     if obsolete_stock == "Y":
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3719,7 +3719,7 @@ def Tascam(RRP, title, sku, obsolete_stock):
     if obsolete_stock == "Y":
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3797,7 +3797,7 @@ def TCElectronic(RRP, title, sku, obsolete_stock):
     if obsolete_stock == "Y":
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -3869,7 +3869,7 @@ def TCHelicon(RRP, title, sku, obsolete_stock):
     if obsolete_stock == "Y":
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4027,7 +4027,7 @@ def UniversalAudio(RRP, title, sku, obsolete_stock):
     if obsolete_stock == "Y":
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4059,7 +4059,7 @@ def UltimateSupport(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4092,7 +4092,7 @@ def Savarez(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4125,7 +4125,7 @@ def Sequenz(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4193,7 +4193,7 @@ def SourceAudio(RRP, title, sku, obsolete_stock):
     if obsolete_stock == "Y":
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4258,7 +4258,7 @@ def Spector(RRP, title, sku, obsolete_stock):
     if obsolete_stock == "Y":
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4322,7 +4322,7 @@ def Soundcraft(RRP, title, sku, obsolete_stock):
     if obsolete_stock == "Y":
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4354,7 +4354,7 @@ def SonicDrive(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4408,7 +4408,7 @@ def Tourtek(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4441,7 +4441,7 @@ def Valencia(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4474,7 +4474,7 @@ def VicFirth(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4507,7 +4507,7 @@ def Xtreme(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4540,7 +4540,7 @@ def XTR(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4594,7 +4594,7 @@ def VCase(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4652,7 +4652,7 @@ def UXL(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4715,7 +4715,7 @@ def BarnesMullins(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4748,7 +4748,7 @@ def EMG(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4781,7 +4781,7 @@ def Hardcase(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4814,7 +4814,7 @@ def Toca(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4847,7 +4847,7 @@ def Gibraltar(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4880,7 +4880,7 @@ def Onstage(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4913,7 +4913,7 @@ def MusicNomad(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -4967,7 +4967,7 @@ def Essex(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5000,7 +5000,7 @@ def Boomwhackers(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5033,7 +5033,7 @@ def NUX(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5066,7 +5066,7 @@ def Lanikai(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5099,7 +5099,7 @@ def TeenageEngineering(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5132,7 +5132,7 @@ def Shubb(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5186,7 +5186,7 @@ def Shure(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5219,7 +5219,7 @@ def Alvarez(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5252,7 +5252,7 @@ def Tama(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5306,7 +5306,7 @@ def Basso(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5339,7 +5339,7 @@ def LeeOskar(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5372,7 +5372,7 @@ def Aquila(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5405,7 +5405,7 @@ def Roland(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5438,7 +5438,7 @@ def Hotone(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5471,7 +5471,7 @@ def Hosa(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5530,7 +5530,7 @@ def Duracell(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5563,7 +5563,7 @@ def Grover(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5629,7 +5629,7 @@ def DCM(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5691,7 +5691,7 @@ def Hidersine(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5724,7 +5724,7 @@ def Cioks(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5757,7 +5757,7 @@ def Puresound(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5790,7 +5790,7 @@ def JohnPearse(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5823,7 +5823,7 @@ def KandK(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5856,7 +5856,7 @@ def Hamilton(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5920,7 +5920,7 @@ def Alpine(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -5985,7 +5985,7 @@ def Aquarian(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6018,7 +6018,7 @@ def Maestro(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6078,7 +6078,7 @@ def Modal(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6111,7 +6111,7 @@ def Netgear(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6144,7 +6144,7 @@ def Onestage(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6177,7 +6177,7 @@ def Lexicon(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6242,7 +6242,7 @@ def Vox(RRP, title, sku, obsolete_stock):
         return RRP, cost
     if obsolete_stock == "Y":
         if RRP >= 100:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 100:
             return RRP, cost
 
@@ -6275,7 +6275,7 @@ def Hagstrom(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6308,7 +6308,7 @@ def Vater(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6362,7 +6362,7 @@ def Deering(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6419,7 +6419,7 @@ def Lag(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6452,7 +6452,7 @@ def Avid(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6485,7 +6485,7 @@ def Guild(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6548,7 +6548,7 @@ def Eikon(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6612,7 +6612,7 @@ def National(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6644,7 +6644,7 @@ def Boveda(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6707,7 +6707,7 @@ def Elixir(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6770,7 +6770,7 @@ def Rotosound(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6832,7 +6832,7 @@ def Kink(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
@@ -6866,7 +6866,7 @@ def SwiffAudio(RRP, title, sku, obsolete_stock):
     if obsolete_stock == 'Y':
 
         if RRP >= 50:
-            return cost * 1.1, cost
+            return cost * 1.05, cost
         if 10 <= RRP < 50:
             return RRP, cost
 
