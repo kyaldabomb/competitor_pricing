@@ -6883,7 +6883,7 @@ def SwiffAudio(RRP, title, sku, obsolete_stock):
         if 0 <= RRP < 10:
             return RRP + 5, cost
 
-
+#Ibanez removed, pricing doesn't update
 
 completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean, "orange": Orange, 'ernie ball': ErnieBall, 'korg': Korg,
                     'arturia': Arturia, 'strandberg': Arturia, 'jbl': JBL, 'epiphone': Epiphone, 'gibson': Gibson,
@@ -6895,7 +6895,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean, "oran
                     "tc helicon": TCHelicon, "seymour duncan": SeymourDuncan, "seymour": SeymourDuncan,
                     "gruv gear": GruvGear, "kyser": Kyser,
                     "akai": Akai, 'marshall': Marshall, 'nord': Nord, 'hercules': Hercules, 'celestion': Celestion
-    , 'boss': Boss, 'general products': Boss, 'ashton': Ashton, 'headrush': Headrush, 'ibanez': Ibanez, 'cordoba': Cordoba, 'evans': Evans
+    , 'boss': Boss, 'general products': Boss, 'ashton': Ashton, 'headrush': Headrush, 'cordoba': Cordoba, 'evans': Evans
     , 'promark': Promark, 'rico': Rico, 'gator cases': Gator, 'paytons': Paytons, 'admira': Paytons, 'hills': Paytons,'beam accessories': Paytons,'carl martin': Paytons,'ecostrap': Paytons,'limousine': Paytons, 'tascam': Tascam,
                     'valencia': Valencia, 'xtreme': Xtreme, 'cnb': CNB, 'v-case': VCase, 'mahalo': Mahalo,
                     '1880 ukulele co': Mahalo, 'dxp': DXP
