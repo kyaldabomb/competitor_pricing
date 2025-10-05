@@ -7377,7 +7377,7 @@ for x in range(1, sheet.max_row + 1):
 
                 RRP = float(sheet['C' + str(x)].value)
                 if 'marshall' in brand.lower():
-                    behringer_workbook = openpyxl.load_workbook(rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Marshall.xlsx")
+                        behringer_workbook = openpyxl.load_workbook(rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Marshall.xlsx")
                         behringer_sheet = behringer_workbook['Sheet1']
                         for items in range(1, behringer_sheet.max_row + 1):
                             behringer_sku = str(behringer_sheet['A' + str(items)].value)
