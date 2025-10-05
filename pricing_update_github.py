@@ -2479,6 +2479,9 @@ def Marshall(RRP, title, sku, obsolete_stock):
 
     RRP = float(RRP)
 
+    
+
+
     obsolete_stock = obsolete_stock
     title = title
     default_discont = 0.85
@@ -7036,6 +7039,12 @@ def download_pricing_files():
         with open('Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx', 'wb') as f:
             session.retrbinary(
                 'RETR competitor_pricing/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx', f.write)
+        # Download Marshall.xlsx
+        
+        os.makedirs('Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers', exist_ok=True)
+        with open('Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Marshall.xlsx', 'wb') as f:
+            session.retrbinary(
+                'RETR competitor_pricing/Pricing_spreadsheets_supplied_by_suppliers/Marshall.xlsx', f.write)
 
         # Download Ernie_Ball.xlsx
         with open('Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Ernie_Ball.xlsx', 'wb') as f:
@@ -7367,6 +7376,20 @@ for x in range(1, sheet.max_row + 1):
             if brand.lower() in completed_brands:
 
                 RRP = float(sheet['C' + str(x)].value)
+                if 'marshall' in brand.lower():
+                    behringer_workbook = openpyxl.load_workbook(rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Marshall.xlsx")
+                        behringer_sheet = behringer_workbook['Sheet1']
+                        for items in range(1, behringer_sheet.max_row + 1):
+                            behringer_sku = str(behringer_sheet['A' + str(items)].value)
+                            behringer_sku = behringer_sku.replace('/','')
+                            if behringer_sku is None:
+                                continue
+                            if behringer_sku in SKU:
+                                RRP = str(behringer_sheet['C' + str(items)].value)
+                                RRP = cost.replace('$', '')
+                                RRP = cost.replace(',', '')
+                                RRP = float(cost) * 1.1
+                                break
                 last_invoiced = str(sheet['O' + str(x)].value)
                 is_over_a_year = is_date_over_a_year_ago(last_invoiced)
                 quantity = str(sheet['I' + str(x)].value)
