@@ -7386,9 +7386,9 @@ for x in range(1, sheet.max_row + 1):
                                 continue
                             if behringer_sku in SKU:
                                 RRP = str(behringer_sheet['C' + str(items)].value)
-                                RRP = cost.replace('$', '')
-                                RRP = cost.replace(',', '')
-                                RRP = float(cost) * 1.1
+                                # RRP = cost.replace('$', '')
+                                # RRP = cost.replace(',', '')
+                                # RRP = float(cost) * 1.1
                                 break
                 last_invoiced = str(sheet['O' + str(x)].value)
                 is_over_a_year = is_date_over_a_year_ago(last_invoiced)
