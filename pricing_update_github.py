@@ -6887,6 +6887,7 @@ def SwiffAudio(RRP, title, sku, obsolete_stock):
             return RRP + 5, cost
 
 #Ibanez removed, pricing doesn't update
+#'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP, removed
 
 completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean, "orange": Orange, 'ernie ball': ErnieBall, 'korg': Korg,
                     'arturia': Arturia, 'strandberg': Arturia, 'jbl': JBL, 'epiphone': Epiphone, 'gibson': Gibson,
@@ -6912,8 +6913,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean, "oran
                     'mitello': Mitello, 'powerbeat': Powerbeat,
                     'schaller': Schaller, 'jargar': Jargar, 'pirastro': Pirastro, 'sonic drive': SonicDrive,
                     'xvive': Xvive,
-                    'beale': Beale, 'snark': Snark, 'kaces': Kaces, 'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,
-                    'esp ltd': ESP,'espltd': ESP,
+                    'beale': Beale, 'snark': Snark, 'kaces': Kaces, 
                     'ghs': GHS, 'strymon': Strymon, 'warwick rockboard': Rockboard, 'sterling': Sterling,
                     'sterling by mm': Sterling
     , 'sterling by mus': Sterling, 'sterling by music man': Sterling, 'ernie ball music man': MusicMan,
