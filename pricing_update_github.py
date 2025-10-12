@@ -6887,14 +6887,12 @@ def SwiffAudio(RRP, title, sku, obsolete_stock):
             return RRP + 5, cost
 
 #Ibanez removed, pricing doesn't update
-#'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP, removed
+#'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP, 'korg': Korg, 'vox': Vox, "universal audio": UniversalAudio, "ua": UniversalAudio, "uaguitar": UniversalAudio , removed, 
 
-completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean, "orange": Orange, 'ernie ball': ErnieBall, 'korg': Korg,
+completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean, "orange": Orange, 'ernie ball': ErnieBall,
                     'arturia': Arturia, 'strandberg': Arturia, 'jbl': JBL, 'epiphone': Epiphone, 'gibson': Gibson,
                     'tc electronic': TCElectronic, 'dbx': DBX, "daddario": Daddario, "planet waves": PlanetWaves,
-                    "tech 21": Tech21, "lr baggs": LRBaggs, "aguilar": Aguilar, "universal audio": UniversalAudio,
-                    "ua": UniversalAudio, "uaguitar": UniversalAudio
-    , "soundcraft": Soundcraft, "avid": Avid, "behringer": Behringer, "casio": Casio, "akg": AKG, "drstrings": AKG,
+                    "tech 21": Tech21, "lr baggs": LRBaggs, "aguilar": Aguilar,  "soundcraft": Soundcraft, "avid": Avid, "behringer": Behringer, "casio": Casio, "akg": AKG, "drstrings": AKG,
                     "blackstar": Blackstar,
                     "tc helicon": TCHelicon, "seymour duncan": SeymourDuncan, "seymour": SeymourDuncan,
                     "gruv gear": GruvGear, "kyser": Kyser,
@@ -6968,7 +6966,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean, "oran
                     'john pearse': JohnPearse, 'k & k': KandK, 'hamilton': Hamilton, 'midas': Alesis, 'tasman': Alesis,
                     'alpine': Alpine, 'smart': Alpine, 'aquarian': Aquarian, 'enki': Blackstar,
                     'maestro': Maestro, 'modal': Modal, 'netgear': Netgear, 'onestage': Onestage, 'lexicon': Lexicon,
-                    'vox': Vox, 'hagstrom': Hagstrom, 'vater percussio': Vater, 'vater': Vater,
+                     'hagstrom': Hagstrom, 'vater percussio': Vater, 'vater': Vater,
                     'markbass': Markbass, 'deering': Deering, 'lag': Lag, 'guild': Guild, 'eikon': Eikon,
                     'italian stage': Eikon, 'vivo': National, 'vivo bows': National,
                     'kremona': National, 'krem': National, 'toms line': National, 'aroma': National,
