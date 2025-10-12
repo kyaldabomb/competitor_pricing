@@ -6887,9 +6887,9 @@ def SwiffAudio(RRP, title, sku, obsolete_stock):
             return RRP + 5, cost
 
 #Ibanez removed, pricing doesn't update
-#'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP, 'korg': Korg, 'vox': Vox, "universal audio": UniversalAudio, "ua": UniversalAudio, "uaguitar": UniversalAudio , removed, 
+#'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP, "orange": Orange,'korg': Korg, 'vox': Vox, "universal audio": UniversalAudio, "ua": UniversalAudio, "uaguitar": UniversalAudio , removed, 
 
-completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean, "orange": Orange, 'ernie ball': ErnieBall,
+completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean,  'ernie ball': ErnieBall,
                     'arturia': Arturia, 'strandberg': Arturia, 'jbl': JBL, 'epiphone': Epiphone, 'gibson': Gibson,
                     'tc electronic': TCElectronic, 'dbx': DBX, "daddario": Daddario, "planet waves": PlanetWaves,
                     "tech 21": Tech21, "lr baggs": LRBaggs, "aguilar": Aguilar,  "soundcraft": Soundcraft, "avid": Avid, "behringer": Behringer, "casio": Casio, "akg": AKG, "drstrings": AKG,
