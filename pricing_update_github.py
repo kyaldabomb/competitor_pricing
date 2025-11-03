@@ -6931,7 +6931,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean,  'ern
     , 'on stage': Onstage, 'music nomad': MusicNomad, 'alto professional': Alto, 'alto': Alto,
                     'boomwhackers': Boomwhackers, 'nux': NUX, 'savarez': Savarez, 'nektar': Nektar,
                     'se electronics': SE, 'cole clark': ColeClark, 'maton': ColeClark, 'radial': Radial,
-                    'radial tonebone': Radial, 'sx': Essex, 'essex': Essex,
+                    'radial tonebone': Radial, 'twonotes': Radial, 'two notes': Radial, 'sx': Essex, 'essex': Essex,
                     'carry on': Blackstar, 'teenage enginee': TeenageEngineering,
                     'teenage engineering': TeenageEngineering, 'shubb': Shubb,
                     'learn to play books': Shubb, 'koala': Shubb, 'progressive': Progressive, 'alvarez': Alvarez,
