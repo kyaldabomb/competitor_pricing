@@ -6938,7 +6938,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean,  'ern
                     'lp': Alvarez, 'tama': Tama,
                     'loog': Hartke, 'hartke': Hartke, 'lanikai': Lanikai, 'basso': Basso, 'lee oskar': LeeOskar,
                     'aquila': Aquila, 'roland': Roland, 'v-drum': Roland,
-                    'Hotone': Hotone, 'hosa technology': Hosa, 'hosa': Hosa, 'duracell': Duracell,
+                    'hotone': Hotone, 'hosa technology': Hosa, 'hosa': Hosa, 'duracell': Duracell,
                     'ultimate suppor': UltimateSupport, 'artec': Shubb,
                     'augustine': Shubb, 'aer': Shubb, 'aranjuez': Shubb, 'aria': Shubb,
                     'axl / longpai': Shubb, 'axl/longpai': Shubb, 'blessing': Shubb, 'blitz': Shubb,
