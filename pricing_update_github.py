@@ -6912,7 +6912,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean,  'ern
                     'schaller': Schaller, 'jargar': Jargar, 'pirastro': Pirastro, 'sonic drive': SonicDrive,
                     'xvive': Xvive,
                     'beale': Beale, 'snark': Snark, 'kaces': Kaces, 
-                    'ghs': GHS, 'strymon': Strymon, 'warwick rockboard': Rockboard, 'warwick rockbass': Rockboard 'sterling': Sterling,
+                    'ghs': GHS, 'strymon': Strymon, 'warwick rockboard': Rockboard, 'warwick rockbass': Rockboard, 'sterling': Sterling,
                     'sterling by mm': Sterling
     , 'sterling by mus': Sterling, 'sterling by music man': Sterling, 'ernie ball music man': MusicMan,
                     'ernie ball by music man': MusicMan,
