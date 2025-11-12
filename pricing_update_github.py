@@ -1629,6 +1629,77 @@ def Sterling(RRP, title, sku, obsolete_stock):
     if 0 <= RRP < 10:
         return RRP + 5, cost
 
+def Ibanez(RRP, title, sku, obsolete_stock):
+    # High end (>200) = *0.7
+    # mid range (80-200) = *0.8
+    # low range (25-80) = *1
+    # super low range (0-25) = +5
+
+    # cost = (RRP*0.8)
+    RRP = float(RRP)
+
+    obsolete_stock = obsolete_stock
+    original_RRP = float(RRP)
+
+    obsolete_stock = obsolete_stock
+
+    default_discount = 1
+    #######################################
+    promo_success = 'n'
+    try:
+
+        gibson_workbook = openpyxl.load_workbook(
+            rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
+        gibson_sheet = gibson_workbook['Sheet1']
+        for items in range(1, gibson_sheet.max_row + 1):
+            gibson_sku = str(gibson_sheet['A' + str(items)].value)
+            if gibson_sku is None:
+                continue
+            if gibson_sku.lower() == sku.lower():
+                RRP = str(gibson_sheet['L' + str(items)].value)
+                RRP = RRP.replace('$', '')
+                RRP = RRP.replace(',', '')
+                RRP = float(RRP)
+
+                cost = str(gibson_sheet['F' + str(items)].value)
+                cost = cost.replace('$', '')
+                cost = cost.replace(',', '')
+                cost = float(cost)
+                promo_success = 'y'
+                if original_RRP * default_discount > float(RRP):
+                    default_discount = 1
+                break
+
+        try:
+            cost
+
+        except:
+            cost = (RRP * 0.8)
+    except:
+        cost = (RRP * 0.8)
+
+    if promo_success == 'y':
+        return RRP, cost
+
+    #########################################################
+    if obsolete_stock == "Y":
+        if RRP >= 100:
+            return cost * 1.05, cost
+        if 10 <= RRP < 100:
+            return RRP, cost
+
+        if 0 <= RRP < 10:
+            return RRP + 5, cost
+
+    else:
+
+        if RRP >= 100:
+            return RRP * default_discount, cost
+        if 10 <= RRP < 100:
+            return RRP, cost
+
+        if 0 <= RRP < 10:
+            return RRP + 5, cost
 
 def Epiphone(RRP, title, sku, obsolete_stock):
     # High end (>200) = *0.7
@@ -1932,7 +2003,7 @@ def Hercules(RRP, title, sku, obsolete_stock):
             return RRP + 5, cost
 
 
-def Ibanez(RRP, title, sku, obsolete_stock):
+def (RRP, title, sku, obsolete_stock):
     # High end (>200) = *0.7
     # mid range (80-200) = *0.8
     # low range (25-80) = *1
@@ -2949,7 +3020,7 @@ def Orange(RRP, title, sku, obsolete_stock):
     RRP = float(RRP)
 
     obsolete_stock = obsolete_stock
-    default_discount = 0.9
+    default_discount = 1
     promo_success = 'n'
 
     try:
@@ -2981,20 +3052,20 @@ def Orange(RRP, title, sku, obsolete_stock):
 
         except:
             if 'crush' in title.lower():
-                cost = (RRP * 0.7) * 0.75
+                cost = (RRP * 0.7)
 
             if 'uk' in title.lower() and 'pedal' not in title.lower():
                 cost = (RRP * 0.7)
             else:
-                cost = (RRP * 0.7) * 0.85
+                cost = (RRP * 0.7)
     except:
         if 'crush' in title.lower():
-            cost = (RRP * 0.7) * 0.75
+            cost = (RRP * 0.7)
 
         if 'uk' in title.lower() and 'pedal' not in title.lower():
             cost = (RRP * 0.7)
         else:
-            cost = (RRP * 0.7) * 0.85
+            cost = (RRP * 0.7)
     if promo_success == 'y':
         return RRP, cost
     if obsolete_stock == 'Y':
@@ -6211,7 +6282,7 @@ def Vox(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
-    default_discount = 0.85
+    default_discount = 1
 
     promo_success = 'n'
 
@@ -6240,7 +6311,7 @@ def Vox(RRP, title, sku, obsolete_stock):
         cost
 
     except:
-        cost = (RRP * 0.7) * 0.85
+        cost = (RRP * 0.75)
     if promo_success == 'y':
         return RRP, cost
     if obsolete_stock == "Y":
@@ -6887,7 +6958,7 @@ def SwiffAudio(RRP, title, sku, obsolete_stock):
             return RRP + 5, cost
 
 #Ibanez removed, pricing doesn't update
-#'epiphone': Epiphone, 'gibson': Gibson,'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP, "orange": Orange,'korg': Korg, 'vox': Vox, "universal audio": UniversalAudio, "ua": UniversalAudio, "uaguitar": UniversalAudio , removed, 
+#'epiphone': Epiphone, 'gibson': Gibson,'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP, "orange": Orange,'korg': Ibanez, 'vox': Vox, "universal audio": UniversalAudio, "ua": UniversalAudio, "uaguitar": UniversalAudio , removed, 
 
 completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean,  'ernie ball': ErnieBall,
                     'arturia': Arturia, 'strandberg': Arturia, 'jbl': JBL, 
@@ -7009,7 +7080,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean,  'ern
                     'total percussio': Valencia, 'total percussion': Valencia, 'tourte': Valencia, 'trophy': Valencia,
                     'v case': Valencia, 'v parts': Valencia, 'valenciaalfred': Valencia, 'versa': Valencia,
                     'vitoos': Valencia, 'v-parts': Valencia, 'waltons': Valencia, 'wsc': Valencia, 'wylde': Valencia,
-                    'x guard': Valencia, 'xrt': Valencia, 'zakk wylde': Valencia
+                    'x guard': Valencia, 'xrt': Valencia, 'zakk wylde': Valencia, 'epiphone': Ibanez, 'gibson': Ibanez,'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP, "orange": Orange,'korg': Ibanez, 'vox': Vox, "universal audio": Ibanez, "ua": Ibanez, "uaguitar": Ibanez, "ibanez": Ibanez
 }
 
 print('Loading Inventory worksheet...')
