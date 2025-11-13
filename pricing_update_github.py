@@ -7724,10 +7724,10 @@ for x in range(1, sheet.max_row + 1):
 
                     if obsolete_stock == 'Y':
                         if RRP > 50:
-                            price_a = cost * 1.06
-                            price_b = cost * 1.16  # Additional 10% for eBay fees
-                            final_price_a = cost * 1.06
-                            final_price_b = cost * 1.16  # Additional 10% for eBay fees
+                            price_a = cost * 0.95
+                            price_b = cost * 1.05  # Additional 10% for eBay fees
+                            final_price_a = cost * 0.95
+                            final_price_b = cost * 1.05  # Additional 10% for eBay fees
                         else:
                             # Keep existing logic for items with RRP <= 50
                             price_b = price_a * 1.05
@@ -7740,11 +7740,11 @@ for x in range(1, sheet.max_row + 1):
 
                     if RRP < 30 and final_price_a < RRP:
                         final_price_a = RRP+5
-                        price_a = RRP+3
+                        price_a = RRP+5
 
                     if RRP < 30 and final_price_b < RRP:
                         final_price_b = RRP+5
-                        price_b = RRP+3
+                        price_b = RRP+5
 
                     if RRP < 15 and price_a < 15 and 'mano' in brand.lower():
                         price_a = RRP + 5
