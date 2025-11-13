@@ -2483,7 +2483,7 @@ def Marshall(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
     title = title
-    default_discont = 0.85
+    default_discont = 0.9
 
     if 'fridge' in title.lower():
         cost = (RRP * 0.75)
@@ -2491,7 +2491,7 @@ def Marshall(RRP, title, sku, obsolete_stock):
 
     else:
 
-        cost = (RRP * 0.7) * 0.8
+        cost = (RRP * 0.7)
 
     if RRP >= 100:
         return RRP * default_discont, cost
