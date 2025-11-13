@@ -7007,7 +7007,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean,  'ern
                     'teka': Valencia, 'tonica': Valencia, 'tortex': Valencia, 'total': Valencia,
                     'total percussio': Valencia, 'total percussion': Valencia, 'tourte': Valencia, 'trophy': Valencia,
                     'v case': Valencia, 'v parts': Valencia, 'valenciaalfred': Valencia, 'versa': Valencia,
-                    'vitoos': Valencia, 'v-parts': Valencia, 'waltons': Valencia, 'wsc': Valencia, 'wylde': Valencia,
+                    'vitoos': Valencia, 'v-parts': Valencia, 'waltons': Valencia, 'wsc': Valencia, 'wylde': Valencia, 'feadog': Valencia,
                     'x guard': Valencia, 'xrt': Valencia, 'zakk wylde': Valencia, 'epiphone': Ibanez, 'gibson': Ibanez,'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP, "orange": Orange,'korg': Ibanez, 'vox': Vox, "universal audio": Ibanez, "ua": Ibanez, "uaguitar": Ibanez, "ibanez": Ibanez
 }
 
