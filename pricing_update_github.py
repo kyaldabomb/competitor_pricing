@@ -14,19 +14,40 @@ from csv import reader
 from datetime import datetime, timedelta
 
 
+# def is_date_over_a_year_ago(past_date_str):
+#     """
+#     Checks if a given date string is over a year ago compared to today's date.
+#     """
+#     try:
+#         past_date = datetime.strptime(past_date_str, "%d/%m/%Y")
+#     except ValueError:
+#         return None  # Handle invalid date format
+
+#     today = datetime.now()
+#     one_year_ago = today - timedelta(days=365)  # Account for leap years later
+
+#     return past_date < one_year_ago
+
 def is_date_over_a_year_ago(past_date_str):
     """
-    Checks if a given date string is over a year ago compared to today's date.
+    Checks if a given date string is before 1st July 2024.
+
+    Args:
+        past_date_str: A string representing a date in "dd/mm/YYYY" format.
+
+    Returns:
+        True if the date is before 1st July 2024, False otherwise.
+        Returns None if the date format is invalid.
     """
     try:
         past_date = datetime.strptime(past_date_str, "%d/%m/%Y")
     except ValueError:
         return None  # Handle invalid date format
 
-    today = datetime.now()
-    one_year_ago = today - timedelta(days=365)  # Account for leap years later
+    # Define the specific date for comparison
+    comparison_date = datetime(2024, 7, 1)
 
-    return past_date < one_year_ago
+    return past_date < comparison_date
 
 
 def Auralex(RRP, title, sku, obsolete_stock):
