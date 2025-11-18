@@ -1952,7 +1952,7 @@ def Gibson(RRP, title, sku, obsolete_stock):
 
     if obsolete_stock == "Y":
         if RRP >= 100:
-            return cost * 0.97, cost
+            return cost * 0.87, cost
         if 10 <= RRP < 100:
             return RRP, cost
 
