@@ -7416,7 +7416,10 @@ for x in range(1, sheet.max_row + 1):
                 else:
                     obsolete_stock = 'N'
 
-                if "ibanez" in brand.lower() or 'epiphone' in brand.lower() or 'gibson' in brand.lower() or 'esp' in brand.lower() or 'orange' in brand.lower() or 'korg' in brand.lower() or 'vox' in brand.lower() or 'universal audio' in brand.lower() or 'uaguitar' in brand.lower() or  brand.lower() == 'ua':
+                if 'gibson' in brand.lower():
+                    continue
+
+                if "ibanez" in brand.lower() or 'epiphone' in brand.lower() or 'esp' in brand.lower() or 'orange' in brand.lower() or 'korg' in brand.lower() or 'vox' in brand.lower() or 'universal audio' in brand.lower() or 'uaguitar' in brand.lower() or  brand.lower() == 'ua':
                     if obsolete_stock == 'Y':
                         pass
                     else:
