@@ -3038,7 +3038,7 @@ def Orange(RRP, title, sku, obsolete_stock):
             return RRP + 5, cost
 
 
-def Paytons(RRP, title, sku, obsolete_stock):
+def s(RRP, title, sku, obsolete_stock):
     # High end (>200) = *0.7
     # mid range (80-200) = *0.8
     # low range (25-80) = *1
@@ -6918,7 +6918,7 @@ completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean,  'ern
                     "gruv gear": GruvGear, "kyser": Kyser,
                     "akai": Akai, 'marshall': Marshall, 'nord': Nord, 'hercules': Hercules, 'celestion': Celestion
     , 'boss': Boss, 'general products': Boss, 'ashton': Ashton, 'headrush': Headrush, 'cordoba': Cordoba, 'evans': Evans
-    , 'promark': Promark, 'rico': Rico, 'gator cases': Gator, 'paytons': Paytons, 'admira': Paytons, 'hills': Paytons,'beam accessories': Paytons,'carl martin': Paytons,'ecostrap': Paytons,'limousine': Paytons, 'tascam': Tascam,
+    , 'promark': Promark, 'rico': Rico, 'gator cases': Gator, 'paytons': Paytons, 'generation': Paytons, 'admira': Paytons, 'hills': Paytons,'beam accessories': Paytons,'carl martin': Paytons,'ecostrap': Paytons,'limousine': Paytons, 'tascam': Tascam,
                     'valencia': Valencia, 'xtreme': Xtreme, 'cnb': CNB, 'v-case': VCase, 'mahalo': Mahalo,
                     '1880 ukulele co': Mahalo, 'dxp': DXP
     , 'dunlop': Dunlop, 'jim dunlop': Dunlop, 'xtr': XTR, 'mano percussion': Mano, 'mano': Mano, 'bluegrass': Bluegrass,
