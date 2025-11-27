@@ -6872,6 +6872,68 @@ def Kink(RRP, title, sku, obsolete_stock):
         if 0 <= RRP < 10:
             return RRP + 5, cost
 
+def Paytons(RRP, title, sku, obsolete_stock):
+    # High end (>200) = *0.7
+    # mid range (80-200) = *0.8
+    # low range (25-80) = *1
+    # super low range (0-25) = +5
+    original_RRP = float(RRP)
+    RRP = float(RRP)
+
+    obsolete_stock = obsolete_stock
+    default_discount = 1
+    promo_success = 'n'
+
+    gibson_workbook = openpyxl.load_workbook(
+        rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
+    gibson_sheet = gibson_workbook['Sheet1']
+    for items in range(1, gibson_sheet.max_row + 1):
+        gibson_sku = str(gibson_sheet['A' + str(items)].value)
+        if gibson_sku is None:
+            continue
+        if gibson_sku.lower() == sku.lower():
+            RRP = str(gibson_sheet['L' + str(items)].value)
+            RRP = RRP.replace('$', '')
+            RRP = RRP.replace(',', '')
+            RRP = float(RRP)
+
+            cost = str(gibson_sheet['F' + str(items)].value)
+            cost = cost.replace('$', '')
+            cost = cost.replace(',', '')
+            if original_RRP * default_discount > float(RRP):
+                default_discount = 1
+            promo_success = 'y'
+            break
+
+    try:
+        cost
+
+    except:
+        cost = (RRP * 0.7)
+
+    
+    if promo_success == 'y':
+        return RRP, cost
+    if obsolete_stock == 'Y':
+
+        if RRP >= 50:
+            return cost * 0.97, cost
+        if 10 <= RRP < 50:
+            return RRP, cost
+
+        if 0 <= RRP < 10:
+            return RRP + 5, cost
+
+    else:
+
+        if RRP >= 50:
+            return RRP, cost
+        if 10 <= RRP < 50:
+            return RRP, cost
+
+        if 0 <= RRP < 10:
+            return RRP + 5, cost
+
 def SwiffAudio(RRP, title, sku, obsolete_stock):
     # High end (>200) = *0.7
     # mid range (80-200) = *0.8
