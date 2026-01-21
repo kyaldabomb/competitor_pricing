@@ -7825,12 +7825,21 @@ for x in range(1, sheet.max_row + 1):
                     #     price_a = float(RRP)-0.05
 
                     if RRP < 30 and final_price_a < RRP:
-                        final_price_a = RRP+5
-                        price_a = RRP+5
+                        if "ernie" in brand.lower():
+                            pass
+                        else:
+                            
+                            final_price_a = RRP+5
+                            price_a = RRP+5
 
                     if RRP < 30 and final_price_b < RRP:
-                        final_price_b = RRP+5
-                        price_b = RRP+5
+
+                        if "ernie" in brand.lower():
+                            pass
+                        else:
+                            
+                            final_price_b = RRP+5
+                            price_b = RRP+5
 
                     if RRP < 15 and price_a < 15 and 'mano' in brand.lower():
                         price_a = RRP + 5
