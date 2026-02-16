@@ -8151,11 +8151,11 @@ for x in range(1, sheet.max_row + 1):
 
 
 
-                    price_d = math.ceil(float(final_price_b) * 1.1) - 0.05
+                    price_d = (math.ceil(float(final_price_b) * 1.1) - 0.05)+4
                     margin = ((float(price_a) - float(cost)) / float(cost)) * 100
                     # print(f'Margin: {margin}')
-                    price_c = math.ceil(float(final_price_b) * 1.05) - 0.05
-                    price_e = math.ceil(float(final_price_b) * 1.12) - 0.05
+                    price_c = (math.ceil(float(final_price_b) * 1.05) - 0.05)+4
+                    price_e = (math.ceil(float(final_price_b) * 1.12) - 0.05)+4
 
                     # Determine category for clearance items
                     if obsolete_stock == 'Y' and RRP > 50:
