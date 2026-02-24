@@ -7193,6 +7193,8 @@ with open('EbayInventoryUpload.csv', 'r', encoding='utf-8') as read_obj:
     csv_reader = reader(read_obj)
     # Iterate over each row in the csv using reader object
     for row in csv_reader:
+        if len(row) < 11:
+            continue
         sku = row[1]
         postage_type = row[10]
 
