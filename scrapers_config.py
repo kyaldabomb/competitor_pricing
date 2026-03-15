@@ -25,12 +25,6 @@ SCRAPERS = {
         "description": "Sky Music Store (Daily)",
         "type": "daily"
     },
-    "mannys_daily": {
-        "file_name": "Mannys.xlsx",
-        "script_name": "Mannys_Daily_Modified.py", 
-        "description": "Mannys Music Store (Daily)",
-        "type": "daily"
-    },
     
     # Monthly scrapers find new items
     "belfield_monthly": {
@@ -55,12 +49,6 @@ SCRAPERS = {
         "file_name": "Sky_Music.xlsx",
         "script_name": "Sky_Music_Monthly_Modified.py", 
         "description": "Sky Music Store (Monthly)",
-        "type": "monthly"
-    },
-    "mannys_monthly": {
-        "file_name": "Mannys.xlsx",
-        "script_name": "Mannys_Monthly_Modified.py", 
-        "description": "Mannys Music Store (Monthly)",
         "type": "monthly"
     },
 }
