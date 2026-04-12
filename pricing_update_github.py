@@ -1212,7 +1212,7 @@ def ESP(RRP, title, sku, obsolete_stock):
 
     obsolete_stock = obsolete_stock
 
-    default_discount = 0.8
+    default_discount = 1
     promo_success = 'n'
     gibson_workbook = openpyxl.load_workbook(
         rf"Pricing Spreadsheets/Pricing_spreadsheets_supplied_by_suppliers/Promotional_Prices.xlsx")
@@ -1244,7 +1244,7 @@ def ESP(RRP, title, sku, obsolete_stock):
             cost = (RRP * 0.7)
 
         else:
-            cost = (RRP * 0.7) * 0.85
+            cost = (RRP * 0.7)
     if promo_success == 'y':
         return RRP, cost
     if obsolete_stock == "Y":
@@ -6969,7 +6969,7 @@ def SwiffAudio(RRP, title, sku, obsolete_stock):
             return RRP + 5, cost
 
 #Ibanez removed, pricing doesn't update
-#'epiphone': Epiphone, 'gibson': Gibson,'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP, "orange": Orange,'korg': Ibanez, 'vox': Vox, "universal audio": UniversalAudio, "ua": UniversalAudio, "uaguitar": UniversalAudio , removed, 
+#'epiphone': Epiphone, 'gibson': Gibson, "orange": Orange,'korg': Ibanez, 'vox': Vox, "universal audio": UniversalAudio, "ua": UniversalAudio, "uaguitar": UniversalAudio , removed ,'esp': ESP, 'esp guitars': ESP, 'esp e-2': ESP,'esp ltd': ESP,'espltd': ESP
 
 completed_brands = {"tanglewood": Tanglewood,"dean": Dean, "morley": Dean,  'ernie ball': ErnieBall,
                     'arturia': Arturia, 'strandberg': Arturia, 'jbl': JBL, 
